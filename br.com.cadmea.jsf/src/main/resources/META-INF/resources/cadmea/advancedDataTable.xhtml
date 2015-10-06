@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+	<composite:interface
+		preferred="true" 
+		expert="false">
+		<composite:attribute name="id" type="java.lang.String" required="true" />
+		<composite:attribute name="title" type="java.lang.String"	required="true" />
+		<composite:attribute name="registers" type="java.util.Collection" />
+		<composite:attribute name="managedBean" type="com.gilbertosantos.java.jsf.ManutencaoFacesHelper" /> 
+	</composite:interface>
+
+	<composite:implementation>
+
+	<c:set scope="request" var="list" value="#{cc.attributes.managedBean.registros}" />
+
+	<c:set scope="request" var="lengthRegisters" value="#{func:lengthOfCollection(list)}" />
+	
+   	<custom:showIf where="#{lengthRegisters > 0}">
+   		<c:set var="lengthColumns" value="#{func:lengthOfCollection(list[0].colunas) + 1}" />	
+   	</custom:showIf>
+	
+		<table class="table"
+		 	summary="#{cc.attributes.title}">
+	        <thead>
+	        	<tr>
+	        		 <custom:showIf where="#{lengthColumns > 1}">
+		        		<td colspan="#{lengthColumns}"> 
+		        			#{msg['advancedDataTable.label.pesquisar']}
+		        		</td>
+		        	 </custom:showIf>	
+	        	</tr>
+	            <tr>
+	            	<custom:showIf where="#{lengthRegisters > 0}">
+		        		<ui:repeat var="column" value="#{list[0].colunas}">
+		                	<th> #{column.header} </th>
+		                </ui:repeat>
+	                </custom:showIf>
+	                
+	                <custom:showIf where="#{lengthColumns > 1}">
+						<th> #{msg['advancedDataTable.action']} </th>
+					</custom:showIf> 
+	            </tr>
+	        </thead>
+	        <tbody>
+	        	<ui:repeat var="obj" value="#{list}">
+	        		<tr>
+	        			<ui:repeat var="column" value="#{obj.colunas}">
+		                	<td> #{column.value} </td>
+		                </ui:repeat>
+	                	<td>
+	                		<span style="display:block; width:100%; text-align:center;">
+	                			<h:commandLink
+									immediate="#{true}"
+									alt="#{msg['advancedDataTable.header.editar']}" 
+									styleClass="buttonGridEditar">
+									<f:attribute name="objId" value="#{obj.id}" />
+									<h:graphicImage library="images/icons/fugue/" name="pencil.png" />
+									<f:ajax listener="#{cc.attributes.managedBean.obter}" event="click" render="@form" execute="@this" />
+								</h:commandLink>
+								
+					            <p:spacer width="30" height="5" />
+					            
+					            <h:commandLink
+					            	immediate="#{true}"
+					            	onclick="return confirmExclude(this);"
+					            	alt="#{msg['advancedDataTable.header.exclude']}"
+					            	actionListener="#{cc.attributes.managedBean.excluir}"
+					            	styleClass="buttonGridExcluir">
+									<h:graphicImage library="images/icons/fugue/" name="cross-circle.png" />
+									<f:attribute name="objId" value="#{obj.id}" />
+									<f:ajax event="click" render="@form" execute="@this" /> 
+								</h:commandLink>
+							</span>
+	                	</td>
+	        		</tr>
+	        	</ui:repeat>
+	        </tbody>
+	        <tfoot>
+	         	<custom:showIf where="#{lengthColumns > 1}">
+		        	<tr>
+		        		<td colspan="#{lengthColumns}">  #{lengthColumns} </td>
+		        	</tr>
+	        	</custom:showIf>
+	        </tfoot>
+		</table>
+	
+	</composite:implementation>
+</html>

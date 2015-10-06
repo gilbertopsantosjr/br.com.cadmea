@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+	<composite:interface>
+		<composite:attribute name="title" type="java.lang.String" />
+		<composite:attribute name="width" type="java.lang.Integer" />
+	</composite:interface>
+
+	<composite:implementation>
+	
+	<div class="row">
+		<div class="col-lg-#{cc.attributes.width}">
+			<div class="panel panel-default">
+				<div class="panel-heading"> #{cc.attributes.title} </div>
+				<div class="panel-body">
+					<div class="row">
+						<composite:insertChildren />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>				
+				
+	</composite:implementation>
+</html>

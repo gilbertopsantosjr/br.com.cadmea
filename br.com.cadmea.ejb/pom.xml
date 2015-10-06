@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>br.com.cadmea</groupId>
+		<artifactId>br.com.cadmea</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>br.com.cadmea.ejb</artifactId>
+	<name>${instituicao} - Cadmea Ejb Comuns</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>br.com.cadmea</groupId>
+			<artifactId>br.com.cadmea.hibernate</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>br.com.cadmea</groupId>
+			<artifactId>br.com.cadmea.comuns</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>br.com.cadmea</groupId>
+			<artifactId>br.com.cadmea.infra</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+	</dependencies>
+</project>

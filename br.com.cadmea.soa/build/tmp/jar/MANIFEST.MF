@@ -1,0 +1,42 @@
+Manifest-Version: 1.0
+Created-By: Gilberto Santos
+Built-Date: Mon Sep 07 20:35:41 IST 2015
+Built-JDK: 1.7.0_79
+Implementation-Title: br.com.cadmea.soa cadmea jar file
+Implementation-Version: 1.0-SNAPSHOT
+Class-path: file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/fil
+ es-2.1/com.sun.jersey/jersey-server/1.8/6da1231f5e2d7a9f7d194e292fc36
+ 95ba7710b2f/jersey-server-1.8.jar file:/Users/gilbertopsantosjr/.grad
+ le/caches/modules-2/files-2.1/com.sun.jersey/jersey-json/1.8/82562147
+ 8fec59983106efaa032c679f925b4eff/jersey-json-1.8.jar file:/Users/gilb
+ ertopsantosjr/.gradle/caches/modules-2/files-2.1/javax/javaee-api/6.0
+ /d6f416983ea13c334d5c599a9045414ecaf5d66d/javaee-api-6.0.jar file:/Us
+ ers/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/asm/asm/3.1/
+ c157def142714c544bdea2e6144645702adf7097/asm-3.1.jar file:/Users/gilb
+ ertopsantosjr/.gradle/caches/modules-2/files-2.1/com.sun.jersey/jerse
+ y-core/1.8/b6a0553c0eb3da45a9b8947a0a7283b3b9266d0d/jersey-core-1.8.j
+ ar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/o
+ rg.codehaus.jettison/jettison/1.1/1a01a2a1218fcf9faa2cc2a6ced025bdea6
+ 87262/jettison-1.1.jar file:/Users/gilbertopsantosjr/.gradle/caches/m
+ odules-2/files-2.1/com.sun.xml.bind/jaxb-impl/2.2.3-1/56baae106392040
+ a45a06d4a41099173425da1e6/jaxb-impl-2.2.3-1.jar file:/Users/gilbertop
+ santosjr/.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jack
+ son-core-asl/1.7.1/6c11953d1094b38e31c8ac7cda559db601caab1e/jackson-c
+ ore-asl-1.7.1.jar file:/Users/gilbertopsantosjr/.gradle/caches/module
+ s-2/files-2.1/org.codehaus.jackson/jackson-mapper-asl/1.7.1/6d4896287
+ 6433e5401ff0133fc0e2efbd01ea7ac/jackson-mapper-asl-1.7.1.jar file:/Us
+ ers/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/org.codehaus
+ .jackson/jackson-jaxrs/1.7.1/28dacb717bedc4f6edd9ca088448ef69d4dcd856
+ /jackson-jaxrs-1.7.1.jar file:/Users/gilbertopsantosjr/.gradle/caches
+ /modules-2/files-2.1/org.codehaus.jackson/jackson-xc/1.7.1/5eb6018a46
+ 439ae23afa3699005277ca2a0f7b47/jackson-xc-1.7.1.jar file:/Users/gilbe
+ rtopsantosjr/.gradle/caches/modules-2/files-2.1/stax/stax-api/1.0.1/4
+ 9c100caf72d658aca8e58bd74a4ba90fa2b0d70/stax-api-1.0.1.jar file:/User
+ s/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/javax.xml.bind
+ /jaxb-api/2.2.2/aeb3021ca93dde265796d82015beecdcff95bf09/jaxb-api-2.2
+ .2.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2
+ .1/javax.xml.stream/stax-api/1.0-2/d6337b0de8b25e53e81b922352fbea9f9f
+ 57ba0b/stax-api-1.0-2.jar file:/Users/gilbertopsantosjr/.gradle/cache
+ s/modules-2/files-2.1/javax.activation/activation/1.1/e6cb541461c2834
+ bdea3eb920f1884d1eb508b50/activation-1.1.jar
+

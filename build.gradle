@@ -1,0 +1,75 @@
+
+
+allprojects {
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        maven {
+            url "http://localhost:8081/nexus/content/groups/public"
+        }
+    }
+}
+
+ext {
+    javaee = '6.0'
+    CADMEA_VERSION = '1.0-SNAPSHOT'
+}
+
+subprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'maven'
+
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+
+    group 'br.com.cadmea'
+    version '1.0-SNAPSHOT'
+
+    configurations {
+        provided
+        compile.extendsFrom provided
+    }
+
+    dependencies {
+        provided "javax:javaee-api:${javaee}"
+    }
+
+    jar {
+        afterEvaluate { Project project ->
+            dependsOn configurations.runtime
+
+            def dependencies = configurations.runtime.resolve().collect { it.toURI().toString() }.join(' ')
+
+            manifest {
+                attributes(
+                        "Manifest-Version": "1.0",
+                        "Created-By": "Gilberto Santos",
+                        "Built-Date": new Date(),
+                        "Built-JDK": System.getProperty('java.version'),
+                        "Implementation-Title": "${baseName} cadmea jar file",
+                        "Implementation-Version": "${project.version}",
+                        "Class-path": dependencies
+                )
+            }
+        }
+    }
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                afterEvaluate { Project project ->
+                    repository(url: "http://localhost:8081/nexus/content/repositories/snapshots") {
+                        authentication(userName: "admin", password: "admin")
+                    }
+                    pom.version = CADMEA_VERSION
+                    pom.artifactId = project.name
+                    pom.groupId = "br.com.cadmea"
+                }
+            }
+        }
+    }
+
+}

@@ -1,0 +1,241 @@
+Manifest-Version: 1.0
+Created-By: Gilberto Santos
+Built-Date: Sat Aug 29 16:07:09 IST 2015
+Built-JDK: 1.7.0_79
+Implementation-Title: br.com.cadmea.spring.test cadmea jar file
+Implementation-Version: 1.0-SNAPSHOT
+Class-path: file:/Users/gilbertopsantosjr/Documents/workspace/Java/gil
+ bertosantos/br.com.cadmea/br.com.cadmea.comuns/build/libs/br.com.cadm
+ ea.comuns-1.0-SNAPSHOT.jar file:/Users/gilbertopsantosjr/Documents/wo
+ rkspace/Java/gilbertosantos/br.com.cadmea/br.com.cadmea.infra/build/l
+ ibs/br.com.cadmea.infra-1.0-SNAPSHOT.jar file:/Users/gilbertopsantosj
+ r/Documents/workspace/Java/gilbertosantos/br.com.cadmea/br.com.cadmea
+ .spring/build/libs/br.com.cadmea.spring-1.0-SNAPSHOT.jar file:/Users/
+ gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/org.testng/testn
+ g/6.8.7/3eaa6cbb13e327f3f1154d336dff11d7e83a727e/testng-6.8.7.jar fil
+ e:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/hsqldb/
+ hsqldb/1.8.0.10/7e9978fdb754bce5fcd5161133e7734ecb683036/hsqldb-1.8.0
+ .10.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-
+ 2.1/commons-dbcp/commons-dbcp/1.4/30be73c965cc990b153a100aaaaafcf239f
+ 82d39/commons-dbcp-1.4.jar file:/Users/gilbertopsantosjr/.gradle/cach
+ es/modules-2/files-2.1/org.springframework/spring-test/3.2.5.RELEASE/
+ 7c043dcf7e6f330df0def14a43dd6bba69108c8d/spring-test-3.2.5.RELEASE.ja
+ r file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/ja
+ vax/javaee-api/6.0/d6f416983ea13c334d5c599a9045414ecaf5d66d/javaee-ap
+ i-6.0.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/file
+ s-2.1/org.apache.commons/commons-lang3/3.3.2/90a3822c38ec8c996e84c16a
+ 3477ef632cbc87a3/commons-lang3-3.3.2.jar file:/Users/gilbertopsantosj
+ r/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.10
+ /4b95f4897fa13f2cd904aee711aeafc0c5295cd8/commons-codec-1.10.jar file
+ :/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/net.vida
+ geek/mirror/1.5.1/681571e2d08afde9fd9e3d66dc17197951fc9b7b/mirror-1.5
+ .1.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2
+ .1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4c
+ b522955686/commons-logging-1.2.jar file:/Users/gilbertopsantosjr/.gra
+ dle/caches/modules-2/files-2.1/commons-collections/commons-collection
+ s/3.2.1/761ea405b9b37ced573d2df0d1e3a4e0f9edc668/commons-collections-
+ 3.2.1.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/file
+ s-2.1/org.slf4j/slf4j-api/1.7.11/7eaaaf2238f324e2b02dbd4d6ced6778b993
+ 28/slf4j-api-1.7.11.jar file:/Users/gilbertopsantosjr/.gradle/caches/
+ modules-2/files-2.1/org.slf4j/slf4j-log4j12/1.7.11/93ed122f011567a03f
+ aff00c06ee4b68a1f5b8ac/slf4j-log4j12-1.7.11.jar file:/Users/gilbertop
+ santosjr/Documents/workspace/Java/gilbertosantos/br.com.cadmea/br.com
+ .cadmea.hibernate/build/libs/br.com.cadmea.hibernate-1.0-SNAPSHOT.jar
+  file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/jav
+ ax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/jav
+ ax.inject-1.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-
+ 2/files-2.1/org.aspectj/aspectjrt/1.8.5/39a8ff2d1f79267907f5573c090b3
+ 42b040b9682/aspectjrt-1.8.5.jar file:/Users/gilbertopsantosjr/.gradle
+ /caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.8.5/6004670a8
+ cbcbe794d73ad00106779561ad1b180/aspectjweaver-1.8.5.jar file:/Users/g
+ ilbertopsantosjr/.gradle/caches/modules-2/files-2.1/org.springframewo
+ rk/spring-core/4.1.6.RELEASE/e2f486124d5dea2d91a9c2ea7d4456bc343ca2cc
+ /spring-core-4.1.6.RELEASE.jar file:/Users/gilbertopsantosjr/.gradle/
+ caches/modules-2/files-2.1/org.springframework.data/spring-data-rest-
+ webmvc/2.2.2.RELEASE/bf63c04c2f969756ed49719510dd0416e7854b40/spring-
+ data-rest-webmvc-2.2.2.RELEASE.jar file:/Users/gilbertopsantosjr/.gra
+ dle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-s
+ tarter/1.2.3.RELEASE/a50eea39bce85f09db0fc43d80e86aa767e8cc24/spring-
+ boot-starter-1.2.3.RELEASE.jar file:/Users/gilbertopsantosjr/.gradle/
+ caches/modules-2/files-2.1/org.springframework.data/spring-data-mongo
+ db/1.6.2.RELEASE/a0292bffe73a65b73fde8420dffcef16c83a7c5e/spring-data
+ -mongodb-1.6.2.RELEASE.jar file:/Users/gilbertopsantosjr/.gradle/cach
+ es/modules-2/files-2.1/org.springframework.security/spring-security-c
+ ore/3.2.7.RELEASE/50c170701f0cc9a99d14a50a7a97ff0c651bab66/spring-sec
+ urity-core-3.2.7.RELEASE.jar file:/Users/gilbertopsantosjr/.gradle/ca
+ ches/modules-2/files-2.1/org.springframework.security/spring-security
+ -web/3.2.7.RELEASE/3170f54765d6d9f99cf2d4ba7f25698d1026cf6f/spring-se
+ curity-web-3.2.7.RELEASE.jar file:/Users/gilbertopsantosjr/.gradle/ca
+ ches/modules-2/files-2.1/org.springframework.security/spring-security
+ -config/3.2.7.RELEASE/36ded839a3f90b268c2b708a5a92a50aa0412223/spring
+ -security-config-3.2.7.RELEASE.jar file:/Users/gilbertopsantosjr/.gra
+ dle/caches/modules-2/files-2.1/org.apache.velocity/velocity/1.7/2ceb5
+ 67b8f3f21118ecdec129fe1271dbc09aa7a/velocity-1.7.jar file:/Users/gilb
+ ertopsantosjr/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/4e0
+ 31bb61df09069aeb2bffb4019e7a5034a4ee0/junit-4.11.jar file:/Users/gilb
+ ertopsantosjr/.gradle/caches/modules-2/files-2.1/org.beanshell/bsh/2.
+ 0b4/a05f0a0feefa8d8467ac80e16e7de071489f0d9c/bsh-2.0b4.jar file:/User
+ s/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/com.beust/jcom
+ mander/1.35/47592e181b0bdbbeb63029e08c5e74f6803c4edd/jcommander-1.35.
+ jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/
+ org.yaml/snakeyaml/1.14/c2df91929ed06a25001939929bff5120e0ea3fd4/snak
+ eyaml-1.14.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2
+ /files-2.1/commons-pool/commons-pool/1.6/4572d589699f09d866a226a14b7f
+ 4323c6d8f040/commons-pool-1.6.jar file:/Users/gilbertopsantosjr/.grad
+ le/caches/modules-2/files-2.1/log4j/log4j/1.2.17/5af35056b4d257e4b64b
+ 9e8069c0746e8b08629f/log4j-1.2.17.jar file:/Users/gilbertopsantosjr/.
+ gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-ehcache/4.3
+ .8.Final/f040321945cbc2040d49f6cd9e273b4a76b59258/hibernate-ehcache-4
+ .3.8.Final.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2
+ /files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779
+ d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar file:/Users
+ /gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/org.hibernate/h
+ ibernate-validator/5.1.3.Final/334d46a93cf095160ce06d8382594b904933c8
+ 08/hibernate-validator-5.1.3.Final.jar file:/Users/gilbertopsantosjr/
+ .gradle/caches/modules-2/files-2.1/c3p0/c3p0/0.9.1.2/4ea71601f844c4b9
+ 0d22195bbdb58979281bb8b6/c3p0-0.9.1.2.jar file:/Users/gilbertopsantos
+ jr/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/4.
+ 3.8.Final/72afcf795dea9d787141fbf665924d634471dcbf/hibernate-core-4.3
+ .8.Final.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/f
+ iles-2.1/org.hibernate/hibernate-entitymanager/4.3.8.Final/eeb1e6d969
+ eb58627329e227da87ae284e93113d/hibernate-entitymanager-4.3.8.Final.ja
+ r file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/cg
+ lib/cglib/2.2/97d03461dc1c04ffc636dcb2579aae7724a78ef2/cglib-2.2.jar 
+ file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/net.
+ sf.beanlib/beanlib-hibernate/5.0.2beta/736bfa5f4e4be9dec7ec24380c7bf0
+ 24812873be/beanlib-hibernate-5.0.2beta.jar file:/Users/gilbertopsanto
+ sjr/.gradle/caches/modules-2/files-2.1/org.springframework.data/sprin
+ g-data-rest-core/2.2.2.RELEASE/4b1cb05febbce70f1094b58ffc342463e1775f
+ 8e/spring-data-rest-core-2.2.2.RELEASE.jar file:/Users/gilbertopsanto
+ sjr/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web
+ mvc/4.1.6.RELEASE/e1ee19a5359f214d65cc18972df8aba17ce1e423/spring-web
+ mvc-4.1.6.RELEASE.jar file:/Users/gilbertopsantosjr/.gradle/caches/mo
+ dules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.4.5/c
+ 69c0cb613128c69d84a6a0304ddb9fce82e8242/jackson-databind-2.4.5.jar fi
+ le:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/com.fa
+ sterxml.jackson.core/jackson-annotations/2.4.5/b400d47efaf8ab612c03b9
+ 04ae5bf26c6706ade6/jackson-annotations-2.4.5.jar file:/Users/gilberto
+ psantosjr/.gradle/caches/modules-2/files-2.1/com.github.fge/json-patc
+ h/1.7/78831bdcabc64a4f9e64e1439763010b24e0d71d/json-patch-1.7.jar fil
+ e:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/org.slf
+ 4j/jcl-over-slf4j/1.7.11/180246b7809ffae6293eea3d34e668ee948f0dc8/jcl
+ -over-slf4j-1.7.11.jar file:/Users/gilbertopsantosjr/.gradle/caches/m
+ odules-2/files-2.1/org.springframework.boot/spring-boot/1.2.3.RELEASE
+ /2601c81786dd8d88fd7e53af1a3950ef45fd5507/spring-boot-1.2.3.RELEASE.j
+ ar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/o
+ rg.springframework.boot/spring-boot-autoconfigure/1.2.3.RELEASE/11175
+ f217ac34bdacd6282cd44310f211121e270/spring-boot-autoconfigure-1.2.3.R
+ ELEASE.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/fil
+ es-2.1/org.springframework.boot/spring-boot-starter-logging/1.2.3.REL
+ EASE/43093c137ea9c6d26ca6341e17295c0a6c506dfb/spring-boot-starter-log
+ ging-1.2.3.RELEASE.jar file:/Users/gilbertopsantosjr/.gradle/caches/m
+ odules-2/files-2.1/org.springframework/spring-tx/4.1.6.RELEASE/b5beec
+ fa930e0e2ce6fb3999eee3f69c4776e6be/spring-tx-4.1.6.RELEASE.jar file:/
+ Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/org.spring
+ framework/spring-context/4.1.6.RELEASE/15f0b22bf89ed468badbc4eec759af
+ 2b916d33e4/spring-context-4.1.6.RELEASE.jar file:/Users/gilbertopsant
+ osjr/.gradle/caches/modules-2/files-2.1/org.springframework/spring-be
+ ans/4.1.6.RELEASE/ce2d409d470948f11fad41ffdf37dcff4d28cd7c/spring-bea
+ ns-4.1.6.RELEASE.jar file:/Users/gilbertopsantosjr/.gradle/caches/mod
+ ules-2/files-2.1/org.springframework/spring-expression/4.1.6.RELEASE/
+ 8bf70887c2c883a6f6e552dbe46eec35c07adf6a/spring-expression-4.1.6.RELE
+ ASE.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-
+ 2.1/org.springframework.data/spring-data-commons/1.9.2.RELEASE/6f92f9
+ 3d9f837ea8a97a99e9bb850d3a08974c99/spring-data-commons-1.9.2.RELEASE.
+ jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/
+ org.mongodb/mongo-java-driver/2.12.5/8e53a39f2a5b2755ecc394d48d180264
+ 60f5da58/mongo-java-driver-2.12.5.jar file:/Users/gilbertopsantosjr/.
+ gradle/caches/modules-2/files-2.1/aopalliance/aopalliance/1.0/235ba8b
+ 489512805ac13a8f9ea77a1ca5ebe3e8/aopalliance-1.0.jar file:/Users/gilb
+ ertopsantosjr/.gradle/caches/modules-2/files-2.1/org.springframework/
+ spring-aop/4.1.6.RELEASE/686c13ba57d9423dede9c5d580dcadc5c67a2761/spr
+ ing-aop-4.1.6.RELEASE.jar file:/Users/gilbertopsantosjr/.gradle/cache
+ s/modules-2/files-2.1/org.springframework/spring-web/4.1.6.RELEASE/96
+ 0101b25d0ec6f45d550bf92c00de8c6a584e6a/spring-web-4.1.6.RELEASE.jar f
+ ile:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/commo
+ ns-lang/commons-lang/2.6/ce1edb914c94ebc388f086c6827e8bdeec71ac2/comm
+ ons-lang-2.6.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules
+ -2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061
+ f71acb49bf010a0/hamcrest-core-1.3.jar file:/Users/gilbertopsantosjr/.
+ gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.1
+ .3.GA/64499e907f19e5e1b3fdc02f81440c1832fe3545/jboss-logging-3.1.3.GA
+ .jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1
+ /org.jboss.logging/jboss-logging-annotations/1.2.0.Beta1/2f437f37bb26
+ 5d9f8f1392823dbca12d2bec06d6/jboss-logging-annotations-1.2.0.Beta1.ja
+ r file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/ne
+ t.sf.ehcache/ehcache-core/2.6.10/8e567a024e27e11b961ca068c5c367f845e2
+ 1a9b/ehcache-core-2.6.10.jar file:/Users/gilbertopsantosjr/.gradle/ca
+ ches/modules-2/files-2.1/com.fasterxml/classmate/1.0.0/434efef28c8116
+ 2b17c540e634cffa3bd9b09b4c/classmate-1.0.0.jar file:/Users/gilbertops
+ antosjr/.gradle/caches/modules-2/files-2.1/org.jboss.spec.javax.trans
+ action/jboss-transaction-api_1.2_spec/1.0.0.Final/1f9fef7a9fcbb41cc39
+ 0fc370a291cf30729e094/jboss-transaction-api_1.2_spec-1.0.0.Final.jar 
+ file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/dom4
+ j/dom4j/1.6.1/5d3ccc056b6f056dbf0dddfdf43894b9065a8f94/dom4j-1.6.1.ja
+ r file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/or
+ g.hibernate.common/hibernate-commons-annotations/4.0.5.Final/2a581b9e
+ db8168e45060d8bad8b7f46712d2c52c/hibernate-commons-annotations-4.0.5.
+ Final.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/file
+ s-2.1/org.hibernate.javax.persistence/hibernate-jpa-2.1-api/1.0.0.Fin
+ al/5e731d961297e5a07290bfaf3db1fbc8bbbf405a/hibernate-jpa-2.1-api-1.0
+ .0.Final.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/f
+ iles-2.1/org.javassist/javassist/3.18.1-GA/d9a09f7732226af26bf99f19e2
+ cffe0ae219db5b/javassist-3.18.1-GA.jar file:/Users/gilbertopsantosjr/
+ .gradle/caches/modules-2/files-2.1/antlr/antlr/2.7.7/83cd2cd674a217ad
+ e95a4bb83a8a14f351f48bd0/antlr-2.7.7.jar file:/Users/gilbertopsantosj
+ r/.gradle/caches/modules-2/files-2.1/org.jboss/jandex/1.1.0.Final/e84
+ a2122e76f0b6503be78094ddf2108057ac15f/jandex-1.1.0.Final.jar file:/Us
+ ers/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/asm/asm/3.1/
+ c157def142714c544bdea2e6144645702adf7097/asm-3.1.jar file:/Users/gilb
+ ertopsantosjr/.gradle/caches/modules-2/files-2.1/net.sf.beanlib/beanl
+ ib/5.0.2beta/5e7e26a3c54f87428b60479fbe481a57525b4b18/beanlib-5.0.2be
+ ta.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2
+ .1/org.hibernate/hibernate/3.1.3/9ee0010c9957dcffb2e205f8c04bcbe76101
+ fbb/hibernate-3.1.3.jar file:/Users/gilbertopsantosjr/.gradle/caches/
+ modules-2/files-2.1/org.springframework/spring/2.0.5/abe5697be40e809a
+ f49b8241edb066686bcbec8f/spring-2.0.5.jar file:/Users/gilbertopsantos
+ jr/.gradle/caches/modules-2/files-2.1/org.springframework.hateoas/spr
+ ing-hateoas/0.16.0.RELEASE/b5f0802006170eba329089d3e82155f97eb3347/sp
+ ring-hateoas-0.16.0.RELEASE.jar file:/Users/gilbertopsantosjr/.gradle
+ /caches/modules-2/files-2.1/org.springframework.plugin/spring-plugin-
+ core/1.1.0.RELEASE/597b979a66e2a338bc988e8eccf53fad4600a07e/spring-pl
+ ugin-core-1.1.0.RELEASE.jar file:/Users/gilbertopsantosjr/.gradle/cac
+ hes/modules-2/files-2.1/org.atteo/evo-inflector/1.1/69655def5603bfa5e
+ b7223b54632337dc0d3c17a/evo-inflector-1.1.jar file:/Users/gilbertopsa
+ ntosjr/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/
+ jackson-core/2.4.5/6fb96728ee26edb19fe329d94f3bd4df1a97652a/jackson-c
+ ore-2.4.5.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/
+ files-2.1/com.github.fge/jackson-coreutils/1.6/9e6af56eb7cc2a65700b28
+ 9abc7ee2bd170fd231/jackson-coreutils-1.6.jar file:/Users/gilbertopsan
+ tosjr/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr
+ 305/2.0.3/5871fb60dc68d67da54a663c3fd636a10a532948/jsr305-2.0.3.jar f
+ ile:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/org.s
+ lf4j/jul-to-slf4j/1.7.11/87a1d59c837c57396bc20f433ee24ad3a59c7812/jul
+ -to-slf4j-1.7.11.jar file:/Users/gilbertopsantosjr/.gradle/caches/mod
+ ules-2/files-2.1/org.slf4j/log4j-over-slf4j/1.7.11/4f51599470151c7b8e
+ bec1d36767138f7fb7d427/log4j-over-slf4j-1.7.11.jar file:/Users/gilber
+ topsantosjr/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback
+ -classic/1.1.3/d90276fff414f06cb375f2057f6778cd63c6082f/logback-class
+ ic-1.1.3.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/f
+ iles-2.1/xml-apis/xml-apis/1.0.b2/3136ca936f64c9d68529f048c2618bd356b
+ f85c9/xml-apis-1.0.b2.jar file:/Users/gilbertopsantosjr/.gradle/cache
+ s/modules-2/files-2.1/xstream/xstream/1.1.2/8d0077aec84dad1e1189cf704
+ cfb054569918bb6/xstream-1.1.2.jar file:/Users/gilbertopsantosjr/.grad
+ le/caches/modules-2/files-2.1/net.jcip/jcip-annotations/1.0/afba4942c
+ aaeaf46aab0b976afd57cc7c181467e/jcip-annotations-1.0.jar file:/Users/
+ gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/ehcache/ehcache/
+ 1.1/c781c87c2eb4e062a473822486cca46cd785b24a/ehcache-1.1.jar file:/Us
+ ers/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/asm/asm-attr
+ s/1.5.3/911ca40cdb527969ee47dc6f782425d94a36b510/asm-attrs-1.5.3.jar 
+ file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/org.
+ objenesis/objenesis/2.1/87c0ea803b69252868d09308b4618f766f135a96/obje
+ nesis-2.1.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/
+ files-2.1/com.github.fge/msg-simple/1.1/f261263e13dd4cfa93cc6b83f1f58
+ f619097a2c4/msg-simple-1.1.jar file:/Users/gilbertopsantosjr/.gradle/
+ caches/modules-2/files-2.1/com.google.guava/guava/17.0/9c6ef172e8de35
+ fd8d4d8783e4821e57cdef7445/guava-17.0.jar file:/Users/gilbertopsantos
+ jr/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-core/1.1
+ .3/e3c02049f2dbbc764681b40094ecf0dcbc99b157/logback-core-1.1.3.jar fi
+ le:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/com.gi
+ thub.fge/btf/1.2/9e66651022eb86301b348d57e6f59459effc343b/btf-1.2.jar
+

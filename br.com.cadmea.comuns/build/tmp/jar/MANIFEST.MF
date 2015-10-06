@@ -1,0 +1,28 @@
+Manifest-Version: 1.0
+Created-By: Gilberto Santos
+Built-Date: Mon Sep 07 20:35:39 IST 2015
+Built-JDK: 1.7.0_79
+Implementation-Title: br.com.cadmea.comuns cadmea jar file
+Implementation-Version: 1.0-SNAPSHOT
+Class-path: file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/fil
+ es-2.1/javax/javaee-api/6.0/d6f416983ea13c334d5c599a9045414ecaf5d66d/
+ javaee-api-6.0.jar file:/Users/gilbertopsantosjr/.gradle/caches/modul
+ es-2/files-2.1/org.apache.commons/commons-lang3/3.2/4ff27bd725ae39f61
+ 6e4ecdd08c27978cef749ec/commons-lang3-3.2.jar file:/Users/gilbertopsa
+ ntosjr/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec
+ /1.10/4b95f4897fa13f2cd904aee711aeafc0c5295cd8/commons-codec-1.10.jar
+  file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/net
+ .vidageek/mirror/1.5.1/681571e2d08afde9fd9e3d66dc17197951fc9b7b/mirro
+ r-1.5.1.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/fi
+ les-2.1/commons-logging/commons-logging/1.1.1/5043bfebc3db072ed80fbd3
+ 62e7caf00e885d8ae/commons-logging-1.1.1.jar file:/Users/gilbertopsant
+ osjr/.gradle/caches/modules-2/files-2.1/commons-collections/commons-c
+ ollections/3.2.1/761ea405b9b37ced573d2df0d1e3a4e0f9edc668/commons-col
+ lections-3.2.1.jar file:/Users/gilbertopsantosjr/.gradle/caches/modul
+ es-2/files-2.1/org.slf4j/slf4j-api/1.7.11/7eaaaf2238f324e2b02dbd4d6ce
+ d6778b99328/slf4j-api-1.7.11.jar file:/Users/gilbertopsantosjr/.gradl
+ e/caches/modules-2/files-2.1/org.slf4j/slf4j-log4j12/1.7.11/93ed122f0
+ 11567a03faff00c06ee4b68a1f5b8ac/slf4j-log4j12-1.7.11.jar file:/Users/
+ gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/log4j/log4j/1.2.
+ 17/5af35056b4d257e4b64b9e8069c0746e8b08629f/log4j-1.2.17.jar
+

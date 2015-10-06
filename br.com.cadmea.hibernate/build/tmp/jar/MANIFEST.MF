@@ -1,0 +1,103 @@
+Manifest-Version: 1.0
+Created-By: Gilberto Santos
+Built-Date: Mon Sep 07 20:35:40 IST 2015
+Built-JDK: 1.7.0_79
+Implementation-Title: br.com.cadmea.hibernate cadmea jar file
+Implementation-Version: 1.0-SNAPSHOT
+Class-path: file:/Users/gilbertopsantosjr/Documents/workspace/Java/gil
+ bertosantos/br.com.cadmea/br.com.cadmea.comuns/build/libs/br.com.cadm
+ ea.comuns-1.0-SNAPSHOT.jar file:/Users/gilbertopsantosjr/.gradle/cach
+ es/modules-2/files-2.1/org.hibernate/hibernate-ehcache/4.3.6.Final/32
+ 7c951e32af0d87b1f6dc0a5e01ecd144a39cf/hibernate-ehcache-4.3.6.Final.j
+ ar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/j
+ avax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05da
+ a73a6a954817d5/validation-api-1.1.0.Final.jar file:/Users/gilbertopsa
+ ntosjr/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-val
+ idator/5.1.3.Final/334d46a93cf095160ce06d8382594b904933c808/hibernate
+ -validator-5.1.3.Final.jar file:/Users/gilbertopsantosjr/.gradle/cach
+ es/modules-2/files-2.1/c3p0/c3p0/0.9.1.2/4ea71601f844c4b90d22195bbdb5
+ 8979281bb8b6/c3p0-0.9.1.2.jar file:/Users/gilbertopsantosjr/.gradle/c
+ aches/modules-2/files-2.1/org.hibernate/hibernate-entitymanager/4.3.5
+ .Final/d5e18e531ffa6fde84b998d2fbf796663a8b112d/hibernate-entitymanag
+ er-4.3.5.Final.jar file:/Users/gilbertopsantosjr/.gradle/caches/modul
+ es-2/files-2.1/cglib/cglib/2.2/97d03461dc1c04ffc636dcb2579aae7724a78e
+ f2/cglib-2.2.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules
+ -2/files-2.1/net.sf.beanlib/beanlib-hibernate/5.0.2beta/736bfa5f4e4be
+ 9dec7ec24380c7bf024812873be/beanlib-hibernate-5.0.2beta.jar file:/Use
+ rs/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/javax/javaee-
+ api/6.0/d6f416983ea13c334d5c599a9045414ecaf5d66d/javaee-api-6.0.jar f
+ ile:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/org.a
+ pache.commons/commons-lang3/3.2/4ff27bd725ae39f616e4ecdd08c27978cef74
+ 9ec/commons-lang3-3.2.jar file:/Users/gilbertopsantosjr/.gradle/cache
+ s/modules-2/files-2.1/commons-codec/commons-codec/1.10/4b95f4897fa13f
+ 2cd904aee711aeafc0c5295cd8/commons-codec-1.10.jar file:/Users/gilbert
+ opsantosjr/.gradle/caches/modules-2/files-2.1/net.vidageek/mirror/1.5
+ .1/681571e2d08afde9fd9e3d66dc17197951fc9b7b/mirror-1.5.1.jar file:/Us
+ ers/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/commons-logg
+ ing/commons-logging/1.1.1/5043bfebc3db072ed80fbd362e7caf00e885d8ae/co
+ mmons-logging-1.1.1.jar file:/Users/gilbertopsantosjr/.gradle/caches/
+ modules-2/files-2.1/commons-collections/commons-collections/3.2.1/761
+ ea405b9b37ced573d2df0d1e3a4e0f9edc668/commons-collections-3.2.1.jar f
+ ile:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/org.s
+ lf4j/slf4j-api/1.7.11/7eaaaf2238f324e2b02dbd4d6ced6778b99328/slf4j-ap
+ i-1.7.11.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/f
+ iles-2.1/org.slf4j/slf4j-log4j12/1.7.11/93ed122f011567a03faff00c06ee4
+ b68a1f5b8ac/slf4j-log4j12-1.7.11.jar file:/Users/gilbertopsantosjr/.g
+ radle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.1.
+ 3.GA/64499e907f19e5e1b3fdc02f81440c1832fe3545/jboss-logging-3.1.3.GA.
+ jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/
+ org.jboss.logging/jboss-logging-annotations/1.2.0.Beta1/2f437f37bb265
+ d9f8f1392823dbca12d2bec06d6/jboss-logging-annotations-1.2.0.Beta1.jar
+  file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/net
+ .sf.ehcache/ehcache-core/2.4.3/fd258ef6959f27fb678b04f90139ded4588e2d
+ 15/ehcache-core-2.4.3.jar file:/Users/gilbertopsantosjr/.gradle/cache
+ s/modules-2/files-2.1/com.fasterxml/classmate/1.0.0/434efef28c81162b1
+ 7c540e634cffa3bd9b09b4c/classmate-1.0.0.jar file:/Users/gilbertopsant
+ osjr/.gradle/caches/modules-2/files-2.1/dom4j/dom4j/1.6.1/5d3ccc056b6
+ f056dbf0dddfdf43894b9065a8f94/dom4j-1.6.1.jar file:/Users/gilbertopsa
+ ntosjr/.gradle/caches/modules-2/files-2.1/org.hibernate.javax.persist
+ ence/hibernate-jpa-2.1-api/1.0.0.Final/5e731d961297e5a07290bfaf3db1fb
+ c8bbbf405a/hibernate-jpa-2.1-api-1.0.0.Final.jar file:/Users/gilberto
+ psantosjr/.gradle/caches/modules-2/files-2.1/org.jboss.spec.javax.tra
+ nsaction/jboss-transaction-api_1.2_spec/1.0.0.Final/1f9fef7a9fcbb41cc
+ 390fc370a291cf30729e094/jboss-transaction-api_1.2_spec-1.0.0.Final.ja
+ r file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/or
+ g.javassist/javassist/3.18.1-GA/d9a09f7732226af26bf99f19e2cffe0ae219d
+ b5b/javassist-3.18.1-GA.jar file:/Users/gilbertopsantosjr/.gradle/cac
+ hes/modules-2/files-2.1/asm/asm/3.1/c157def142714c544bdea2e6144645702
+ adf7097/asm-3.1.jar file:/Users/gilbertopsantosjr/.gradle/caches/modu
+ les-2/files-2.1/net.sf.beanlib/beanlib/5.0.2beta/5e7e26a3c54f87428b60
+ 479fbe481a57525b4b18/beanlib-5.0.2beta.jar file:/Users/gilbertopsanto
+ sjr/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate/3.1.3/
+ 9ee0010c9957dcffb2e205f8c04bcbe76101fbb/hibernate-3.1.3.jar file:/Use
+ rs/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/org.springfra
+ mework/spring/2.0.5/abe5697be40e809af49b8241edb066686bcbec8f/spring-2
+ .0.5.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files
+ -2.1/log4j/log4j/1.2.17/5af35056b4d257e4b64b9e8069c0746e8b08629f/log4
+ j-1.2.17.jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/f
+ iles-2.1/xml-apis/xml-apis/1.0.b2/3136ca936f64c9d68529f048c2618bd356b
+ f85c9/xml-apis-1.0.b2.jar file:/Users/gilbertopsantosjr/.gradle/cache
+ s/modules-2/files-2.1/commons-lang/commons-lang/2.1/4763ecc9d78781c91
+ 5c07eb03e90572c7ff04205/commons-lang-2.1.jar file:/Users/gilbertopsan
+ tosjr/.gradle/caches/modules-2/files-2.1/xstream/xstream/1.1.2/8d0077
+ aec84dad1e1189cf704cfb054569918bb6/xstream-1.1.2.jar file:/Users/gilb
+ ertopsantosjr/.gradle/caches/modules-2/files-2.1/aopalliance/aopallia
+ nce/1.0/235ba8b489512805ac13a8f9ea77a1ca5ebe3e8/aopalliance-1.0.jar f
+ ile:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1/net.j
+ cip/jcip-annotations/1.0/afba4942caaeaf46aab0b976afd57cc7c181467e/jci
+ p-annotations-1.0.jar file:/Users/gilbertopsantosjr/.gradle/caches/mo
+ dules-2/files-2.1/ehcache/ehcache/1.1/c781c87c2eb4e062a473822486cca46
+ cd785b24a/ehcache-1.1.jar file:/Users/gilbertopsantosjr/.gradle/cache
+ s/modules-2/files-2.1/asm/asm-attrs/1.5.3/911ca40cdb527969ee47dc6f782
+ 425d94a36b510/asm-attrs-1.5.3.jar file:/Users/gilbertopsantosjr/.grad
+ le/caches/modules-2/files-2.1/org.hibernate/hibernate-core/4.3.6.Fina
+ l/e6f1e89880e645c66ef9c30d60a68f7e26f3152d/hibernate-core-4.3.6.Final
+ .jar file:/Users/gilbertopsantosjr/.gradle/caches/modules-2/files-2.1
+ /org.jboss/jandex/1.1.0.Final/e84a2122e76f0b6503be78094ddf2108057ac15
+ f/jandex-1.1.0.Final.jar file:/Users/gilbertopsantosjr/.gradle/caches
+ /modules-2/files-2.1/org.hibernate.common/hibernate-commons-annotatio
+ ns/4.0.5.Final/2a581b9edb8168e45060d8bad8b7f46712d2c52c/hibernate-com
+ mons-annotations-4.0.5.Final.jar file:/Users/gilbertopsantosjr/.gradl
+ e/caches/modules-2/files-2.1/antlr/antlr/2.7.7/83cd2cd674a217ade95a4b
+ b83a8a14f351f48bd0/antlr-2.7.7.jar
+

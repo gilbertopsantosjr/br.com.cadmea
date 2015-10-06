@@ -1,0 +1,12 @@
+
+    dependencies {
+        compile project(":br.com.cadmea.comuns")
+        compile project(":br.com.cadmea.hibernate")
+
+        compile "javax.inject:javax.inject:1"
+        compile "org.aspectj:aspectjrt:1.6.11"
+        compile "org.aspectj:aspectjweaver:1.6.11"
+    }
+
+
+
