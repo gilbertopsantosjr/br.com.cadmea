@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<head>
+    <title> Turn SQL to JSON </title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <!-- bootstrap required Jquery -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <!-- angular -->   
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-resource.js"></script>
+    <!-- controller -->
+    <script src="sql2json.js"></script>
+</head>
+
+<body ng-app="sql2jsonApp">
+   
+ <div class="container" ng-controller="MainController">
+        
+    <form role="form">
+       
+        <div class="form-group">
+            <label for="query">Type The SQL Query:</label>
+            <textarea rows="18" class="form-control" id="query" ng-model="query"></textarea>
+        </div>
+        
+        <div class="checkbox">
+            <label><input type="checkbox" ng-model="foreignkey.value" />Removed Foreign key from the result </label>
+        </div>
+        
+        <div class="form-group">
+            <button class="btn" ng-click="getJson()">
+                <span class="glyphicon glyphicon-rss">  </span>  Get Json
+            </button>
+        </div>
+        
+   </form>
+    
+   <pre>{{json}}</pre>
+ </div>
+ 
+</body>
