@@ -1,0 +1,6 @@
+
+dependencies {
+ 	compile project(":br.com.cadmea.comuns");
+ 	compile project(":br.com.cadmea.infra");
+ 	compile project(":br.com.cadmea.hibernate");
+}

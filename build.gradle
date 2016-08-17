@@ -1,0 +1,83 @@
+
+apply plugin: 'maven'
+apply plugin: 'java'
+
+allprojects {
+    
+    ext.RepoConfigurator = {
+	    maven {
+	      url = uri('http://192.168.50.10:18081/nexus/content/groups/public') 
+	   }
+  	}
+	
+	buildscript.repositories RepoConfigurator
+	repositories RepoConfigurator
+}
+
+ext {
+    javaee = '7.0'
+    CADMEA_VERSION = '1.0-SNAPSHOT'
+}
+
+subprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'maven'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    group 'br.com.cadmea'
+    version '1.0-SNAPSHOT'
+
+    configurations {
+        provided
+        compile.extendsFrom provided
+    }
+
+    dependencies {
+        provided "javax:javaee-api:${javaee}"
+    }
+
+    jar {
+        afterEvaluate { Project project ->
+            dependsOn configurations.runtime
+
+            def dependencies = configurations.runtime.resolve().collect { it.toURI().toString() }.join(' ')
+
+            manifest {
+                attributes(
+                        "Manifest-Version": "1.0",
+                        "Created-By": "Gilberto Santos",
+                        "Built-Date": new Date(),
+                        "Built-JDK": System.getProperty('java.version'),
+                        "Implementation-Title": "${baseName} cadmea jar file",
+                        "Implementation-Version": "${project.version}",
+                        "Class-path": dependencies
+                )
+            }
+        }
+    }
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                afterEvaluate { Project project ->
+                      repository(
+				        url: "${nexusUrl}/content/repositories/releases") {
+				          authentication(userName: nexusUsername, password: nexusPassword)
+				      }
+				      snapshotRepository(
+				        url: "${nexusUrl}/content/repositories/snapshots") {
+				          authentication(userName: nexusUsername, password: nexusPassword)
+				      }
+                    pom.version = CADMEA_VERSION
+                    pom.artifactId = project.name
+                    pom.groupId = "br.com.cadmea"
+                }
+            }
+        }
+    }
+
+}

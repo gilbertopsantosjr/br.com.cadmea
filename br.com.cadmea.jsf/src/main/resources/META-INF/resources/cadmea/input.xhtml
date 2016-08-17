@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	
+	xmlns:ssfunc="http://br.com.cadmea.jsf/spring/fnc"
+	xmlns:cadmea="http://java.sun.com/jsf/composite/cadmea"
+	xmlns:func="http://br.com.cadmea.jsf/fnc">
+
+	<composite:interface>
+			<composite:attribute name="label" type="java.lang.String" />
+			<composite:attribute name="html5" type="java.lang.String" default=""/>
+			<composite:attribute name="items" type="java.lang.String" default=""/>
+			
+      		<composite:attribute name="value"  />
+      		<composite:attribute name="maxlength"  default="999"/>
+      		<composite:attribute name="readOnly" default="false" type="java.lang.Boolean"/>
+      		<composite:attribute name="required" default="false" type="java.lang.Boolean"/>
+      		<composite:attribute name="rendered" default="true" type="java.lang.Boolean"/>
+      		
+      		<composite:attribute name="labelClass" type="java.lang.String" default="form-group" />
+      		<composite:attribute name="inputClass" type="java.lang.String" default="form-control" />
+      		
+            <composite:attribute name="layout" type="java.lang.String" default="input" />
+            <composite:attribute name="pattern" type="java.lang.String" default="" />
+            <composite:attribute name="items" type="java.util.Collection"  />
+            
+            <composite:attribute name="rendered" default="true" type="java.lang.Boolean"/>
+            <composite:attribute name="noWhiteSpaces" default="true" type="java.lang.Boolean" />
+            <composite:attribute name="noNumber" default="true" type="java.lang.Boolean" />
+            <composite:attribute name="noSpecialCharacter" default="true" type="java.lang.Boolean" />
+            
+	</composite:interface> 
+
+	<composite:implementation>
+			
+		   <div class="#{cc.attributes.labelClass}">
+               <cadmea:showIf test="#{cc.attributes.layout eq 'input'}">
+               	   <h:outputLabel for="#{func:preparedId(cc.attributes.label)}"> #{cc.attributes.label}  </h:outputLabel>
+	               <h:inputText 
+	               		id="#{func:preparedId(cc.attributes.label)}"
+						styleClass="#{cc.attributes.inputClass}" label="#{cc.attributes.label}"
+						required="#{cc.attributes.required}"  rendered="#{cc.attributes.rendered}"
+						value="#{cc.attrs.value}" readonly="#{cc.attributes.readOnly}">
+					  	<f:passThroughAttributes value="#{func:returnMap(cc.attrs.html5)}"/>
+				  		<f:validator validatorId="noWhiteSpaces" disabled="#{not cc.attrs.required or not cc.attrs.noWhiteSpaces}" />
+				  		<f:validator validatorId="noNumber" disabled="#{not cc.attrs.required or not cc.attrs.noNumber}" />
+				  		<f:validator validatorId="noSpecialCharacter" disabled="#{not cc.attrs.required or not cc.attrs.noSpecialCharacter}" />
+						<f:validateLength minimum="3" maximum="#{cc.attrs.maxlength}" disabled="#{not cc.attrs.required}" />
+					</h:inputText>	
+					<p class="help-block" style="color:red"> <h:message for="#{func:preparedId(cc.attributes.label)}" /> </p>
+			   </cadmea:showIf>	
+			   
+			   <cadmea:showIf test="#{cc.attributes.layout eq 'inputEmail'}">
+               	   <h:outputLabel for="#{func:preparedId(cc.attributes.label)}"> #{cc.attributes.label} </h:outputLabel>
+	               <h:inputText 
+	               		id="#{func:preparedId(cc.attributes.label)}"
+						styleClass="#{cc.attributes.inputClass}" label="#{cc.attributes.label}"
+						required="#{cc.attributes.required}"  rendered="#{cc.attributes.rendered}"
+						value="#{cc.attrs.value}" readonly="#{cc.attributes.readOnly}"
+						pt:type="email" pt:placeholder="example@something.com">
+				  		<f:validator validatorId="mustBeEmail"  />
+					</h:inputText>	
+					<p class="help-block" style="color:red"> <h:message for="#{func:preparedId(cc.attributes.label)}" /> </p>
+			   </cadmea:showIf>
+			   
+			    <cadmea:showIf test="#{cc.attributes.layout eq 'inputNumber'}">
+               	   <h:outputLabel for="#{func:preparedId(cc.attributes.label)}"> #{cc.attributes.label} </h:outputLabel>
+	               <h:inputText 
+	               		id="#{func:preparedId(cc.attributes.label)}"
+						styleClass="#{cc.attributes.inputClass}" label="#{cc.attributes.label}"
+						required="#{cc.attributes.required}"  rendered="#{cc.attributes.rendered}"
+						value="#{cc.attrs.value}" readonly="#{cc.attributes.readOnly}">
+						<f:convertNumber minFractionDigits="2"  />
+					</h:inputText>	
+					<p class="help-block" style="color:red"> <h:message for="#{func:preparedId(cc.attributes.label)}" /> </p>
+			   </cadmea:showIf>
+			   
+			    <cadmea:showIf test="#{cc.attributes.layout eq 'inputDate'}">
+               	   <h:outputLabel for="#{func:preparedId(cc.attributes.label)}"> #{cc.attributes.label} </h:outputLabel>
+	               <h:inputText 
+	               		id="#{func:preparedId(cc.attributes.label)}"
+						styleClass="#{cc.attributes.inputClass}" label="#{cc.attributes.label}"
+						required="#{cc.attributes.required}"  rendered="#{cc.attributes.rendered}"
+						value="#{cc.attrs.value}" readonly="#{cc.attributes.readOnly}"
+						converterMessage="Format must be yyyy-MM-dd" pt:type="date">
+						<f:convertDateTime pattern="yyyy-MM-dd"/>  
+					</h:inputText>	
+					<p class="help-block" style="color:red"> <h:message for="#{func:preparedId(cc.attributes.label)}" /> </p>
+			   </cadmea:showIf>
+			   
+			    <cadmea:showIf test="#{cc.attributes.layout eq 'textarea'}">
+			    	<h:outputLabel for="#{func:preparedId(cc.attributes.label)}"> #{cc.attributes.label} </h:outputLabel>
+					<h:inputTextarea 
+						id="#{func:preparedId(cc.attributes.label)}"
+						value="#{cc.attrs.value}"
+						styleClass="#{cc.attributes.inputClass}"
+						rows="15" cols="30" counter="counter" maxlength="#{cc.attributes.maxlength}"       
+						counterTemplate="{0} #{msg['characters.remaining']}." autoResize="false"/>  
+				</cadmea:showIf>
+				
+				<cadmea:showIf test="#{cc.attributes.layout eq 'selectOneMenu'}">
+					<h:outputLabel for="#{func:preparedId(cc.attributes.label)}"> #{cc.attributes.label} </h:outputLabel>
+					<h:selectOneMenu 
+						id="#{func:preparedId(cc.attributes.label)}" 
+						styleClass="#{cc.attrs.inputClass}"  value="#{cc.attrs.value}">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems value="#{func:returnMap(cc.attrs.items)}" />
+					</h:selectOneMenu>				
+				</cadmea:showIf>
+				
+				<cadmea:showIf test="#{cc.attributes.layout eq 'inputFile'}">
+					<h:outputLabel for="#{func:preparedId(cc.attributes.label)}"> #{cc.attributes.label} </h:outputLabel>
+					 <h:inputFile 
+					 	id="#{func:preparedId(cc.attributes.label)}" 
+					 	value="#{cc.attrs.value}" >
+                         <f:validator validatorId="imageValidator" />
+                      </h:inputFile>
+				</cadmea:showIf>
+              
+           </div>	
+	
+	</composite:implementation>
+	
+</html>
