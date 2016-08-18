@@ -9,6 +9,10 @@ import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import br.com.cadmea.comuns.orm.Entidade;
 import br.com.cadmea.comuns.util.Util;
 
@@ -41,18 +45,7 @@ public abstract class BaseEntidade implements Entidade {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final BaseEntidade other = (BaseEntidade) obj;
-		if ((this.getId() == null) ? (other.getId() != null) : !this.getId()
-				.equals(other.getId())) {
-			return false;
-		}
-		return true;
+		return EqualsBuilder.reflectionEquals(this, obj);
 	}
 
 	@Override
@@ -61,5 +54,12 @@ public abstract class BaseEntidade implements Entidade {
 		hash = 53 * hash + (this.getId() != null ? this.getId().hashCode() : 0);
 		return Integer.parseInt(hash + "");
 	}
+	
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+	}
+	
+
 
 }
