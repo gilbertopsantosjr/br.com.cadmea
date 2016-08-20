@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import br.com.cadmea.model.orm.BaseEntidade;
+import br.com.cadmea.comuns.orm.Entidade;
 
 /**
  * @author gilbertopsantosjr
  *
  */
-public class GenericRestService<E extends BaseEntidade> implements ServiceMap {
+public class GenericRestService<E extends Entidade> implements ServiceMap {
 
 	private final Logger LOGGER = Logger.getLogger(this.getClass());
 
