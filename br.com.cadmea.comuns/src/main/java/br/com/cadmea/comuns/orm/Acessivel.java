@@ -5,7 +5,7 @@ package br.com.cadmea.comuns.orm;
  * @author gilberto
  *
  */
-public interface Acessivel extends Entidade {
+public interface Acessivel  {
 
 	public String getUsername();
 
