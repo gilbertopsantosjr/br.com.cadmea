@@ -21,7 +21,7 @@ import br.com.cadmea.comuns.orm.Entidade;
  * @author Gilberto Santos
  * 
  */
-public class UserAccess implements UserDetails, Acessivel, Entidade, HttpSessionBindingListener {
+public class UserAccess implements Entidade, Acessivel, UserDetails, HttpSessionBindingListener {
 
 	private static Logger logger = Logger.getLogger(UserAccess.class);
 	private static final long serialVersionUID = 1L;
