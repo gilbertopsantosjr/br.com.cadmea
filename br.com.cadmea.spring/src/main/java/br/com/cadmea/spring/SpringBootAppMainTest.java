@@ -7,7 +7,7 @@ import br.com.cadmea.spring.util.ApplicationContextUtil;
 
 
 @SpringBootApplication
-public class AppMain {
+public class SpringBootAppMainTest {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApplicationContextUtil.class, args);

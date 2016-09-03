@@ -32,10 +32,9 @@
 	    compile "org.springframework.boot:spring-boot-starter-jdbc:1.4.0.RELEASE"
 	    compile "org.springframework.boot:spring-boot-starter-security:1.4.0.RELEASE"
 	    compile "org.springframework.boot:spring-boot-starter-integration:1.4.0.RELEASE"
+        compile "org.apache.velocity:velocity:1.7"
+		compile 'mysql:mysql-connector-java:5.1.6'
 	     
 		testCompile("org.springframework.boot:spring-boot-starter-test:1.4.0.RELEASE")
-
-        compile "org.apache.velocity:velocity:1.7"
-
         
     }
