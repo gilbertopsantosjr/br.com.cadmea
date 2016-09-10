@@ -5,10 +5,12 @@ apply plugin: 'java'
 allprojects {
     
     ext.RepoConfigurator = {
-	    maven {
-	      url = uri('http://192.168.50.10:18081/nexus/content/groups/public') 
-	   }
-  	}
+ 	mavenCentral()
+	mavenLocal()
+	maven {url 'https://oss.sonatype.org/content/repositories/snapshots/'}
+    maven {url = uri('http://192.168.50.10:18081/nexus/content/groups/public') }
+  	
+    }
 	
 	buildscript.repositories RepoConfigurator
 	repositories RepoConfigurator
@@ -22,7 +24,6 @@ ext {
 subprojects {
 
     apply plugin: 'java'
-    apply plugin: 'idea'
     apply plugin: 'maven'
 
     sourceCompatibility = 1.8
@@ -40,11 +41,14 @@ subprojects {
         provided "javax:javaee-api:${javaee}"
     }
 
-    jar {
+    task fatJar(type: Jar) {
         afterEvaluate { Project project ->
             dependsOn configurations.runtime
 
             def dependencies = configurations.runtime.resolve().collect { it.toURI().toString() }.join(' ')
+            
+            from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+            with jar
 
             manifest {
                 attributes(
@@ -57,6 +61,7 @@ subprojects {
                         "Class-path": dependencies
                 )
             }
+
         }
     }
 
