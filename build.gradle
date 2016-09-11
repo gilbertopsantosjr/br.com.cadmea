@@ -40,15 +40,12 @@ subprojects {
         provided "javax:javaee-api:${javaee}"
     }
 
-    task fatJar(type: Jar) {
+    jar {
         afterEvaluate { Project project ->
             dependsOn configurations.runtime
 
             def dependencies = configurations.runtime.resolve().collect { it.toURI().toString() }.join(' ')
             
-            from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-            with jar
-
             manifest {
                 attributes(
                         "Manifest-Version": "1.0",
@@ -60,7 +57,6 @@ subprojects {
                         "Class-path": dependencies
                 )
             }
-
         }
     }
 
