@@ -5,10 +5,10 @@ import java.util.Collection;
 import java.util.Map;
 
 import br.com.cadmea.comuns.excecao.DaoException;
-import br.com.cadmea.comuns.orm.Entidade;
+import br.com.cadmea.comuns.orm.EntityPersistent;
 import br.com.cadmea.comuns.orm.enums.Result;
 
-public interface BaseMaintenanceFindSrv<E extends Entidade> {
+public interface BaseMaintenanceFindSrv<E extends EntityPersistent> {
 
   /**
    * Retorna a entidade solicitada.

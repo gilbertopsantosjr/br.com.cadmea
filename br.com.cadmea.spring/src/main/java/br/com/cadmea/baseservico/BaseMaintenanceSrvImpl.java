@@ -2,7 +2,7 @@ package br.com.cadmea.baseservico;
 
 import java.util.Collection;
 
-import br.com.cadmea.comuns.orm.Entidade;
+import br.com.cadmea.comuns.orm.EntityPersistent;
 import br.com.cadmea.infra.negocio.Negocial;
 
 /**
@@ -14,12 +14,12 @@ import br.com.cadmea.infra.negocio.Negocial;
  * @param <E>
  * @param <B>
  */
-public abstract class BaseMaintenanceSrvImpl<E extends Entidade, B extends Negocial<E>>
+public abstract class BaseMaintenanceSrvImpl<E extends EntityPersistent, B extends Negocial<E>>
     extends BaseFindSrvImpl<E, B> implements BaseMaintenanceSrv<E> {
 
   /**
    * Retorna a instância de BO.
-   * 
+   *
    * @return O BO que será utilizado nas operações de manutenção
    */
   @Override

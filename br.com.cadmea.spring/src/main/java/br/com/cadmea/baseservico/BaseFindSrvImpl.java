@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.com.cadmea.comuns.excecao.DaoException;
-import br.com.cadmea.comuns.orm.Entidade;
+import br.com.cadmea.comuns.orm.EntityPersistent;
 import br.com.cadmea.comuns.orm.enums.Result;
 import br.com.cadmea.infra.negocio.Negocial;
 
@@ -19,19 +19,19 @@ import br.com.cadmea.infra.negocio.Negocial;
  * @param <E>
  * @param <B>
  */
-public abstract class BaseFindSrvImpl<E extends Entidade, B extends Negocial<E>>
+public abstract class BaseFindSrvImpl<E extends EntityPersistent, B extends Negocial<E>>
     implements BaseMaintenanceFindSrv<E> {
 
   /**
    * Retorna instância de BO.
-   * 
+   *
    * @return O BO que será utilizado nas operações de manutenção
    */
   protected abstract B getBo();
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * br.com.cadmea.baseservico.BaseMaintenanceFindSrv#find(java.io.Serializable)
    */
@@ -42,7 +42,7 @@ public abstract class BaseFindSrvImpl<E extends Entidade, B extends Negocial<E>>
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see br.com.cadmea.baseservico.BaseMaintenanceFindSrv#find(java.util.Map)
    */
   @Override
@@ -52,7 +52,7 @@ public abstract class BaseFindSrvImpl<E extends Entidade, B extends Negocial<E>>
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see br.com.cadmea.baseservico.BaseMaintenanceFindSrv#find(java.util.Map,
    * br.com.cadmea.comuns.orm.enums.Result)
    */
@@ -63,7 +63,7 @@ public abstract class BaseFindSrvImpl<E extends Entidade, B extends Negocial<E>>
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * br.com.cadmea.baseservico.BaseMaintenanceFindSrv#find(java.lang.String,
    * java.lang.Object)
@@ -83,7 +83,7 @@ public abstract class BaseFindSrvImpl<E extends Entidade, B extends Negocial<E>>
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see br.com.cadmea.baseservico.BaseMaintenanceFindSrv#listAll()
    */
   @Override
@@ -93,7 +93,7 @@ public abstract class BaseFindSrvImpl<E extends Entidade, B extends Negocial<E>>
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * br.com.cadmea.baseservico.BaseMaintenanceFindSrv#listAll(java.util.Map,
    * int, int)

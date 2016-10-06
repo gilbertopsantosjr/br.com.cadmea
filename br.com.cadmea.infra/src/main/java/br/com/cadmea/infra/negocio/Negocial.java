@@ -5,51 +5,51 @@ import java.util.Collection;
 import java.util.Map;
 
 import br.com.cadmea.comuns.excecao.DaoException;
-import br.com.cadmea.comuns.orm.Entidade;
+import br.com.cadmea.comuns.orm.EntityPersistent;
 import br.com.cadmea.comuns.orm.enums.Result;
 
-public interface Negocial<E extends Entidade> {
+public interface Negocial<E extends EntityPersistent> {
 
   /**
-   * 
+   *
    * @param identificador
    * @return
    */
   public abstract E find(Serializable identificador);
 
   /**
-   * 
+   *
    * @param entidade
    * @return
    */
   public abstract E insert(E entidade);
 
   /**
-   * 
+   *
    * @param entidade
    */
   public abstract void save(E entidade);
 
   /**
-   * 
+   *
    * @param entidade
    */
   public abstract void save(Collection<E> entidade);
 
   /**
-   * 
+   *
    * @param entidade
    */
   public abstract void remove(E entidade);
 
   /**
-   * 
+   *
    * @param entidades
    */
   public abstract void remove(Collection<E> entidades);
 
   /**
-   * 
+   *
    * @param params
    * @param resl
    * @return
@@ -67,20 +67,20 @@ public interface Negocial<E extends Entidade> {
       throws DaoException;
 
   /**
-   * 
+   *
    * @param params
    * @return
    */
   public abstract Collection<E> find(Map<String, Object> params);
 
   /**
-   * 
+   *
    * @return
    */
   public Collection<E> findAll();
 
   /**
-   * 
+   *
    * @param de
    * @param ate
    * @return
@@ -88,7 +88,7 @@ public interface Negocial<E extends Entidade> {
   public abstract Collection<E> findAll(int de, int ate);
 
   /**
-   * 
+   *
    * @param params
    * @param de
    * @param ate

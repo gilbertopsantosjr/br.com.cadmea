@@ -2,18 +2,20 @@ package br.com.cadmea.baseservico;
 
 import java.util.Collection;
 
-import br.com.cadmea.comuns.orm.Entidade;
+import br.com.cadmea.comuns.orm.EntityPersistent;
 
 /**
- * 
+ *
  * @author Gilberto Santos
  *
  * @param <E>
  */
-public interface BaseMaintenanceSrv<E extends Entidade> extends BaseMaintenanceFindSrv<E> {
+public interface BaseMaintenanceSrv<E extends EntityPersistent>
+    extends BaseMaintenanceFindSrv<E> {
 
   /**
    * Insere a entidade passada por parâmetro.
+   * 
    * @param entidade
    * @return chave da mensagem de sucesso da operação.
    */
@@ -21,19 +23,21 @@ public interface BaseMaintenanceSrv<E extends Entidade> extends BaseMaintenanceF
 
   /**
    * Salva a entidade passada por parâmetro.
+   * 
    * @param entidade
    * @return chave da mensagem de sucesso da operação.
    */
   void save(E entidade);
 
   /**
-   * 
+   *
    * @param entidades
    */
   void save(Collection<E> entidades);
 
   /**
    * Remove a entidade passada por parâmetro.
+   * 
    * @param entidade
    * @return chave da mensagem de sucesso da operação.
    */
@@ -41,6 +45,7 @@ public interface BaseMaintenanceSrv<E extends Entidade> extends BaseMaintenanceF
 
   /**
    * Remove todas as entidades da coleção.
+   * 
    * @param entities
    * @return chave da mensagem de sucesso da operação.
    */

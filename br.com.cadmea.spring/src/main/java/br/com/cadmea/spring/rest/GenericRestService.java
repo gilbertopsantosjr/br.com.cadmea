@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import br.com.cadmea.baseservico.BaseMaintenanceSrv;
-import br.com.cadmea.model.orm.BaseEntidade;
+import br.com.cadmea.model.orm.BaseEntityPersistent;
 
 /**
  * @author Gilberto Santos
  *
  */
-public abstract class GenericRestService<E extends BaseEntidade>
+public abstract class GenericRestService<E extends BaseEntityPersistent>
     implements ServiceMap {
 
   private final Logger LOGGER = Logger.getLogger(this.getClass());

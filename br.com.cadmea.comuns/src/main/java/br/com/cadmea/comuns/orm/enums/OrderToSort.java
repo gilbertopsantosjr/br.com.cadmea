@@ -1,5 +1,5 @@
 package br.com.cadmea.comuns.orm.enums;
 
-public enum Order {
+public enum OrderToSort {
     ASC, DESC;
 }

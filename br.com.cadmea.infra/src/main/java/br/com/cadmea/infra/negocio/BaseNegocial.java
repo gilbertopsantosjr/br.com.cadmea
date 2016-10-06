@@ -12,7 +12,7 @@ import br.com.cadmea.comuns.excecao.JaExisteException;
 import br.com.cadmea.comuns.excecao.NoneExistException;
 import br.com.cadmea.comuns.orm.enums.Result;
 import br.com.cadmea.model.dao.DaoGenerico;
-import br.com.cadmea.model.orm.BaseEntidade;
+import br.com.cadmea.model.orm.BaseEntityPersistent;
 
 /**
  * Classe responsavel pelas regras de negocio da entidade manipulada pela classe
@@ -22,7 +22,7 @@ import br.com.cadmea.model.orm.BaseEntidade;
  * @param <E>
  *          Entidade que sera manipulada
  */
-public abstract class BaseNegocial<E extends BaseEntidade>
+public abstract class BaseNegocial<E extends BaseEntityPersistent>
     implements Negocial<E> {
 
   /**

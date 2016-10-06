@@ -7,7 +7,7 @@ import java.util.Map;
 import br.com.cadmea.comuns.excecao.DaoException;
 import br.com.cadmea.comuns.excecao.NoneExistException;
 import br.com.cadmea.comuns.orm.enums.Result;
-import br.com.cadmea.model.orm.BaseEntidade;
+import br.com.cadmea.model.orm.BaseEntityPersistent;
 
 /**
  * Interface para acesso a base de dados já com métodos de manutenção (CRUD)
@@ -18,7 +18,7 @@ import br.com.cadmea.model.orm.BaseEntidade;
  * @author Gilberto Santos
  * @version 1.0
  */
-public interface DaoGenerico<E extends BaseEntidade> {
+public interface DaoGenerico<E extends BaseEntityPersistent> {
 
 	/**
 	 * insere uma nova instancia no banco de dados,
