@@ -70,7 +70,7 @@ public class Util {
 
 	public static String obterMensagemDoArquivoDePropriedades(ObjetoTemplateMensagemVo otm) {
 		StringBuilder mensagemCompleta = new StringBuilder();
-		Locale locale = new Locale(otm.getIdiomasDoSistema().getDescricao());
+		Locale locale = new Locale(otm.getIdiomasDoSistema().getDescription());
 		ResourceBundle bundle = ResourceBundle.getBundle(ConstantesComum.APP_MENSAGENS_FILE, locale);
 		
 		if (bundle.containsKey(otm.obterMensagemNoPattern()))

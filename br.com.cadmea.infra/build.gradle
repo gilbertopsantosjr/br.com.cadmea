@@ -1,6 +1,5 @@
 
     dependencies {
-        compile project(":br.com.cadmea.comuns")
         compile project(":br.com.cadmea.hibernate")
 
         compile "javax.inject:javax.inject:1"

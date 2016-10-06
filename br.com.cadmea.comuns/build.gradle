@@ -1,6 +1,6 @@
 
     ext {
-        SLF4J_VERSION = '1.7.11'
+        SLF4J_VERSION = '1.7.16'
         JUNIT_VERSION = '4.11'
     }
 
@@ -12,9 +12,8 @@
 
         provided "commons-logging:commons-logging:1.1.1"
         provided "commons-collections:commons-collections:3.2.1"
-
-        provided "org.slf4j:slf4j-api:${SLF4J_VERSION}"
-        provided "org.slf4j:slf4j-log4j12:${SLF4J_VERSION}"
+       	
+        compile "org.slf4j:slf4j-log4j12:${SLF4J_VERSION}"
 
         testCompile "junit:junit:${JUNIT_VERSION}"
     }

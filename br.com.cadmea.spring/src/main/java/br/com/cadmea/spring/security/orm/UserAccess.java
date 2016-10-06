@@ -15,12 +15,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.cadmea.comuns.orm.Acessivel;
-import br.com.cadmea.comuns.orm.Entidade;
+import br.com.cadmea.model.orm.BaseEntidade;
+
 /**
  * @author Gilberto Santos
  * 
  */
-public class UserAccess implements Entidade, UserDetails, Acessivel, HttpSessionBindingListener {
+public class UserAccess extends BaseEntidade implements UserDetails, Acessivel, HttpSessionBindingListener {
 
 	private static Logger logger = Logger.getLogger(UserAccess.class);
 	private static final long serialVersionUID = 1L;

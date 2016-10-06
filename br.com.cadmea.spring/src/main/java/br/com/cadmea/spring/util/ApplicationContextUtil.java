@@ -6,12 +6,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 
-@Configuration
-@EnableAutoConfiguration
-@ComponentScan(basePackages = { "br.com.cadmea.**.*" })
+//@Configuration
+//@EnableAutoConfiguration
+//@ComponentScan(basePackages = { "br.com.cadmea.**.*" })
 public class ApplicationContextUtil  {
 
-	@Bean(name = "applicationProperty")
+	//@Bean(name = "applicationProperty")
 	public ApplicationProperty getApplicationProperty() {
 		return new ApplicationProperty();
 	}

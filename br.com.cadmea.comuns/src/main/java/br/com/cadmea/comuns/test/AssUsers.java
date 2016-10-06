@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 import net.vidageek.mirror.dsl.Mirror;
-import br.com.cadmea.comuns.orm.Entidade;
+import br.com.cadmea.comuns.orm.EntityPersistent;
 import br.com.cadmea.comuns.orm.enums.CenariosDeViolacao;
 
 public class AssUsers {
@@ -20,7 +20,7 @@ public class AssUsers {
 	 * @return Collection<T>
 	 * @throws ClassNotFoundException
 	 */
-	public static <T extends Entidade> Collection<T> paraClasse(Class<T> clazz) {
+	public static <T extends EntityPersistent> Collection<T> paraClasse(Class<T> clazz) {
 		Collection<T> entidades = new ArrayList<T>();
 		// obtem todos os atributos de Entidade
 		List<Field> atributos = new Mirror().on(clazz).reflectAll().fields();
@@ -35,7 +35,7 @@ public class AssUsers {
 					if (field.getType().isAssignableFrom(String.class)) {
 						// seta um valor irregular para cada atributo encontrado
 						new Mirror().on(entidade).set().field(field)
-								.withValue(violacao.getDescricao());
+								.withValue(violacao.getDescription());
 					}
 				}
 				entidades.add(entidade);

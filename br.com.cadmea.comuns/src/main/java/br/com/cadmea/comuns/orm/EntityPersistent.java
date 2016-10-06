@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author Gilberto Santos
  * @version 1.0
  */
-public interface Entidade extends Serializable {
+public interface EntityPersistent extends Serializable {
 
 	/**
 	 * Retorna o Id da entidade.

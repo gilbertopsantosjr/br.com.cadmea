@@ -1,8 +1,8 @@
 package br.com.cadmea.comuns.util;
 
-import br.com.cadmea.comuns.orm.ElementoDeDominio;
+import br.com.cadmea.comuns.orm.DomainElement;
 
-public enum IdiomasDoSistema implements ElementoDeDominio {
+public enum IdiomasDoSistema implements DomainElement {
 
 	PORTUGUES_BRASILEIRO("pt_BR"), INGLES_AMERICANO("en_US");
 
@@ -13,7 +13,7 @@ public enum IdiomasDoSistema implements ElementoDeDominio {
 	}
 
 	@Override
-	public String getDescricao() {
+	public String getDescription() {
 		return descricao;
 	}
 

@@ -1,9 +1,9 @@
 package br.com.cadmea.comuns.orm.enums;
 
-import br.com.cadmea.comuns.orm.ElementoDeDominio;
+import br.com.cadmea.comuns.orm.DomainElement;
 import br.com.cadmea.comuns.util.Util;
 
-public enum CenariosDeViolacao implements ElementoDeDominio {
+public enum CenariosDeViolacao implements DomainElement {
 	
 	/*
 	 * 		{javax.validation.constraints.AssertFalse.message}	=	deve ser falso 
@@ -42,7 +42,7 @@ public enum CenariosDeViolacao implements ElementoDeDominio {
 	}
 
 	@Override
-	public String getDescricao() {
+	public String getDescription() {
 		return valor;
 	}
 	

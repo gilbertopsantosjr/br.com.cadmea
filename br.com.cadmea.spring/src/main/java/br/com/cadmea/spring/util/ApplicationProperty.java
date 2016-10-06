@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-@Component
-@PropertySource("classpath:application.properties")
+//@Component
+//@PropertySource("classpath:application.properties")
 public class ApplicationProperty {
 
-	@Value("${security.password.secret}")
+	//@Value("${security.password.secret}")
 	private String secret;
 
 	public ApplicationProperty() {

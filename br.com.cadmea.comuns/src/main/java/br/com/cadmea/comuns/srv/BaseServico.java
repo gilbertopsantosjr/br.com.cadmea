@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
-import br.com.cadmea.comuns.orm.Entidade;
+import br.com.cadmea.comuns.orm.EntityPersistent;
 import br.com.cadmea.comuns.orm.enums.Result;
 
 /**
@@ -13,14 +13,14 @@ import br.com.cadmea.comuns.orm.enums.Result;
  * determina os serviços padrões que toda entidade deve implementar
  * @param <E>
  */
-public interface BaseServico<E extends Entidade> {
+public interface BaseServico<E extends EntityPersistent> {
 	
 	/**
 	 * insere um registro e devolve sua referencia 
 	 * @param entidade
 	 * @return Serializable
 	 */
-    Entidade insert(E entidade);
+    EntityPersistent insert(E entidade);
 	
 	/**
 	 * persiste (cria ou alterar uma existente) uma nova entidade e limpa o estado para repetir o processo

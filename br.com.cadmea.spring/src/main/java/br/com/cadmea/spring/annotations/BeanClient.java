@@ -1,4 +1,4 @@
-package br.com.cadmea.spring;
+package br.com.cadmea.spring.annotations;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

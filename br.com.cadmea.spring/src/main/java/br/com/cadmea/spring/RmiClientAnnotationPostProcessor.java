@@ -14,6 +14,8 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.remoting.rmi.RmiProxyFactoryBean;
 import org.springframework.util.StringUtils;
 
+import br.com.cadmea.spring.annotations.BeanClient;
+
 /**
  * @author gilberto.junior
  */

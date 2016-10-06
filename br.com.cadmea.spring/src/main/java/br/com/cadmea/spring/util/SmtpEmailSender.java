@@ -9,18 +9,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
-@Component("br.com.cadmea.spring.util.SendEmail")
+@Lazy
+@Component("br.com.cadmea.spring.util.SmtpEmailSender")
 @ConditionalOnClass(JavaMailSender.class)
 public class SmtpEmailSender {
 
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+  @Lazy
   @Autowired
   private JavaMailSender mailSender;
   
