@@ -28,8 +28,7 @@ import org.hibernate.transform.ResultTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.cadmea.comuns.excecao.DaoException;
-import br.com.cadmea.comuns.excecao.NoneExistException;
+import br.com.cadmea.comuns.exceptions.DaoException;
 import br.com.cadmea.comuns.orm.enums.ComparacaoData;
 import br.com.cadmea.comuns.orm.enums.OrderToSort;
 import br.com.cadmea.comuns.orm.enums.Result;
@@ -37,7 +36,7 @@ import br.com.cadmea.comuns.util.ConstantesComum;
 import br.com.cadmea.comuns.util.CriteriaData;
 import br.com.cadmea.comuns.util.CriteriaDataConstrutor;
 import br.com.cadmea.comuns.util.Util;
-import br.com.cadmea.model.orm.BaseEntityPersistent;
+import br.com.cadmea.model.BaseEntityPersistent;
 
 /**
  * Interface para acesso a base de dados ja com metodos de manutencao (CRUD)
@@ -185,7 +184,7 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent, ID extends 
 
   @Override
   public T find(String propriedade, Object valor, Result res)
-      throws NoneExistException {
+      throws DaoException {
     Map<String, Object> params = new HashMap<String, Object>();
     params.put(propriedade, valor);
     return find(params, Result.UNIQUE);
@@ -359,7 +358,7 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent, ID extends 
 
   @Override
   public T find(Map<String, Object> params, Result resultado)
-      throws NoneExistException {
+      throws DaoException {
     List<T> lista = new ArrayList<T>();
     lista = (List<T>) find(params);
     T retorno = null;
@@ -368,7 +367,7 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent, ID extends 
     }
     lista = null;
     if (retorno == null)
-      throw new NoneExistException();
+      throw new DaoException();
     return retorno;
   }
 

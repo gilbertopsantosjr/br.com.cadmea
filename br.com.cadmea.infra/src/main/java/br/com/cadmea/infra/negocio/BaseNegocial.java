@@ -7,12 +7,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import br.com.cadmea.comuns.excecao.DaoException;
-import br.com.cadmea.comuns.excecao.JaExisteException;
-import br.com.cadmea.comuns.excecao.NoneExistException;
+import br.com.cadmea.comuns.exceptions.BusinessException;
+import br.com.cadmea.comuns.exceptions.DaoException;
+import br.com.cadmea.comuns.exceptions.enums.DefaultMessages;
 import br.com.cadmea.comuns.orm.enums.Result;
+import br.com.cadmea.model.BaseEntityPersistent;
 import br.com.cadmea.model.dao.DaoGenerico;
-import br.com.cadmea.model.orm.BaseEntityPersistent;
 
 /**
  * Classe responsavel pelas regras de negocio da entidade manipulada pela classe
@@ -55,7 +55,7 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
   public E find(Serializable identificador) {
     E entidade = getDao().find(identificador);
     if (entidade == null) {
-      throw new NoneExistException();
+      throw new BusinessException(DefaultMessages.NOT_FOUND);
     }
     return entidade;
   }
@@ -68,7 +68,7 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
   @Override
   public E insert(E entidade) {
     if (isThere(entidade))
-      throw new JaExisteException();
+      throw new BusinessException(DefaultMessages.FOUND);
     return getDao().save(entidade);
   }
 
@@ -94,8 +94,9 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
    */
   @Override
   public void remove(E entidade) {
-    E entity = find(entidade.getId());
-    getDao().remove(entity);
+    if (!isThere(entidade))
+      throw new BusinessException(DefaultMessages.NOT_FOUND);
+    getDao().remove(entidade);
   }
 
   /*
@@ -129,7 +130,7 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
   public E find(Map<String, Object> params, Result resl) {
     E entidade = getDao().find(params, resl);
     if (entidade == null) {
-      throw new NoneExistException();
+      throw new BusinessException(DefaultMessages.NOT_FOUND);
     }
     // E copy = copier.hibernate2dto(entidade);
     return entidade;
@@ -150,7 +151,7 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
   public Collection<E> find(Map<String, Object> params) {
     Collection<E> entidades = getDao().find(params);
     if (entidades == null) {
-      throw new NoneExistException();
+      throw new BusinessException(DefaultMessages.NOT_FOUND);
     }
     return entidades;
   }

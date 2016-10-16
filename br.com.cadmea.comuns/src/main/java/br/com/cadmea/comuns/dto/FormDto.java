@@ -1,4 +1,4 @@
-package br.com.cadmea.comuns.to;
+package br.com.cadmea.comuns.dto;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -8,8 +8,8 @@ import java.util.Map;
 
 import br.com.cadmea.comuns.orm.EntityPersistent;
 
-public abstract class FormTo<E extends EntityPersistent>
-    implements TransientObject {
+public abstract class FormDto<E extends EntityPersistent>
+    implements DomainTransferObject {
 
   private Serializable id;
   private E entity;
@@ -59,7 +59,7 @@ public abstract class FormTo<E extends EntityPersistent>
 
   /**
    * Retorna os parametros de pesquisa
-   * 
+   *
    * @return Map<String, Object>
    */
   public Map<String, Object> getParams() {

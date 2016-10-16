@@ -1,7 +1,7 @@
 /**
  *
  */
-package br.com.cadmea.model.orm;
+package br.com.cadmea.model;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;

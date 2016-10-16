@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
-import br.com.cadmea.comuns.excecao.DaoException;
+import br.com.cadmea.comuns.exceptions.DaoException;
 import br.com.cadmea.comuns.orm.EntityPersistent;
 import br.com.cadmea.comuns.orm.enums.Result;
+import br.com.cadmea.comuns.srv.BaseServico;
 
-public interface BaseMaintenanceFindSrv<E extends EntityPersistent> {
+public interface BaseMaintenanceFindSrv<E extends EntityPersistent>
+    extends BaseServico<E> {
 
   /**
    * Retorna a entidade solicitada.
@@ -16,6 +18,7 @@ public interface BaseMaintenanceFindSrv<E extends EntityPersistent> {
    * @param identificador
    * @return entidade
    */
+  @Override
   E find(Serializable identificador);
 
   /**
@@ -25,6 +28,7 @@ public interface BaseMaintenanceFindSrv<E extends EntityPersistent> {
    * @param orderBy
    * @return Collection<E>
    */
+  @Override
   Collection<E> find(Map<String, Object> params);
 
   /**
@@ -33,6 +37,7 @@ public interface BaseMaintenanceFindSrv<E extends EntityPersistent> {
    * @param params
    * @return E
    */
+  @Override
   E find(Map<String, Object> params, Result res);
 
   /**
@@ -49,6 +54,7 @@ public interface BaseMaintenanceFindSrv<E extends EntityPersistent> {
    *
    * @return Collection
    */
+  @Override
   Collection<E> listAll();
 
   /**
@@ -57,6 +63,7 @@ public interface BaseMaintenanceFindSrv<E extends EntityPersistent> {
    * @param ate
    * @return Collection
    */
+  @Override
   Collection<E> listAll(Map<String, Object> params, int de, int ate);
 
   /**

@@ -15,7 +15,7 @@ public interface BaseMaintenanceSrv<E extends EntityPersistent>
 
   /**
    * Insere a entidade passada por parâmetro.
-   * 
+   *
    * @param entidade
    * @return chave da mensagem de sucesso da operação.
    */
@@ -23,13 +23,13 @@ public interface BaseMaintenanceSrv<E extends EntityPersistent>
 
   /**
    * Salva a entidade passada por parâmetro.
-   * 
+   *
    * @param entidade
-   * @return chave da mensagem de sucesso da operação.
    */
   void save(E entidade);
 
   /**
+   * Salva a entidade passada por parâmetro.
    *
    * @param entidades
    */
@@ -37,17 +37,15 @@ public interface BaseMaintenanceSrv<E extends EntityPersistent>
 
   /**
    * Remove a entidade passada por parâmetro.
-   * 
+   *
    * @param entidade
-   * @return chave da mensagem de sucesso da operação.
    */
   void remove(E entidade);
 
   /**
    * Remove todas as entidades da coleção.
-   * 
+   *
    * @param entities
-   * @return chave da mensagem de sucesso da operação.
    */
   void remove(Collection<E> entities);
 

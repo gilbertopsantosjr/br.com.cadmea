@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
-import br.com.cadmea.comuns.excecao.DaoException;
+import br.com.cadmea.comuns.exceptions.DaoException;
 import br.com.cadmea.comuns.orm.EntityPersistent;
 import br.com.cadmea.comuns.orm.enums.Result;
 

@@ -20,9 +20,9 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-// @PropertySource(value = { "classpath:database/jdbc.properties" })
 @EnableTransactionManagement
-@EntityScan(basePackageClasses = { Jsr310JpaConverters.class })
+@EntityScan(basePackages = { "br.com.cadmea.model.orm" },
+    basePackageClasses = { Jsr310JpaConverters.class })
 public class PersistenceConfig {
 
   private static final String PROPERTY_NAME_HIBERNATE_MAX_FETCH_DEPTH = "hibernate.max_fetch_depth";
@@ -32,8 +32,7 @@ public class PersistenceConfig {
   private static final String PROPERTY_NAME_HIBERNATE_GENERATE_SQL = "hibernate.generate_sql";
   private static final String PROPERTY_NAME_HIBERNATE_UPDATE_SQL = "hibernate.hbm2ddl.auto";
   private static final String PROPERTY_NAME_HIBERNATE_DIALECT = "hibernate.dialect";
-
-  static final String ENTITYMANAGER_PACKAGES_TO_SCAN = "package.entities";
+  private static final String ENTITYMANAGER_PACKAGES_TO_SCAN = "cadmea.package.entities";
 
   @Autowired
   private Environment env;
@@ -79,7 +78,8 @@ public class PersistenceConfig {
   @Bean
   public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
     String mypackages[] = new String[] {
-        env.getProperty(ENTITYMANAGER_PACKAGES_TO_SCAN) };
+        env.getProperty(ENTITYMANAGER_PACKAGES_TO_SCAN),
+        "br.com.cadmea.model.orm" };
 
     LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
     entityManagerFactoryBean.setJpaVendorAdapter(vendorAdaptor());

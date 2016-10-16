@@ -11,6 +11,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
+import br.com.cadmea.spring.security.CustomUserDetailsService;
+import br.com.cadmea.spring.security.HeaderHandler;
+import br.com.cadmea.spring.security.SecurityConfiguration;
 import br.com.cadmea.spring.tx.PersistenceConfig;
 
 @Target({ ElementType.TYPE, ElementType.ANNOTATION_TYPE })
@@ -18,7 +21,8 @@ import br.com.cadmea.spring.tx.PersistenceConfig;
 @Documented
 @SpringBootApplication
 @EnableAutoConfiguration
-@Import({ PersistenceConfig.class })
+@Import({ PersistenceConfig.class, SecurityConfiguration.class,
+    CustomUserDetailsService.class, HeaderHandler.class })
 @PropertySource("classpath:cadmea.properties")
 public @interface CadmeaSpring {
   String basePackage() default "";

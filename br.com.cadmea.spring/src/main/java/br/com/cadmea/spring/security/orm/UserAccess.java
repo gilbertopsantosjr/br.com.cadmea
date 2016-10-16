@@ -1,116 +1,128 @@
 /**
- * 
+ *
  */
 package br.com.cadmea.spring.security.orm;
 
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
 import org.apache.log4j.Logger;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import br.com.cadmea.comuns.orm.Acessivel;
-import br.com.cadmea.model.orm.BaseEntityPersistent;
+import br.com.cadmea.model.orm.UserSystem;
 
 /**
  * @author Gilberto Santos
- * 
+ *
  */
-public class UserAccess extends BaseEntityPersistent implements UserDetails, Acessivel, HttpSessionBindingListener {
+public class UserAccess extends UserSystem
+    implements UserDetails, HttpSessionBindingListener {
 
-	private static Logger logger = Logger.getLogger(UserAccess.class);
-	private static final long serialVersionUID = 1L;
-	private Long id;
-	private String username;
-	private String password;
-	private String nickname;
-	private String urlUserAccess;
+  /**
+   *
+   */
+  private static final long serialVersionUID = 1L;
 
-	public Long getId() {
-		return id;
-	}
+  private static Logger logger = Logger.getLogger(UserAccess.class);
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+  private final Set<String> roles;
 
-	public String getNickname() {
-		return nickname;
-	}
+  public UserAccess(String username, String password, Set<String> roles) {
+    super();
+    setUsername(username);
+    setPassword(password);
+    this.roles = roles;
+  }
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
+  public UserAccess(String username, String password) {
+    super();
+    setUsername(username);
+    setPassword(password);
+    this.roles = new HashSet<>();
+  }
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  public UserAccess(String username) {
+    super();
+    setUsername(username);
+    this.roles = new HashSet<>();
+  }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+  public void addRole(String role) {
+    this.roles.add(role);
+  }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    Set<String> roles = this.getRoles();
 
-	@Override
-	public String getPassword() {
-		return password;
-	}
+    if (roles == null) {
+      return Collections.emptyList();
+    }
 
-	@Override
-	public String getUsername() {
-		return username;
-	}
+    Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return false;
-	}
+    for (String role : roles) {
+      authorities.add(new SimpleGrantedAuthority(role));
+    }
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return false;
-	}
+    return authorities;
+  }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return false;
-	}
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
 
-	@Override
-	public boolean isEnabled() {
-		return false;
-	}
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
 
-	public String getUrlUserAccess() {
-		return urlUserAccess;
-	}
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
 
-	public void setUrlUserAcess(String urlUserAccess) {
-		this.urlUserAccess = urlUserAccess;
-	}
-	
-	private final SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+  @Override
+  public boolean isEnabled() {
+    return true;
+  }
 
-	@Override
-	public void valueBound(HttpSessionBindingEvent arg0) {
-		logger.info("user :" + this.getNickname() + " as log ing " + sdf.format(new Date()));
-	}
+  public Set<String> getRoles() {
+    return roles;
+  }
 
-	@Override
-	public void valueUnbound(HttpSessionBindingEvent arg0) {
-		logger.info("user :" + this.getNickname() + " as log out " + sdf.format(new Date()));
-	}
-	
-	
+  private final SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+
+  @Override
+  public void valueBound(HttpSessionBindingEvent arg0) {
+    logger.info("user :" + this.getUsername() + " as log ing "
+        + sdf.format(new Date()));
+  }
+
+  @Override
+  public void valueUnbound(HttpSessionBindingEvent arg0) {
+    logger.info("user :" + this.getUsername() + " as log out "
+        + sdf.format(new Date()));
+  }
+
+  @Override
+  public String getUsername() {
+    return super.getUsername();
+  }
+
+  @Override
+  public String getPassword() {
+    return super.getPassword();
+  }
 
 }

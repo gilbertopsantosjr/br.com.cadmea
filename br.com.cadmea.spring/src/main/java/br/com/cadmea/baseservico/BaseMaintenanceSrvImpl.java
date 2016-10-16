@@ -15,7 +15,7 @@ import br.com.cadmea.infra.negocio.Negocial;
  * @param <B>
  */
 public abstract class BaseMaintenanceSrvImpl<E extends EntityPersistent, B extends Negocial<E>>
-    extends BaseFindSrvImpl<E, B> implements BaseMaintenanceSrv<E> {
+    extends BaseMaintenanceFindSrvImpl<E, B> implements BaseMaintenanceSrv<E> {
 
   /**
    * Retorna a instância de BO.

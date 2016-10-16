@@ -1,102 +1,133 @@
 package br.com.cadmea.spring.rest;
 
-import java.lang.reflect.ParameterizedType;
-import java.rmi.ServerException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Collection;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.log4j.Logger;
+import javax.annotation.PostConstruct;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.cadmea.baseservico.BaseMaintenanceSrv;
-import br.com.cadmea.model.orm.BaseEntityPersistent;
+import br.com.cadmea.comuns.dto.DomainTransferObject;
+import br.com.cadmea.comuns.orm.EntityPersistent;
+import br.com.cadmea.spring.rest.exceptions.NotFoundException;
+import br.com.cadmea.spring.rest.exceptions.PreconditionRequiredException;
 
 /**
  * @author Gilberto Santos
- *
  */
-public abstract class GenericRestService<E extends BaseEntityPersistent>
-    implements ServiceMap {
+@SuppressWarnings("unchecked")
+public abstract class GenericRestService<E extends EntityPersistent, Dto extends DomainTransferObject>
+    implements ServiceMap<E> {
 
-  private final Logger LOGGER = Logger.getLogger(this.getClass());
+  /**
+   * inicializa o managedBean no escopo de conversacao
+   */
+  protected void startingConversation() {
 
-  private final Class<E> clazz;
+  };
 
-  @SuppressWarnings("unchecked")
-  public GenericRestService() {
-    this.clazz = (Class<E>) ((ParameterizedType) getClass()
-        .getGenericSuperclass()).getActualTypeArguments()[0];
+  @PostConstruct
+  public void init() {
+    beforeLoadClass();
+    afterLoadClass();
   }
 
-  public abstract BaseMaintenanceSrv<E> getBaseMaintenanceSrv();
+  /**
+   * chama o service para salvar uma nova Entidade
+   */
+  @RequestMapping(value = "/save/", method = RequestMethod.POST)
+  public ResponseEntity<Void> save(@RequestBody Dto formDto,
+      UriComponentsBuilder ucBuilder) {
 
-  @RequestMapping(path = "/find/all", method = RequestMethod.GET)
-  public List<E> findAll() {
-    if (this.LOGGER.isDebugEnabled()) {
-      this.LOGGER.debug("Requesting all records.");
+    setViewForm(formDto);
+
+    if (!getViewForm().validate())
+      throw new PreconditionRequiredException("004");
+
+    try {
+      beforeSave();
+
+      if (getViewForm().getEntity().getId() != null)
+        getService().save(getViewForm().getEntity());
+      else {
+        getViewForm()
+            .setEntity((E) getService().insert(getViewForm().getEntity()));
+      }
+      afterSave();
+
+    } finally {
+      getViewForm().createNewInstance();
     }
-    return new ArrayList<>(getBaseMaintenanceSrv().listAll());
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setLocation(ucBuilder.path("/get/{id}")
+        .buildAndExpand(getViewForm().getId()).toUri());
+
+    return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
   }
 
-  @RequestMapping(path = "/find/query", method = RequestMethod.GET)
-  public List<E> findByNamedQuery() {
-    if (this.LOGGER.isDebugEnabled()) {
-      this.LOGGER.debug("Requesting all records.");
-    }
-    return new ArrayList<>(getBaseMaintenanceSrv().find("findByKey",
-        new HashMap<String, Object>()));
-  }
-
-  @RequestMapping(path = "/entity", method = RequestMethod.GET)
-  public String getNameOfEntity() {
-    return ToStringBuilder.reflectionToString(clazz,
-        ToStringStyle.MULTI_LINE_STYLE);
-  }
-
-  @RequestMapping(path = "/create", method = RequestMethod.POST)
-  public E insert(@RequestBody E entityObject) {
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug(String.format("Saving the entity [%s].", entityObject));
-    }
-    return getBaseMaintenanceSrv().insert(entityObject);
-  }
-
-  @RequestMapping(path = "/update", method = RequestMethod.PUT)
-  public void update(@RequestBody E entityObject) throws ServerException {
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug(
-          String.format("Request to update the record [%s].", entityObject));
-    }
-    if (entityObject.getId() == null) {
-      String errorMessage = String.format("ID of entity [%s] cannot be null.",
-          entityObject.getClass());
-      this.LOGGER.error(errorMessage);
-      throw new ServerException(errorMessage);
-    } else {
-      getBaseMaintenanceSrv().save(entityObject);
-    }
-  }
-
-  @RequestMapping(path = "/delete", method = RequestMethod.DELETE)
-  public void delete(@RequestBody E entityObject) throws ServerException {
-    if (LOGGER.isDebugEnabled()) {
-      this.LOGGER.debug(
-          String.format("Request to delete the record [%s].", entityObject));
+  /**
+   * chama o servico para excluir uma Entidade ja existente
+   *
+   */
+  @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+  public ResponseEntity<Void> exclude(@PathVariable("id") String IdEntity) {
+    E entidade = getService().find(Long.valueOf(IdEntity));
+    if (entidade == null) {
+      throw new NotFoundException(IdEntity);
     }
 
-    if (entityObject.getId() == null) {
-      String errorMessage = String.format("ID of entity [%s] cannot be null.",
-          entityObject.getClass());
-      this.LOGGER.error(errorMessage);
-      throw new ServerException(errorMessage);
-    } else {
-      getBaseMaintenanceSrv().remove(entityObject);
-    }
+    beforeExclude();
+    getService().remove(entidade);
+    afterExclude();
+
+    return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
   }
+
+  @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+  public ResponseEntity<E> get(String IdEntity) {
+    E entidade = getService().find(Long.valueOf(IdEntity));
+    if (entidade == null) {
+      throw new NotFoundException(IdEntity);
+    }
+
+    beforeRetrieve();
+    getViewForm().createNewInstance();
+    getViewForm().setEntity(entidade);
+    afterRetrieve();
+
+    return new ResponseEntity<E>(getViewForm().getEntity(), HttpStatus.OK);
+  }
+
+  /**
+   * <p>
+   * obtem uma lista a partir dos criterio de entrada no formulario obtem as
+   * instancias atraves do seu identificador natural por padrÃ£o a ordem da
+   * consulta serÃ¡ pelo seu identificador natural
+   * </p>
+   *
+   * @return Collection<E>
+   */
+  @RequestMapping(value = "/find/all/", method = RequestMethod.GET)
+  protected ResponseEntity<Collection<E>> findAll() {
+    Collection<E> list = getService().find(getViewForm().getParams());
+    if (list.isEmpty())
+      throw new NotFoundException("");
+
+    return new ResponseEntity<Collection<E>>(HttpStatus.OK);
+  }
+
+  /**
+   * elimina o managedBean no escopo de conversacao
+   */
+  protected void finalizarConversacao() {
+
+  };
 
 }

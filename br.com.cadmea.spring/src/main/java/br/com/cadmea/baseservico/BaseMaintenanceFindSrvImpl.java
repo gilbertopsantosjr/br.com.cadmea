@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.com.cadmea.comuns.excecao.DaoException;
+import br.com.cadmea.comuns.exceptions.DaoException;
 import br.com.cadmea.comuns.orm.EntityPersistent;
 import br.com.cadmea.comuns.orm.enums.Result;
 import br.com.cadmea.infra.negocio.Negocial;
@@ -19,7 +19,7 @@ import br.com.cadmea.infra.negocio.Negocial;
  * @param <E>
  * @param <B>
  */
-public abstract class BaseFindSrvImpl<E extends EntityPersistent, B extends Negocial<E>>
+public abstract class BaseMaintenanceFindSrvImpl<E extends EntityPersistent, B extends Negocial<E>>
     implements BaseMaintenanceFindSrv<E> {
 
   /**
