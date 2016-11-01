@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.com.cadmea.comuns.dto.DomainTransferObject;
 import br.com.cadmea.comuns.dto.FormDto;
 import br.com.cadmea.comuns.orm.EntityPersistent;
 import br.com.cadmea.comuns.srv.BaseServico;
@@ -27,25 +26,6 @@ public interface ServiceMap<E extends EntityPersistent> {
 
   public abstract FormDto<E> getViewForm();
 
-  public abstract <Dto extends DomainTransferObject> void setViewForm(
-      Dto formDto);
-
   public abstract BaseServico<E> getService();
-
-  void beforeRetrieve();
-
-  void afterRetrieve();
-
-  void afterExclude();
-
-  void beforeExclude();
-
-  void afterSave();
-
-  void beforeSave();
-
-  void afterLoadClass();
-
-  void beforeLoadClass();
 
 }

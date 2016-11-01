@@ -16,6 +16,9 @@
         compile "org.slf4j:slf4j-log4j12:${SLF4J_VERSION}"
 
         testCompile "junit:junit:${JUNIT_VERSION}"
+        
+		compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.8.4'
+        
     }
 
 

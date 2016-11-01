@@ -9,38 +9,42 @@ import java.util.Map;
 import br.com.cadmea.comuns.orm.EntityPersistent;
 
 public abstract class FormDto<E extends EntityPersistent>
-    implements DomainTransferObject {
+    implements DomainTransferObject<E> {
 
-  private Serializable id;
   private E entity;
   private Collection<E> entities;
 
+  @Override
   public E getEntity() {
     return entity;
   }
 
+  @Override
   public void setEntity(E entity) {
     this.entity = entity;
   }
 
+  @Override
   public Collection<E> getEntities() {
     return entities;
   }
 
+  @Override
   public void setEntities(Collection<E> entities) {
     this.entities = entities;
   }
 
+  @Override
   public Serializable getId() {
-    return id;
-  }
-
-  public void setId(Serializable id) {
-    this.id = id;
+    if (getEntity() != null) {
+      if (getEntity().getId() != null)
+        return getEntity().getId();
+    }
+    return null;
   }
 
   @SuppressWarnings("unchecked")
-  public void createNewInstance() {
+  public void newInstance() {
     try {
       Class<E> entidade = (Class<E>) ((ParameterizedType) getClass()
           .getGenericSuperclass()).getActualTypeArguments()[0];
@@ -57,11 +61,7 @@ public abstract class FormDto<E extends EntityPersistent>
     return true;
   }
 
-  /**
-   * Retorna os parametros de pesquisa
-   *
-   * @return Map<String, Object>
-   */
+  @Override
   public Map<String, Object> getParams() {
     return new HashMap<String, Object>();
   }

@@ -5,6 +5,8 @@
         compile "javax.inject:javax.inject:1"
         compile "org.aspectj:aspectjrt:1.6.11"
         compile "org.aspectj:aspectjweaver:1.6.11"
+        
+        compile group: 'org.springframework', name: 'spring-tx', version: '4.2.5.RELEASE'
     }
 
 

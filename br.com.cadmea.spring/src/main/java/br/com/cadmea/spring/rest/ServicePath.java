@@ -25,8 +25,8 @@ public final class ServicePath {
   // PUBLIC PATHS
   ///////////////////////////////////////////////////////////////
 
-  public static final String LOGIN_PATH = PUBLIC_ROOT_PATH + "/login";
+  public static final String LOGIN_PATH = ROOT_PATH + "/login";
 
-  public static final String LOGOUT_PATH = PUBLIC_ROOT_PATH + "/logout";
+  public static final String LOGOUT_PATH = ROOT_PATH + "/logout";
 
 }

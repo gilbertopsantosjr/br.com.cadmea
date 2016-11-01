@@ -15,6 +15,7 @@ import br.com.cadmea.spring.security.CustomUserDetailsService;
 import br.com.cadmea.spring.security.HeaderHandler;
 import br.com.cadmea.spring.security.SecurityConfiguration;
 import br.com.cadmea.spring.tx.PersistenceConfig;
+import br.com.cadmea.spring.util.LoggingApplication;
 
 @Target({ ElementType.TYPE, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
@@ -22,7 +23,8 @@ import br.com.cadmea.spring.tx.PersistenceConfig;
 @SpringBootApplication
 @EnableAutoConfiguration
 @Import({ PersistenceConfig.class, SecurityConfiguration.class,
-    CustomUserDetailsService.class, HeaderHandler.class })
+    CustomUserDetailsService.class, HeaderHandler.class,
+    LoggingApplication.class })
 @PropertySource("classpath:cadmea.properties")
 public @interface CadmeaSpring {
   String basePackage() default "";

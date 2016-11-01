@@ -2,7 +2,6 @@ package br.com.cadmea.model.dao;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -359,15 +358,11 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent, ID extends 
   @Override
   public T find(Map<String, Object> params, Result resultado)
       throws DaoException {
-    List<T> lista = new ArrayList<T>();
-    lista = (List<T>) find(params);
+    final List<T> lista = (List<T>) find(params);
     T retorno = null;
     if (!lista.isEmpty()) {
       retorno = lista.get(0);
     }
-    lista = null;
-    if (retorno == null)
-      throw new DaoException();
     return retorno;
   }
 

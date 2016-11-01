@@ -68,6 +68,17 @@ public interface Negocial<E extends EntityPersistent> {
 
   /**
    *
+   * @param propriedade
+   * @param valor
+   * @param res
+   * @return
+   * @throws DaoException
+   */
+  public E find(String propriedade, Object valor, Result res)
+      throws DaoException;
+
+  /**
+   *
    * @param params
    * @return
    */

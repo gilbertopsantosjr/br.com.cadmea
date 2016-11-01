@@ -20,7 +20,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@EnableTransactionManagement
+@EnableTransactionManagement(proxyTargetClass = true)
 @EntityScan(basePackages = { "br.com.cadmea.model.orm" },
     basePackageClasses = { Jsr310JpaConverters.class })
 public class PersistenceConfig {

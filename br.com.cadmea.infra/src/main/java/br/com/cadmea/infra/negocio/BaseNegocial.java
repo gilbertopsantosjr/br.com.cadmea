@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import br.com.cadmea.comuns.exceptions.BusinessException;
 import br.com.cadmea.comuns.exceptions.DaoException;
 import br.com.cadmea.comuns.exceptions.enums.DefaultMessages;
@@ -52,6 +55,7 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
    * @see br.com.cadmea.infra.negocio.Negocial#find(java.io.Serializable)
    */
   @Override
+  @Transactional(readOnly = true)
   public E find(Serializable identificador) {
     E entidade = getDao().find(identificador);
     if (entidade == null) {
@@ -66,6 +70,7 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
    * @see br.com.cadmea.infra.negocio.Negocial#insert(E)
    */
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public E insert(E entidade) {
     if (isThere(entidade))
       throw new BusinessException(DefaultMessages.FOUND);
@@ -78,13 +83,15 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
    * @see br.com.cadmea.infra.negocio.Negocial#save(E)
    */
   @Override
-  public void save(E entidade) {
-    getDao().save(entidade);
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void save(E entity) {
+    getDao().save(entity);
   }
 
   @Override
-  public void save(Collection<E> entidade) {
-    getDao().save(entidade);
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void save(Collection<E> entities) {
+    getDao().save(entities);
   }
 
   /*
@@ -93,6 +100,7 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
    * @see br.com.cadmea.infra.negocio.Negocial#remove(E)
    */
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void remove(E entidade) {
     if (!isThere(entidade))
       throw new BusinessException(DefaultMessages.NOT_FOUND);
@@ -105,6 +113,7 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
    * @see br.com.cadmea.infra.negocio.Negocial#remove(java.util.Collection)
    */
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void remove(Collection<E> entidades) {
     Collection<E> removidas = new ArrayList<E>();
     Iterator<E> iterator = entidades.iterator();
@@ -127,6 +136,7 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
    * br.com.cadmea.comuns.orm.enums.Result)
    */
   @Override
+  @Transactional(readOnly = true)
   public E find(Map<String, Object> params, Result resl) {
     E entidade = getDao().find(params, resl);
     if (entidade == null) {
@@ -137,9 +147,17 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Collection<E> find(String namedQuery, Map<String, Object> parameters)
       throws DaoException {
     return getDao().find(namedQuery, parameters);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public E find(String propriedade, Object valor, Result res)
+      throws DaoException {
+    return getDao().find(propriedade, valor, res);
   }
 
   /*
@@ -148,6 +166,7 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
    * @see br.com.cadmea.infra.negocio.Negocial#find(java.util.Map)
    */
   @Override
+  @Transactional(readOnly = true)
   public Collection<E> find(Map<String, Object> params) {
     Collection<E> entidades = getDao().find(params);
     if (entidades == null) {
@@ -162,6 +181,7 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
    * @see br.com.cadmea.infra.negocio.Negocial#listAll()
    */
   @Override
+  @Transactional(readOnly = true)
   public Collection<E> findAll() {
     return getDao().listAll();
   }
@@ -172,6 +192,7 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
    * @see br.com.cadmea.infra.negocio.Negocial#listAll(int, int)
    */
   @Override
+  @Transactional(readOnly = true)
   public Collection<E> findAll(int de, int ate) {
     return getDao().listAll(new HashMap<String, Object>(), de, ate);
   }
@@ -182,6 +203,7 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
    * @see br.com.cadmea.infra.negocio.Negocial#listAll(java.util.Map, int, int)
    */
   @Override
+  @Transactional(readOnly = true)
   public Collection<E> findAll(Map<String, Object> params, int de, int ate) {
     return getDao().listAll(params, de, ate);
   }
