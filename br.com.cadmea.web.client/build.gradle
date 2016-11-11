@@ -1,0 +1,42 @@
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'  
+apply plugin: 'fi.jasoft.plugin.vaadin'
+
+buildscript {  
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
+        classpath "fi.jasoft.plugin:gradle-vaadin-plugin:0.11.4"
+    }
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {  
+	mavenCentral()
+    maven { url "http://repo.spring.io/libs-snapshot" }
+}
+
+dependencies {  
+  	compile("com.vaadin:vaadin-spring-boot-starter:1.0.0")
+  	compile("org.springframework.boot:spring-boot-starter")
+  	compile("org.springframework:spring-web")
+    compile("com.fasterxml.jackson.core:jackson-databind")
+  	testCompile("junit:junit")
+}
+
+jar {  
+    baseName = 'br.com.cadmea.web'
+    version = '0.0.1-SNAPSHOT'
+}
+
+springBoot {  
+    mainClass = 'br.com.cadmea.web.StartServerAndLoginScreen'
+}
+
+// Configure bootRun to ensure the widgetset and theme is compiled 
+bootRun.dependsOn 'vaadinCompile', 'vaadinThemeCompile'
+

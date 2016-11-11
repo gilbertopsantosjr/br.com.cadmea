@@ -28,8 +28,8 @@ public abstract class BaseEntityPersistent implements EntityPersistent {
   private static final long serialVersionUID = 1L;
 
   @Id
-  @GenericGenerator(name = "kaugen", strategy = "increment")
-  @GeneratedValue(generator = "kaugen")
+  @GenericGenerator(name = "native_generator", strategy = "native")
+  @GeneratedValue(generator = "native_generator")
   private Long id;
 
   @Override

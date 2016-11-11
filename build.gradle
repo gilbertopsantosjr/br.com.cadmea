@@ -32,6 +32,8 @@ subprojects {
     group 'br.com.cadmea'
     version '1.0-SNAPSHOT'
 
+    tasks.withType(Javadoc).all { enabled = false }
+
     configurations {
         provided
         compile.extendsFrom provided

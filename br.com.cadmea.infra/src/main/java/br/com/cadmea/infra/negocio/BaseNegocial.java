@@ -231,8 +231,7 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
    *         contrario.
    */
   protected boolean isThere(E entidade) {
-    boolean result = false;
-    return result;
+    return true;
   }
 
 }

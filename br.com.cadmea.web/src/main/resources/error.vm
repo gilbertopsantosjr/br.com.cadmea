@@ -1,0 +1,9 @@
+<h1>$error_cause</h1>
+<br/>
+<span>
+$stack_trace 
+</span>
+<br/>
+<span>
+$invocation_exception
+</span>
