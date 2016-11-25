@@ -6,18 +6,16 @@
 
     dependencies {
 
-        provided "org.apache.commons:commons-lang3:3.2"
-        provided "commons-codec:commons-codec:1.10"
-        provided "net.vidageek:mirror:1.5.1"
+        compile "org.apache.commons:commons-lang3:3.2"
+        compile "commons-codec:commons-codec:1.10"
+        compile "commons-logging:commons-logging:1.1.1"
+        compile "commons-collections:commons-collections:3.2.1"
 
-        provided "commons-logging:commons-logging:1.1.1"
-        provided "commons-collections:commons-collections:3.2.1"
-       	
-        compile "org.slf4j:slf4j-log4j12:${SLF4J_VERSION}"
-
+		provided "net.vidageek:mirror:1.5.1"
+		
+		compileOnly "org.slf4j:slf4j-log4j12:1.7.16"
+		
         testCompile "junit:junit:${JUNIT_VERSION}"
-        
-		compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.8.4'
         
     }
 

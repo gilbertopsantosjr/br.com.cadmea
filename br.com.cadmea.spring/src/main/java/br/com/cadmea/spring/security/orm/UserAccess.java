@@ -13,7 +13,9 @@ import java.util.Set;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,7 +34,7 @@ public class UserAccess extends UserSystem
    */
   private static final long serialVersionUID = 1L;
 
-  private static Logger logger = Logger.getLogger(UserAccess.class);
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   private final Set<String> roles;
 

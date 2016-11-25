@@ -1,12 +1,12 @@
-package br.com.cadmea.web.model.domains;
+package br.com.cadmea.comuns.orm.enums;
 
 import br.com.cadmea.comuns.orm.DomainElement;
 
-public enum TipoDePessoa implements DomainElement {
+public enum TypePerson implements DomainElement {
 
   FISICA("Pessoa Fisica"), JURIDICA("Pessoa Juridica");
 
-  private TipoDePessoa(String descricao) {
+  private TypePerson(String descricao) {
     this.descricao = descricao;
   }
 

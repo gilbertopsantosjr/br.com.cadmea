@@ -1,4 +1,4 @@
-package br.com.cadmea.web.model.domains;
+package br.com.cadmea.comuns.orm.enums;
 
 import br.com.cadmea.comuns.orm.DomainElement;
 

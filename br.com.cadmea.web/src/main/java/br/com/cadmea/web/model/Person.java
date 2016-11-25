@@ -19,9 +19,9 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import br.com.cadmea.comuns.orm.enums.Gender;
+import br.com.cadmea.comuns.orm.enums.Relationship;
 import br.com.cadmea.model.BaseEntityPersistent;
-import br.com.cadmea.web.model.domains.Gender;
-import br.com.cadmea.web.model.domains.Relationship;
 
 /**
  * @author Gilberto Santos
