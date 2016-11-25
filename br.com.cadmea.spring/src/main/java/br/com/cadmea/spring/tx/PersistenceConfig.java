@@ -38,7 +38,7 @@ public class PersistenceConfig {
 	private static final String PROPERTY_NAME_HIBERNATE_DIALECT = "cadmea.hibernate.dialect";
 	private static final String ENTITYMANAGER_PACKAGES_TO_SCAN = "cadmea.package.entities";
 	
-	Properties env = new Properties();
+	Properties env = null;
 	InputStream input = null;
 	
 	@PostConstruct
@@ -48,7 +48,8 @@ public class PersistenceConfig {
 	
 	private void loadEnvVariables(){
 		try {
-			final String filename = "config.properties";
+			env = new Properties();
+			final String filename = "cadmea.properties";
 			input = PersistenceConfig.class.getClassLoader().getResourceAsStream(filename);
 			env.load(input);
 		} catch (Exception e) {
@@ -95,9 +96,6 @@ public class PersistenceConfig {
 	}
 
 	private HibernateJpaVendorAdapter vendorAdaptor() {
-		if(env == null)
-			loadEnvVariables();
-
 		Optional<String> showSqlOpt = Optional.ofNullable(env.getProperty(PROPERTY_NAME_HIBERNATE_SHOW_SQL));
 		Optional<String> generateSqlOpt = Optional.ofNullable(env.getProperty(PROPERTY_NAME_HIBERNATE_GENERATE_SQL));
 		Optional<String> dialectOpt = Optional.ofNullable(env.getProperty(PROPERTY_NAME_HIBERNATE_DIALECT));
@@ -112,10 +110,13 @@ public class PersistenceConfig {
 
 	@Bean(name = "transactionManager")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
-		String entityPackagesToScan = "com.model";
+		if(env == null)
+			loadEnvVariables();
+		
+		String entityPackagesToScan = "";
 		
 		if ( null != (env.getProperty(ENTITYMANAGER_PACKAGES_TO_SCAN)) && !env.getProperty(ENTITYMANAGER_PACKAGES_TO_SCAN).isEmpty() )
-			entityPackagesToScan = "";
+			entityPackagesToScan = env.getProperty(ENTITYMANAGER_PACKAGES_TO_SCAN);
 		
 		String mypackages[] = new String[] { "br.com.cadmea.model.orm", entityPackagesToScan };
 
