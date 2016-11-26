@@ -2,6 +2,7 @@ package br.com.cadmea.spring.tx;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -24,6 +25,12 @@ import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.fasterxml.jackson.databind.Module;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+
+import br.com.cadmea.spring.util.JsonDateSerializer;
+import ch.qos.logback.classic.pattern.DateConverter;
+
 @Configuration
 @EnableTransactionManagement(proxyTargetClass = true)
 @EntityScan(basePackages = { "br.com.cadmea.model.orm" }, basePackageClasses= { Jsr310JpaConverters.class })
@@ -45,6 +52,14 @@ public class PersistenceConfig {
 	public void init() {
 		loadEnvVariables();
 	}
+	
+	@Bean
+    public Module customModule() {
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(Date.class, new JsonDateSerializer.Serialize());
+        module.addDeserializer(Date.class, new JsonDateSerializer.Deserialize());
+        return module;
+    }
 	
 	private void loadEnvVariables(){
 		try {

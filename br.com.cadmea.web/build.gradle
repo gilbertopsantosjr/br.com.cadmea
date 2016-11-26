@@ -17,6 +17,12 @@
 
     dependencies {
         compile (project(":br.com.cadmea.spring"));
+        compile 'com.google.code.gson:gson:2.8.0'
+
+		testCompile('org.springframework.boot:spring-boot-starter-web') 
+		testCompile('org.springframework.boot:spring-boot-starter-test') 
+
+		testCompile 'junit:junit:4.12'
     }
     
     springBoot {  

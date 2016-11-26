@@ -35,7 +35,7 @@ public abstract class FormDto<E extends EntityPersistent>
   }
 
   @Override
-  public Serializable getId() {
+  public Long getId() {
     if (getEntity() != null) {
       if (getEntity().getId() != null)
         return getEntity().getId();

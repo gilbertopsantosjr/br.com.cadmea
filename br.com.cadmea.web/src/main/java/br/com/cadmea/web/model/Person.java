@@ -19,9 +19,13 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import br.com.cadmea.comuns.orm.enums.Gender;
 import br.com.cadmea.comuns.orm.enums.Relationship;
 import br.com.cadmea.model.BaseEntityPersistent;
+import br.com.cadmea.spring.util.JsonDateSerializer;
 
 /**
  * @author Gilberto Santos
@@ -31,6 +35,7 @@ import br.com.cadmea.model.BaseEntityPersistent;
 @Table(name = "cadmea_person_member")
 @AttributeOverrides(@AttributeOverride(name = "id",
     column = @Column(name = "pes_id", nullable = false)))
+@JsonAutoDetect
 public class Person extends BaseEntityPersistent {
 
   /**
