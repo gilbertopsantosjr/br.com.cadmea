@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,8 @@ import br.com.cadmea.spring.rest.exceptions.RestException;
 @SuppressWarnings("unchecked")
 public abstract class GenericRestService<E extends EntityPersistent, Dto extends DomainTransferObject<E>>
     implements ServiceMap<E> {
+
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   /**
    * an event that occurs when starting a conversation with a client
@@ -80,6 +84,7 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
       afterSave();
 
     } catch (Exception e) {
+      e.printStackTrace();
       throw new RestException(e);
 
     } finally {
@@ -189,8 +194,9 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
    * @param IdEntity
    * @return ResponseEntity<E> the entity up to date Rest.Status.Ok
    */
-  @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
-  protected ResponseEntity<E> get(String IdEntity) {
+  @RequestMapping(value = "/load/{id}", method = RequestMethod.GET)
+  protected ResponseEntity<E> load(@PathVariable String IdEntity) {
+    logger.info("requesting an entity by id");
     E entidade = getService().find(Long.valueOf(IdEntity));
     if (entidade == null) {
       throw new NotFoundException(IdEntity);

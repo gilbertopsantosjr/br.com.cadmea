@@ -7,13 +7,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.GenericGenerator;
 
 import br.com.cadmea.comuns.orm.EntityPersistent;
-import br.com.cadmea.comuns.util.Util;
 
 /**
  * @author Gilberto Santos
@@ -44,14 +42,27 @@ public abstract class BaseEntityPersistent implements EntityPersistent {
 
   @Override
   public boolean equals(Object obj) {
-    return EqualsBuilder.reflectionEquals(this, obj);
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    BaseEntityPersistent other = (BaseEntityPersistent) obj;
+    if (id == null) {
+      if (other.id != null)
+        return false;
+    } else if (!id.equals(other.id))
+      return false;
+    return true;
   }
 
   @Override
   public int hashCode() {
-    long hash = Long.parseLong(Util.generatorNumericCode(1));
-    hash = 53 * hash + (this.getId() != null ? this.getId().hashCode() : 0);
-    return Integer.parseInt(hash + "");
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    return result;
   }
 
   @Override

@@ -15,7 +15,6 @@ import javax.servlet.http.HttpSessionBindingListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,23 +37,24 @@ public class UserAccess extends UserSystem
 
   private final Set<String> roles;
 
-  public UserAccess(String username, String password, Set<String> roles) {
+  public UserAccess(final String email, final String password,
+      final Set<String> roles) {
     super();
-    setUsername(username);
+    setEmail(email);
     setPassword(password);
     this.roles = roles;
   }
 
-  public UserAccess(String username, String password) {
+  public UserAccess(final String email, final String password) {
     super();
-    setUsername(username);
+    setEmail(email);
     setPassword(password);
     this.roles = new HashSet<>();
   }
 
-  public UserAccess(String username) {
+  public UserAccess(final String email) {
     super();
-    setUsername(username);
+    setEmail(email);
     this.roles = new HashSet<>();
   }
 
@@ -119,12 +119,7 @@ public class UserAccess extends UserSystem
 
   @Override
   public String getUsername() {
-    return super.getUsername();
-  }
-
-  @Override
-  public String getPassword() {
-    return super.getPassword();
+    return super.getEmail();
   }
 
 }

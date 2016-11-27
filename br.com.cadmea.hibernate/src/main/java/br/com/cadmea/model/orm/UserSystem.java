@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,12 +14,15 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.com.cadmea.comuns.orm.enums.Situation;
 import br.com.cadmea.model.BaseEntityPersistent;
@@ -36,8 +40,8 @@ public class UserSystem extends BaseEntityPersistent {
 
   @NotNull
   @NotEmpty
-  @Column(name = "usu_username", nullable = false, length = 150, unique = true)
-  private String username;
+  @Column(name = "usu_nickname", nullable = false, length = 150)
+  private String nickname;
 
   @NotNull
   @NotEmpty
@@ -66,11 +70,19 @@ public class UserSystem extends BaseEntityPersistent {
   @Enumerated(EnumType.ORDINAL)
   private Situation situation;
 
-  @ManyToMany(fetch = FetchType.LAZY, targetEntity = Permission.class)
+  @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE },
+      fetch = FetchType.EAGER, targetEntity = Permission.class)
   @JoinTable(name = "cadmea_permissions_per_user",
       joinColumns = { @JoinColumn(name = "user_id") },
       inverseJoinColumns = { @JoinColumn(name = "permission_id") })
   private Set<Permission> permissions;
+
+  @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE },
+      fetch = FetchType.EAGER)
+  @JoinColumn(name = "pes_id", referencedColumnName = "pes_id",
+      nullable = false)
+  @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+  private Person person;
 
   public String getEmail() {
     return email;
@@ -80,12 +92,12 @@ public class UserSystem extends BaseEntityPersistent {
     this.email = email;
   }
 
-  public String getUsername() {
-    return username;
+  public String getNickname() {
+    return nickname;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
+  public void setNickname(String nickname) {
+    this.nickname = nickname;
   }
 
   public String getPassword() {
@@ -134,6 +146,14 @@ public class UserSystem extends BaseEntityPersistent {
 
   public void setPermissions(Set<Permission> permissions) {
     this.permissions = permissions;
+  }
+
+  public Person getPerson() {
+    return person;
+  }
+
+  public void setPerson(Person person) {
+    this.person = person;
   }
 
 }

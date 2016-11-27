@@ -135,10 +135,8 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent, ID extends 
     try {
       obj = getEntityManager().find(getClazz(), identificador);
       if (obj == null)
-        throw new RuntimeException("Not possible to find entity "); // substituir
-                                                                    // por chave
-                                                                    // da
-                                                                    // mensagem
+        throw new RuntimeException("Not possible to find entity ");
+      // substituir mensagem por radio
     } catch (RuntimeException e) {
       log.error("fail to find", e);
     }
@@ -269,8 +267,12 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent, ID extends 
                 .like(propNome, stringIdentificavel, MatchMode.ANYWHERE)
                 .ignoreCase());
           }
-        } else
-          criteria.add(Restrictions.eq(propNome, valor).ignoreCase());
+        } else {
+          if (propNome.equalsIgnoreCase("password"))
+            criteria.add(Restrictions.eq(propNome, valor));
+          else
+            criteria.add(Restrictions.eq(propNome, valor).ignoreCase());
+        }
       }
 
       if (valor instanceof OrderToSort) {

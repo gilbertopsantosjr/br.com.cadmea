@@ -1,6 +1,7 @@
-package br.com.cadmea.web.model;
+package br.com.cadmea.model.orm;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -11,7 +12,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,13 +21,9 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import br.com.cadmea.comuns.orm.enums.Gender;
 import br.com.cadmea.comuns.orm.enums.Relationship;
 import br.com.cadmea.model.BaseEntityPersistent;
-import br.com.cadmea.spring.util.JsonDateSerializer;
 
 /**
  * @author Gilberto Santos
@@ -35,7 +33,6 @@ import br.com.cadmea.spring.util.JsonDateSerializer;
 @Table(name = "cadmea_person_member")
 @AttributeOverrides(@AttributeOverride(name = "id",
     column = @Column(name = "pes_id", nullable = false)))
-@JsonAutoDetect
 public class Person extends BaseEntityPersistent {
 
   /**
@@ -66,10 +63,35 @@ public class Person extends BaseEntityPersistent {
   @Temporal(TemporalType.TIMESTAMP)
   private Date dateOfBirth;
 
-  @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE },
-      fetch = FetchType.LAZY)
-  @JoinColumn(name = "con_id", nullable = true)
-  private Contact contact;
+  @ManyToMany(fetch = FetchType.LAZY, targetEntity = Email.class,
+      cascade = { CascadeType.ALL })
+  @JoinTable(name = "cadmea_emails_per_person",
+      joinColumns = { @JoinColumn(name = "user_id") },
+      inverseJoinColumns = { @JoinColumn(name = "ema_id") })
+  private Set<Email> emails;
+
+  @ManyToMany(fetch = FetchType.LAZY, targetEntity = Phone.class,
+      cascade = { CascadeType.ALL })
+  @JoinTable(name = "cadmea_phones_per_person",
+      joinColumns = { @JoinColumn(name = "user_id") },
+      inverseJoinColumns = { @JoinColumn(name = "pho_id") })
+  private Set<Phone> phones;
+
+  public Set<Email> getEmails() {
+    return emails;
+  }
+
+  public void setEmails(Set<Email> emails) {
+    this.emails = emails;
+  }
+
+  public Set<Phone> getPhones() {
+    return phones;
+  }
+
+  public void setPhones(Set<Phone> phones) {
+    this.phones = phones;
+  }
 
   public String getName() {
     return name;
@@ -109,14 +131,6 @@ public class Person extends BaseEntityPersistent {
 
   public void setDateOfBirth(Date dateOfBirth) {
     this.dateOfBirth = dateOfBirth;
-  }
-
-  public Contact getContact() {
-    return contact;
-  }
-
-  public void setContact(Contact contact) {
-    this.contact = contact;
   }
 
 }

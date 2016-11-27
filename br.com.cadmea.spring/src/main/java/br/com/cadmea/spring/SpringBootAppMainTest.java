@@ -7,8 +7,8 @@ import br.com.cadmea.spring.annotations.CadmeaSpring;
 @CadmeaSpring
 public class SpringBootAppMainTest {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SpringBootAppMainTest.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(SpringBootAppMainTest.class, args);
+  }
 
 }

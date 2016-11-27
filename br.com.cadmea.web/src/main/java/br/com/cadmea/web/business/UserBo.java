@@ -12,14 +12,14 @@ import org.springframework.stereotype.Component;
 import br.com.cadmea.comuns.orm.enums.Result;
 import br.com.cadmea.comuns.orm.enums.Situation;
 import br.com.cadmea.infra.negocio.BaseNegocial;
-import br.com.cadmea.web.model.User;
+import br.com.cadmea.model.orm.UserSystem;
 
 /**
  * @author Gilberto Santos
  *
  */
 @Component
-class UserBo extends BaseNegocial<User> {
+class UserBo extends BaseNegocial<UserSystem> {
 
   @Inject
   private UserDao userDao;
@@ -30,7 +30,7 @@ class UserBo extends BaseNegocial<User> {
   }
 
   @Override
-  public User insert(User entidade) {
+  public UserSystem insert(UserSystem entidade) {
     entidade.setDateRegister(new Date());
     entidade.setSituation(Situation.DISABLE);
     entidade.setLastVisit(new Date());
@@ -38,13 +38,13 @@ class UserBo extends BaseNegocial<User> {
   }
 
   @Override
-  public void save(User entidade) {
+  public void save(UserSystem entidade) {
     entidade.setLastVisit(new Date());
     super.save(entidade);
   }
 
   @Override
-  public boolean isThere(User entidade) {
+  public boolean isThere(UserSystem entidade) {
     return getDao().find("email", entidade.getEmail(), Result.UNIQUE) != null;
   }
 

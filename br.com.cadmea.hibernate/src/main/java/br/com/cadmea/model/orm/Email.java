@@ -1,4 +1,4 @@
-package br.com.cadmea.web.model;
+package br.com.cadmea.model.orm;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
