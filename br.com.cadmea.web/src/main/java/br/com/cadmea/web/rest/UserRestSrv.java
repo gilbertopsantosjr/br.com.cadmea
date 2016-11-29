@@ -10,7 +10,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -53,17 +52,6 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
     getViewForm().getEntity().setPassword(hashPassword);
   }
 
-  @RequestMapping(path = "/api/private/user/read/{id}",
-      method = RequestMethod.GET)
-  public ResponseEntity<UserFormDto> readUserProfile(
-      @PathVariable String identificador) {
-    logger.info("starting readUserProfile service");
-    UserFormDto found = new UserFormDto();
-    ResponseEntity<UserSystem> user = super.load(identificador);
-    found.setEntity(user.getBody());
-    return new ResponseEntity<UserFormDto>(found, HttpStatus.OK);
-  }
-
   @RequestMapping(value = "/authentication/", method = RequestMethod.POST)
   public ResponseEntity<UserFormDto> logIn(@RequestBody UserFormDto formDto) {
     logger.info("starting logIn service");
@@ -72,8 +60,8 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
 
     UserFormDto found = new UserFormDto();
     try {
-      final String username = formDto.getEntity().getEmail();
-      final UserSystem user = getService().getUserBy(username);
+      final String email = formDto.getEntity().getEmail();
+      final UserSystem user = getService().getUserBy(email);
       found.setEntity(user);
 
       UserAccess userAccess = new UserAccess(user.getPerson().getName());

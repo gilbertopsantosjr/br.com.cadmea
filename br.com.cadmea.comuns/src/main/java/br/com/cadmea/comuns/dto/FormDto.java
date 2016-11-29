@@ -1,6 +1,5 @@
 package br.com.cadmea.comuns.dto;
 
-import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.HashMap;
@@ -52,6 +51,8 @@ public abstract class FormDto<E extends EntityPersistent>
     } catch (IllegalAccessException ex) {
       ex.printStackTrace();
     } catch (InstantiationException e) {
+      e.printStackTrace();
+    } catch (Exception e) {
       e.printStackTrace();
     }
 

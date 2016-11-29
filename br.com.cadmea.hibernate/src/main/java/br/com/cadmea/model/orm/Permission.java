@@ -13,6 +13,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.cadmea.model.BaseEntityPersistent;
 
 /**
@@ -37,6 +39,7 @@ public class Permission extends BaseEntityPersistent {
   private String role;
 
   @ManyToMany(targetEntity = UserSystem.class, mappedBy = "permissions")
+  @JsonIgnore
   private Set<UserSystem> users;
 
   public String getRole() {

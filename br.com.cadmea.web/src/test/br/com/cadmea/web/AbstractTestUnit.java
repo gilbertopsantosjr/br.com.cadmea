@@ -1,36 +1,53 @@
 package br.com.cadmea.web;
 
+import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import javax.inject.Inject;
+import javax.servlet.Filter;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.google.gson.Gson;
 
 import br.com.cadmea.comuns.UnitaryTest;
 import br.com.cadmea.comuns.util.Util;
-import br.com.cadmea.model.orm.UserSystem;
-import br.com.cadmea.spring.security.orm.UserAccess;
-import br.com.cadmea.web.business.UserSrv;
+import br.com.cadmea.spring.util.SpringFunctions;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = StartServerAndLoginScreen.class)
 public abstract class AbstractTestUnit implements UnitaryTest {
 
-  @Inject
-  private UserSrv userSrv;
+  @Autowired
+  private Filter springSecurityFilterChain;
+
+  @Autowired
+  private WebApplicationContext webApplicationContext;
+
+  protected MockMvc mockMvc;
+
+  protected MediaType contentType = new MediaType(
+      MediaType.APPLICATION_JSON.getType(),
+      MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
+
+  @Before
+  public void setup() {
+    mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+        .addFilters(springSecurityFilterChain).build();
+  }
 
   /**
    * return a mock number for id
@@ -48,20 +65,8 @@ public abstract class AbstractTestUnit implements UnitaryTest {
 
   }
 
-  public UserSystem simulateLogin(final String email) {
-
-    final UserSystem user = userSrv.getUserBy(email);
-
-    UserAccess userAccess = new UserAccess(user.getPerson().getName());
-    user.getPermissions().forEach(a -> {
-      userAccess.getRoles().add(a.getRole());
-    });
-
-    Authentication auth = new UsernamePasswordAuthenticationToken(userAccess,
-        null, userAccess.getAuthorities());
-    SecurityContextHolder.getContext().setAuthentication(auth);
-
-    return user;
+  public void simulateLogin(final String email) {
+    SpringFunctions.createHeaders(email, "password");
   }
 
   public Gson fromGson() {

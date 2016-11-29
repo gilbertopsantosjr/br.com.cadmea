@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import br.com.cadmea.comuns.dto.DomainTransferObject;
 import br.com.cadmea.comuns.dto.FormDto;
+import br.com.cadmea.comuns.exceptions.SystemException;
 import br.com.cadmea.comuns.orm.EntityPersistent;
 import br.com.cadmea.spring.rest.exceptions.NotFoundException;
 import br.com.cadmea.spring.rest.exceptions.PreconditionRequiredException;
@@ -191,25 +192,23 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
   /**
    * the rest service /get/ to remove an old entity
    *
-   * @param IdEntity
+   * @param id
    * @return ResponseEntity<E> the entity up to date Rest.Status.Ok
    */
   @RequestMapping(value = "/load/{id}", method = RequestMethod.GET)
-  protected ResponseEntity<E> load(@PathVariable String IdEntity) {
+  protected ResponseEntity<E> load(@PathVariable String id) {
     logger.info("requesting an entity by id");
-    E entidade = getService().find(Long.valueOf(IdEntity));
-    if (entidade == null) {
-      throw new NotFoundException(IdEntity);
-    }
     try {
+      E entidade = getService().find(Long.valueOf(id));
       beforeGetById();
       getViewForm().newInstance();
       getViewForm().setEntity(entidade);
       afterGetById();
+    } catch (SystemException e) {
+      throw new NotFoundException(e.getMessage());
     } catch (Exception e) {
       throw new RestException(e);
     }
-
     return new ResponseEntity<E>(getViewForm().getEntity(), HttpStatus.OK);
   }
 

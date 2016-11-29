@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.cadmea.comuns.exceptions.DaoException;
+import br.com.cadmea.comuns.exceptions.SystemException;
 import br.com.cadmea.comuns.orm.enums.ComparacaoData;
 import br.com.cadmea.comuns.orm.enums.OrderToSort;
 import br.com.cadmea.comuns.orm.enums.Result;
@@ -132,14 +133,10 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent, ID extends 
   @Override
   public T find(Serializable identificador) {
     T obj = null;
-    try {
-      obj = getEntityManager().find(getClazz(), identificador);
-      if (obj == null)
-        throw new RuntimeException("Not possible to find entity ");
-      // substituir mensagem por radio
-    } catch (RuntimeException e) {
-      log.error("fail to find", e);
-    }
+    obj = getEntityManager().find(getClazz(), identificador);
+    if (obj == null)
+      throw new SystemException(
+          "Not possible to find entity: " + getClazz().getSimpleName());
     return obj;
   }
 
