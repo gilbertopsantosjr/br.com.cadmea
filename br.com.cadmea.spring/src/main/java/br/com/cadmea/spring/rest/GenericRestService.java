@@ -135,7 +135,6 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
 
     } finally {
       getViewForm().newInstance();
-      getService().find(getViewForm().getId());
     }
 
     return new ResponseEntity<E>(getViewForm().getEntity(), HttpStatus.OK);
