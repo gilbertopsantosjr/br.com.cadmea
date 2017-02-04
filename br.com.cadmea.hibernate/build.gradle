@@ -2,12 +2,12 @@
 	dependencies {
 
 		compile project(":br.com.cadmea.comuns")
+		compile project(":br.com.cadmea.share")
+		
 		compileOnly 'org.hibernate:hibernate-core:4.3.11.Final'
 		compileOnly "org.hibernate:hibernate-validator:5.2.4.Final"
 		compileOnly "javax.validation:validation-api:1.1.0.Final"
 		compileOnly "org.slf4j:slf4j-log4j12:1.7.16"
-
-		compileOnly 'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
 		
 
 	}

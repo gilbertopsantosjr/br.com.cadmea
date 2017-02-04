@@ -25,6 +25,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
+import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -196,6 +197,11 @@ public class PersistenceConfig {
     registrationBean.setFilter(openSessionInView());
     registrationBean.addUrlPatterns("/api/*");
     return registrationBean;
+  }
+  
+  @Bean
+  public HibernateJpaSessionFactoryBean sessionFactory() {
+      return new HibernateJpaSessionFactoryBean();
   }
 
   @Bean

@@ -67,39 +67,46 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent, ID extends 
   }
 
   @Override
-  public Collection<T> find(String namedQuery, Map<String, Object> parameters) {
+  public Collection<T> findByNamedQuery(String namedQuery, Map<String, Object> parameters) {
     TypedQuery<T> q = obterPorNamedQuery(namedQuery, parameters);
     return q.getResultList();
   }
 
   @Override
-  public T find(String namedQuery, Map<String, Object> parameters,
+  public T findByNamedQuery(String namedQuery, Map<String, Object> parameters,
       Result resultado) {
     T retorno = null;
     TypedQuery<T> query = obterPorNamedQuery(namedQuery, parameters);
-    if (resultado.equals(Result.UNIQUE))
-      retorno = obterApenasUmaEntidade(query);
+    if (resultado.equals(Result.UNIQUE)){
+    	 query.setMaxResults(1);
+    	 List<T> list = query.getResultList();
+    	 retorno = obterApenasUmaEntidade(list);
+    }
     return retorno;
   }
 
   /**
    * opcao para tratar entidade nao encontrada com getSingleResult
    */
-  private T obterApenasUmaEntidade(TypedQuery<T> query) {
-    query.setMaxResults(1);
-    List<T> list = query.getResultList();
+  private T obterApenasUmaEntidade( List<T> list ) {
     if (list == null || list.size() == 0) {
       return null;
     }
     return list.get(0);
   }
 
+  /**
+   *
+   * is mandatory following this patterns <b> NameEntity.namedQuery </b> in order to created named queries 
+   * @param namedQuery
+   * @param parameters
+   * @return
+   */
   @SuppressWarnings("unchecked")
   private TypedQuery<T> obterPorNamedQuery(String namedQuery,
       Map<String, Object> parameters) {
     String preNamedQuery = getClazz().getSimpleName() + "." + namedQuery;
-    TypedQuery<T> q = (TypedQuery<T>) getEntityManager()
-        .createNamedQuery(preNamedQuery);
+    TypedQuery<T> q = (TypedQuery<T>) getEntityManager().createNamedQuery(preNamedQuery);
     if (parameters != null) {
       for (Entry<String, Object> e : parameters.entrySet()) {
         q.setParameter(e.getKey(), e.getValue());
@@ -149,7 +156,7 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent, ID extends 
   public T get(Long id) {
     Map<String, Object> params = new HashMap<String, Object>();
     params.put("id", id);
-    return find(ConstantesComum.OBTER_POR_ID, params, Result.UNIQUE);
+    return findByNamedQuery(ConstantesComum.OBTER_POR_ID, params, Result.UNIQUE);
   }
 
   /**

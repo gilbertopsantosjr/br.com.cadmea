@@ -8,6 +8,7 @@ import br.com.cadmea.comuns.exceptions.DaoException;
 import br.com.cadmea.comuns.orm.EntityPersistent;
 import br.com.cadmea.comuns.orm.enums.Result;
 
+
 public interface Negocial<E extends EntityPersistent> {
 
   /**
@@ -63,8 +64,20 @@ public interface Negocial<E extends EntityPersistent> {
    * @return
    * @throws DaoException
    */
-  Collection<E> find(String namedQuery, Map<String, Object> parameters)
+  Collection<E> findByNamedQuery(String namedQuery, Map<String, Object> parameters)
       throws DaoException;
+
+  
+  /**
+   * 
+   * @param namedQuery
+   * @param parameters
+   * @param resl
+   * @return
+   * @throws DaoException
+   */
+  E findByNamedQuery(String namedQuery, Map<String, Object> parameters, Result resl)
+	      throws DaoException;
 
   /**
    *

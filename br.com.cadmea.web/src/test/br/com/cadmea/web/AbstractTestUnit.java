@@ -32,7 +32,7 @@ import com.google.gson.JsonParseException;
 
 import br.com.cadmea.comuns.UnitaryTest;
 import br.com.cadmea.comuns.util.Util;
-import br.com.cadmea.spring.util.SpringFunctions;
+import br.com.cadmea.web.util.SpringFunctions;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)

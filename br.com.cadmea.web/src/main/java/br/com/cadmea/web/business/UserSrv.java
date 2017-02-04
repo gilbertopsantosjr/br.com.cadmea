@@ -47,7 +47,7 @@ public class UserSrv extends BaseMaintenanceSrvImpl<UserSystem, UserBo> {
     Map<String, Object> params = new HashMap<>();
     params.put("email", email);
 
-    return getBo().find(params, Result.UNIQUE);
+    return getBo().findByNamedQuery("loginByUsername", params, Result.UNIQUE);
   }
 
   /**

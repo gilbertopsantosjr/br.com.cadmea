@@ -87,7 +87,7 @@ public interface DaoGenerico<E extends BaseEntityPersistent> {
    * @param parameters
    * @return Collection<E>
    */
-  public Collection<E> find(String namedQuery, Map<String, Object> parameters)
+  public Collection<E> findByNamedQuery(String namedQuery, Map<String, Object> parameters)
       throws DaoException;
 
   /**
@@ -98,7 +98,7 @@ public interface DaoGenerico<E extends BaseEntityPersistent> {
    * @param resultado
    * @return E
    */
-  public E find(String namedQuery, Map<String, Object> parameters,
+  public E findByNamedQuery(String namedQuery, Map<String, Object> parameters,
       Result resultado) throws DaoException;
 
   /**

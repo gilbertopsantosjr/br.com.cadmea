@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import br.com.cadmea.spring.annotations.CadmeaSpring;
 
 @CadmeaSpring
-@ComponentScan(basePackages = { "br.com.cadmea"})
+@ComponentScan(basePackages = {"br.com.cadmea"})
 public class StartServerAndLoginScreen {
 
 	public static void main(String[] args) {

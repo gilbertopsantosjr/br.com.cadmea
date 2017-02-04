@@ -78,7 +78,7 @@ public abstract class BaseMaintenanceFindSrvImpl<E extends EntityPersistent, B e
   @Override
   public Collection<E> find(String namedQuery, Map<String, Object> parameters)
       throws DaoException {
-    return getBo().find(namedQuery, parameters);
+    return getBo().findByNamedQuery(namedQuery, parameters);
   }
 
   /*

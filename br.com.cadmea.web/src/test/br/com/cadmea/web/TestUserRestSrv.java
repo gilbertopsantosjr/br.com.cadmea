@@ -24,12 +24,13 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import br.com.cadmea.comuns.orm.enums.Gender;
 import br.com.cadmea.comuns.orm.enums.Relationship;
 import br.com.cadmea.comuns.orm.enums.Situation;
+import br.com.cadmea.dto.UserFormDto;
 import br.com.cadmea.model.orm.Permission;
 import br.com.cadmea.model.orm.Person;
 import br.com.cadmea.model.orm.Phone;
 import br.com.cadmea.model.orm.UserSystem;
 import br.com.cadmea.spring.util.GenericResponse;
-import br.com.cadmea.web.dto.UserFormDto;
+
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestUserRestSrv extends AbstractTestUnit {

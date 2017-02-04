@@ -1,5 +1,23 @@
 <html>
-Hi, $to
-<br/>
-$message
+	<body>
+		<h3>Hi ${nickname}, you have request a new password!</h3>
+		<p>
+			From - ${fromNickname} 
+		</p>
+		<h3>
+			Password Recovery
+		</h3>
+		<p>
+			Please click the link below 
+			<br/>
+			${url}
+		</p>
+		<h3>
+			Message
+		</h3>
+		<p>
+			${message}
+		</p>
+	</body>
+
 </html>

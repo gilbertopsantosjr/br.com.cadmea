@@ -1,29 +1,31 @@
 
-	apply plugin: 'java'	
 	apply plugin: 'application'
-	apply plugin: 'eclipse-wtp'
-	apply plugin: 'org.springframework.boot'   
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'eclipse'
 	
 	buildscript {
 	    repositories {
 	        mavenCentral()
-	         maven { url "http://repo.spring.io/libs-release" }
-	    	
-		    dependencies {
-		          classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
-    		}
+	        maven { url "http://repo.spring.io/libs-release" }
 		}
-	}
+		
+		dependencies {
+	       classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
+		} 
+	} 
 
     dependencies {
-        compile (project(":br.com.cadmea.spring"));
-        compile 'com.google.code.gson:gson:2.8.0'
+    
+        compileOnly project(':br.com.cadmea.spring')
+        compileOnly project(':br.com.cadmea.share')
+        
+        compileOnly 'com.google.code.gson:gson:2.8.0'
 
-		testCompile('org.springframework.boot:spring-boot-starter-web') 
-		testCompile('org.springframework.boot:spring-boot-starter-test') 
-		testCompile('org.springframework.security:spring-security-test')
+		testCompileOnly('org.springframework.boot:spring-boot-starter-web:1.4.2.RELEASE') 
+		testCompileOnly('org.springframework.boot:spring-boot-starter-test:1.4.2.RELEASE') 
+		testCompileOnly('org.springframework.security:spring-security-test:4.1.3.RELEASE')
 
-		testCompile 'junit:junit:4.12'
+		testCompileOnly 'junit:junit:4.12' 
     }
     
     springBoot {  
@@ -31,9 +33,10 @@
 	}
 	
 	applicationDefaultJvmArgs = ["-XX:MaxHeapSize=512m", 
-	"-Xmx512m", "-XX:+CMSClassUnloadingEnabled", "-Xdebug",  
+	"-Xmx512m", "-XX:+CMSClassUnloadingEnabled", "-Xdebug", "-Dserver.port=8090", 
 	"-agentpath:/Applications/Java/jrebel/lib/libjrebel64.dylib", 
 	"-Djava.compiler=NONE"]
+	
 	
 	
 	

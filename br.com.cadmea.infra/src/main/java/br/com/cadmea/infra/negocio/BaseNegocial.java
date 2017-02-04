@@ -55,7 +55,7 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
    * @see br.com.cadmea.infra.negocio.Negocial#find(java.io.Serializable)
    */
   @Override
-  @Transactional(readOnly = true)
+  @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
   public E find(Serializable identificador) {
     E entidade = getDao().find(identificador);
     if (entidade == null) {
@@ -148,9 +148,16 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
 
   @Override
   @Transactional(readOnly = true)
-  public Collection<E> find(String namedQuery, Map<String, Object> parameters)
+  public Collection<E> findByNamedQuery(String namedQuery, Map<String, Object> parameters)
       throws DaoException {
-    return getDao().find(namedQuery, parameters);
+    return getDao().findByNamedQuery(namedQuery, parameters);
+  }
+  
+  @Override
+  @Transactional(readOnly = true)
+  public E findByNamedQuery(String namedQuery, Map<String, Object> parameters, Result resl)
+      throws DaoException {
+    return getDao().findByNamedQuery(namedQuery, parameters, resl);
   }
 
   @Override

@@ -23,14 +23,31 @@ ext {
 
 subprojects {
 
+	sourceSets {
+		main{
+			java {
+				srcDir 'src/main/java'
+			}
+		}
+		test {
+			java {
+				srcDir 'src/test/java'
+			}
+		}
+	}
+
+
     apply plugin: 'java'
     apply plugin: 'maven'
-
+	apply plugin: 'eclipse'
+	
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
     group 'br.com.cadmea'
     version '1.0-SNAPSHOT'
+    
+    sourceSets.main.java.srcDirs = ['src/main/java', 'src/test/java'] 
 
     tasks.withType(Javadoc).all { enabled = false }
 
@@ -53,6 +70,7 @@ subprojects {
     }
 
     jar {
+     	
         afterEvaluate { Project project ->
             dependsOn configurations.runtime
 

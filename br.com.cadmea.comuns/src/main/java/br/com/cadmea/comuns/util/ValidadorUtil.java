@@ -174,5 +174,24 @@ public class ValidadorUtil {
 		return retorno;
 
 	}
+	
+	
+	/**
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static boolean isValid(final String str) {
+		return str != null && !str.isEmpty();
+	}
+
+	/**
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	public static boolean isValid(final Object obj) {
+		return obj != null;
+	}
 
 }
