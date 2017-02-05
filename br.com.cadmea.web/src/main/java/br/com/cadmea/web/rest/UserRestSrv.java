@@ -104,6 +104,7 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
 			throw e;
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new RestException(e);
 		}
 

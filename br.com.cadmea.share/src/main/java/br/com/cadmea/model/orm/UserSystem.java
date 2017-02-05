@@ -31,7 +31,7 @@ import br.com.cadmea.model.BaseEntityPersistent;
 @Table(name = "cadmea_user_system")
 @AttributeOverrides(@AttributeOverride(name = "id",
     column = @Column(name = "usu_id", nullable = false)))
-@NamedQuery(name="UserSystem.loginByUsername", query="SELECT u.email FROM UserSystem u WHERE u.email = :email and u.situation = 1") 
+@NamedQuery(name="UserSystem.loginByUsername", query="SELECT u.id, u.email, u.nickname, p.name FROM UserSystem as u INNER JOIN u.person as p WHERE u.email = :email and u.situation = 1") 
 public class UserSystem extends BaseEntityPersistent {
 
   /**

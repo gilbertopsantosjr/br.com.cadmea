@@ -69,7 +69,7 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent, ID extends 
   @Override
   public Collection<T> findByNamedQuery(String namedQuery, Map<String, Object> parameters) {
     TypedQuery<T> q = obterPorNamedQuery(namedQuery, parameters);
-    return q.getResultList();
+    return factoryEntity(q.getResultList());
   }
 
   @Override
@@ -92,10 +92,20 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent, ID extends 
     if (list == null || list.size() == 0) {
       return null;
     }
-    return list.get(0);
+    List<T> mylist = factoryEntity(list);
+    return mylist.get(0);
   }
 
   /**
+   * transforma uma (List<Object[]>) em (List<T>), necessario sobreescrever a funcao no Dao.
+   * @param list
+   * @return
+   */
+  public List<T> factoryEntity(List<T> list){
+	  return list;
+  }
+
+/**
    *
    * is mandatory following this patterns <b> NameEntity.namedQuery </b> in order to created named queries 
    * @param namedQuery
