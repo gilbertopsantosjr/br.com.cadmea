@@ -1,6 +1,9 @@
 package br.com.cadmea.model.orm;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -17,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import br.com.cadmea.comuns.orm.enums.Gender;
@@ -41,7 +45,7 @@ public class Person extends BaseEntityPersistent {
   @Column(nullable = false, length = 255, name = "pes_name")
   private String name;
 
-  @Column(nullable = false, length = 11, name = "pes_register")
+  @Column(nullable = true, length = 11, name = "pes_register")
   private String register;
 
   @NotNull
@@ -65,6 +69,34 @@ public class Person extends BaseEntityPersistent {
       joinColumns = { @JoinColumn(name = "user_id") },
       inverseJoinColumns = { @JoinColumn(name = "ema_id") })
   private Set<Email> emails;
+  
+  /**
+   * The elements of a Set cannot be accessed by index. 
+   * You will need to add methods which return a List wrapping your set.
+   * @return
+   */
+  @Transient
+  public List<Email> getEmailAsList(){
+	  if(getEmails() != null && !getEmails().isEmpty())
+		  return new ArrayList<Email>(getEmails());
+	  else
+		 return new ArrayList<Email>(Arrays.asList(new Email()));
+  }
+  
+  @Transient
+  public void setEmailAsList(List<Email> email){
+	  for (Email email2 : email) {
+		System.out.println(email2);
+	}
+  }
+  
+  @Transient
+  public List<Phone> getPhoneAsList(){
+	  if(getPhones() != null && !getPhones().isEmpty())
+		  return new ArrayList<Phone>(getPhones());
+	  else
+		 return new ArrayList<Phone>(Arrays.asList(new Phone()));
+  }
 
   @ManyToMany(fetch = FetchType.LAZY, targetEntity = Phone.class,
       cascade = { CascadeType.ALL })

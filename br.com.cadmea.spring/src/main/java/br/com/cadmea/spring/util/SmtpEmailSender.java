@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.velocity.app.VelocityEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.velocity.VelocityEngineUtils;
 
 @Lazy
 @Component("br.com.cadmea.spring.util.SmtpEmailSender")
@@ -31,16 +29,13 @@ public class SmtpEmailSender {
   @Autowired
   private JavaMailSender mailSender;
 
-  @Autowired
-  private VelocityEngine velocityEngine;
-
   public void send(String to, String subject, Map<String, Object> msg,
       Locale locale) {
     try {
       log.info("{begin == sending email}");
       TemplateEmail preparator = new TemplateEmail(to, subject, msg);
       preparator.preConfiguredMessage = mailSender.createMimeMessage();
-      preparator.velocityEngine = velocityEngine;
+      //preparator.velocityEngine = velocityEngine;
 
       mailSender.send(preparator);
       log.info("{end == sending email}");
@@ -63,7 +58,7 @@ class TemplateEmail implements MimeMessagePreparator {
 
   MimeMessage preConfiguredMessage;
 
-  VelocityEngine velocityEngine;
+  //VelocityEngine velocityEngine;
 
   TemplateEmail(String _to, String _subject, Map<String, Object> _msg) {
     this.to = _to;
@@ -74,15 +69,14 @@ class TemplateEmail implements MimeMessagePreparator {
   @Override
   public void prepare(MimeMessage mimeMessage) throws Exception {
 
-    String text = VelocityEngineUtils.mergeTemplateIntoString(
-        this.velocityEngine, "template-email.vm", "UTF-8", this.msg);
+    //String text = VelocityEngineUtils.mergeTemplateIntoString(null, "template-email.vm", "UTF-8", this.msg);
 
     MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
     message.setTo(to);
     message.setSentDate(new Date());
     message.setFrom(new InternetAddress("gilbertopsantosjr@gmail.com"));
     message.setSubject(subject);
-    message.setText(text, true);
+    message.setText("", true);
   }
 
 }

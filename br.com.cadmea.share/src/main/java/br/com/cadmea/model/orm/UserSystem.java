@@ -20,7 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -40,24 +40,26 @@ public class UserSystem extends BaseEntityPersistent {
   private static final long serialVersionUID = -8331133681470459544L;
 
   @NotNull
+  @Size(min=3, max=150)
   @Column(name = "usu_nickname", nullable = false, length = 150)
   private String nickname;
 
   @NotNull
+  @Size(min=20, max=250)
   @Column(name = "usu_email", nullable = false, length = 250, unique = true)
   private String email;
 
   @NotNull
+  @Size(min=6, message="{userSystem.password.min.size}")
   @Column(name = "usu_pwd", nullable = true, length = 150)
   private String password;
 
-  @NotNull
   @Column(name = "usu_dt_register", nullable = false)
-  @Temporal(TemporalType.TIMESTAMP)
+  @Temporal(TemporalType.DATE)
   private Date dateRegister;
-
+  
   @Column(name = "usu_dt_expired", nullable = true)
-  @Temporal(TemporalType.TIMESTAMP)
+  @Temporal(TemporalType.DATE)
   private Date dateExpire;
 
   @Column(nullable = false, name = "usu_last_visit")

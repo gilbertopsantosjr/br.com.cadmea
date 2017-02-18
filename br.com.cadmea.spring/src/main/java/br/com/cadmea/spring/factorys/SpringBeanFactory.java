@@ -2,7 +2,7 @@ package br.com.cadmea.spring.factorys;
 
 import java.util.logging.Logger;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 

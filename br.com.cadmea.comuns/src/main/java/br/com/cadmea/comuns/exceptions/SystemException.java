@@ -1,5 +1,6 @@
 package br.com.cadmea.comuns.exceptions;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -12,6 +13,7 @@ import java.util.Locale;
 public class SystemException extends RuntimeException {
 
 	private Locale locale;
+	private List<String> messages;
 	
 	/**
 	 * Cria o objeto.
@@ -48,6 +50,15 @@ public class SystemException extends RuntimeException {
 		super(causa);
 	}
 	
+	
+	public List<String> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<String> messages) {
+		this.messages = messages;
+	}
+
 	public Locale getLocale() {
 		return locale;
 	}

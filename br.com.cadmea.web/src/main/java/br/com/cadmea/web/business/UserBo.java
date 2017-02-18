@@ -8,7 +8,9 @@ import java.util.Date;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
+import org.springframework.validation.ObjectError;
 
+import br.com.cadmea.comuns.exceptions.BusinessException;
 import br.com.cadmea.comuns.orm.enums.Result;
 import br.com.cadmea.comuns.orm.enums.Situation;
 import br.com.cadmea.infra.negocio.BaseNegocial;
@@ -21,31 +23,50 @@ import br.com.cadmea.model.orm.UserSystem;
 @Component
 class UserBo extends BaseNegocial<UserSystem> {
 
-  @Inject
-  private UserDao userDao;
+	@Inject
+	private UserDao userDao;
 
-  @Override
-  public UserDao getDao() {
-    return userDao;
-  }
+	private static final int MAX_NUMBER_PHONES = 3;
 
-  @Override
-  public UserSystem insert(UserSystem entidade) {
-    entidade.setDateRegister(new Date());
-    entidade.setSituation(Situation.DISABLE);
-    entidade.setLastVisit(new Date());
-    return super.insert(entidade);
-  }
+	private static final int MAX_NUMBER_EMAILS = 3;
 
-  @Override
-  public void save(UserSystem entidade) {
-    entidade.setLastVisit(new Date());
-    super.save(entidade);
-  }
+	@Override
+	public UserDao getDao() {
+		return userDao;
+	}
 
-  @Override
-  public boolean isThere(UserSystem entidade) {
-    return getDao().find("email", entidade.getEmail(), Result.UNIQUE) != null;
-  }
+	/**
+	 * validate the quantities of each contact form 
+	 * @param userSystem
+	 */
+	public void validateEntity(UserSystem userSystem) {
+		if (userSystem.getPerson().getEmailAsList().size() > MAX_NUMBER_EMAILS) {
+			throw new BusinessException("User can't have more than 3 emails contacts");
+		}
+		if (userSystem.getPerson().getPhoneAsList().size() > MAX_NUMBER_PHONES) {
+			throw new BusinessException("User can't have more than 3 phones contacts");
+		}
+	}
+
+	@Override
+	public UserSystem insert(UserSystem entidade) {
+		validateEntity(entidade);
+		entidade.setDateRegister(new Date());
+		entidade.setSituation(Situation.DISABLE);
+		entidade.setLastVisit(new Date());
+		return super.insert(entidade);
+	}
+
+	@Override
+	public void save(UserSystem entidade) {
+		validateEntity(entidade);
+		entidade.setLastVisit(new Date());
+		super.save(entidade);
+	}
+
+	@Override
+	public boolean isThere(UserSystem entidade) {
+		return getDao().find("email", entidade.getEmail(), Result.UNIQUE) != null;
+	}
 
 }

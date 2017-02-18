@@ -1,6 +1,6 @@
 package br.com.cadmea.comuns.clazz;
 
-import br.com.cadmea.comuns.util.IdiomasDoSistema;
+import br.com.cadmea.comuns.util.LocaleOfSystem;
 
 public class ObjetoTemplateMensagemVo {
 
@@ -8,7 +8,7 @@ public class ObjetoTemplateMensagemVo {
 	private String atributo;
 	private String chaveMensagem;
 	private String chaveTemplate; 
-	private IdiomasDoSistema idiomasDoSistema;
+	private LocaleOfSystem idiomasDoSistema;
 	
 	public String getChaveMensagem() {
 		return chaveMensagem;
@@ -22,12 +22,12 @@ public class ObjetoTemplateMensagemVo {
 	public void setChaveTemplate(String chaveTemplate) {
 		this.chaveTemplate = chaveTemplate;
 	}
-	public IdiomasDoSistema getIdiomasDoSistema() {
+	public LocaleOfSystem getIdiomasDoSistema() {
 		if(idiomasDoSistema == null)
-			idiomasDoSistema = IdiomasDoSistema.PORTUGUES_BRASILEIRO;
+			idiomasDoSistema = LocaleOfSystem.PORTUGUES_BRASILEIRO;
 		return idiomasDoSistema;
 	}
-	public void setIdiomasDoSistema(IdiomasDoSistema idiomasDoSistema) {
+	public void setIdiomasDoSistema(LocaleOfSystem idiomasDoSistema) {
 		this.idiomasDoSistema = idiomasDoSistema;
 	}
 	
