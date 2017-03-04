@@ -187,6 +187,17 @@ public class PersistenceConfig {
 
     properties.put(removeCadmea(PROPERTY_NAME_HIBERNATE_JDBC_BATCH_SIZE),
         bathSizeOpt.orElse("10"));
+    
+     //properties.put("hibernate.default_schema", "public"); 
+	 properties.put("hibernate.current_session_context_class","thread" ); // Contexto de sessão a ser usado
+	 properties.put("hibernate.transaction.factory_class", "org.hibernate.transaction.JDBCTransactionFactory "); // Delegada as transações (JDBC) a bases de dados (Padrão)
+	 properties.put("hibernate.jdbc.factory_class", "org.hibernate.jdbc.NonBatchingBatcherFactory") ; //Selecione um org.hibernate.jdbc.Batcher personalizado 
+	 properties.put("hibernate.jdbc.batch_size", 100) ;// Lote de SQL 
+	 properties.put("hibernate.cache.use_second_level_cache", true ); //Cache 
+	 properties.put("hibernate.transaction.auto_close_session", true); // Fecha sessão automaticamente 
+	 properties.put("hibernate.generate_statistics", false); // Estatisticas de processos SQL
+	 properties.put("hibernate.use_sql_comments", false);
+	 properties.put("hibernate.connection.pool_size", 50); //Poll de conexão
 
     return properties;
   }

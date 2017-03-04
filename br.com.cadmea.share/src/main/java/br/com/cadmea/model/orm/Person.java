@@ -1,26 +1,17 @@
 package br.com.cadmea.model.orm;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import br.com.cadmea.comuns.orm.enums.Gender;
@@ -33,132 +24,91 @@ import br.com.cadmea.model.BaseEntityPersistent;
  */
 @Entity
 @Table(name = "cadmea_person_member")
-@AttributeOverrides(@AttributeOverride(name = "id",
-    column = @Column(name = "pes_id", nullable = false)))
+@AttributeOverrides(@AttributeOverride(name = "id", column = @Column(name = "pes_id", nullable = false)))
 public class Person extends BaseEntityPersistent {
 
-  /**
-   *
-   */
-  private static final long serialVersionUID = 6754653476445927880L;
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 6754653476445927880L;
+	// can't have whitespace
+	@Column(nullable = false, length = 35, name = "pes_name")
+	private String name;
 
-  @Column(nullable = false, length = 255, name = "pes_name")
-  private String name;
+	@Column(nullable = true, length = 250, name = "pes_surname")
+	private String surname;
 
-  @Column(nullable = true, length = 11, name = "pes_register")
-  private String register;
+	@NotNull
+	@Column(nullable = false, length = 1, name = "pes_gender")
+	@Enumerated(EnumType.ORDINAL)
+	private Gender gender;
 
-  @NotNull
-  @Column(nullable = false, length = 1, name = "pes_gender")
-  @Enumerated(EnumType.ORDINAL)
-  private Gender gender;
+	@Column(nullable = true, length = 1, name = "pes_relationship")
+	@Enumerated(EnumType.ORDINAL)
+	private Relationship relationship;
 
-  @NotNull
-  @Column(nullable = true, length = 1, name = "pes_relationship")
-  @Enumerated(EnumType.ORDINAL)
-  private Relationship relationship;
+	@NotNull
+	@Column(nullable = false, name = "pes_date_of_birth")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dateOfBirth;
 
-  @NotNull
-  @Column(nullable = false, name = "pes_date_of_birth")
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date dateOfBirth;
-
-  @ManyToMany(fetch = FetchType.LAZY, targetEntity = Email.class,
-      cascade = { CascadeType.ALL })
-  @JoinTable(name = "cadmea_emails_per_person",
-      joinColumns = { @JoinColumn(name = "user_id") },
-      inverseJoinColumns = { @JoinColumn(name = "ema_id") })
-  private Set<Email> emails;
-  
-  /**
-   * The elements of a Set cannot be accessed by index. 
-   * You will need to add methods which return a List wrapping your set.
-   * @return
-   */
-  @Transient
-  public List<Email> getEmailAsList(){
-	  if(getEmails() != null && !getEmails().isEmpty())
-		  return new ArrayList<Email>(getEmails());
-	  else
-		 return new ArrayList<Email>(Arrays.asList(new Email()));
-  }
-  
-  @Transient
-  public void setEmailAsList(List<Email> email){
-	  for (Email email2 : email) {
-		System.out.println(email2);
+	@OneToOne
+	private Country country;
+	
+	public String getSurname() {
+		return surname;
 	}
-  }
-  
-  @Transient
-  public List<Phone> getPhoneAsList(){
-	  if(getPhones() != null && !getPhones().isEmpty())
-		  return new ArrayList<Phone>(getPhones());
-	  else
-		 return new ArrayList<Phone>(Arrays.asList(new Phone()));
-  }
 
-  @ManyToMany(fetch = FetchType.LAZY, targetEntity = Phone.class,
-      cascade = { CascadeType.ALL })
-  @JoinTable(name = "cadmea_phones_per_person",
-      joinColumns = { @JoinColumn(name = "user_id") },
-      inverseJoinColumns = { @JoinColumn(name = "pho_id") })
-  private Set<Phone> phones;
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
 
-  public Set<Email> getEmails() {
-    return emails;
-  }
+	public Country getCountry() {
+		return country;
+	}
 
-  public void setEmails(Set<Email> emails) {
-    this.emails = emails;
-  }
+	public void setCountry(Country country) {
+		this.country = country;
+	}
 
-  public Set<Phone> getPhones() {
-    return phones;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public void setPhones(Set<Phone> phones) {
-    this.phones = phones;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String getRegister() {
+		return surname;
+	}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	public void setRegister(String register) {
+		this.surname = register;
+	}
 
-  public String getRegister() {
-    return register;
-  }
+	public Gender getGender() {
+		return gender;
+	}
 
-  public void setRegister(String register) {
-    this.register = register;
-  }
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
 
-  public Gender getGender() {
-    return gender;
-  }
+	public Relationship getRelationship() {
+		return relationship;
+	}
 
-  public void setGender(Gender gender) {
-    this.gender = gender;
-  }
+	public void setRelationship(Relationship relationship) {
+		this.relationship = relationship;
+	}
 
-  public Relationship getRelationship() {
-    return relationship;
-  }
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
 
-  public void setRelationship(Relationship relationship) {
-    this.relationship = relationship;
-  }
-
-  public Date getDateOfBirth() {
-    return dateOfBirth;
-  }
-
-  public void setDateOfBirth(Date dateOfBirth) {
-    this.dateOfBirth = dateOfBirth;
-  }
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
 
 }

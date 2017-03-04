@@ -1,24 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="cadmea">
 <head>
-	<jsp:include page="header.jsp"/>
+	<jsp:include page="/WEB-INF/view/header.jsp"/>
 </head>
 
 <body>
     <div id="wrap">
         <div class="container">
         	<div class="row">
-        		<jsp:include page="menu.jsp"/>
+        		<jsp:include page="/WEB-INF/view/menu.jsp"/>
         	</div>
-        	<div class="row">
-				<c:if test="${not empty page}">
-				   <jsp:include page="${page}.jsp" />
-				</c:if>
+        	<div class="content" ng-view>
+				
         	</div>
         </div>
-        <jsp:include page="footer.jsp"/>  
+        <jsp:include page="/WEB-INF/view/footer.jsp"/>  
     </div>
 </body>
 </html>

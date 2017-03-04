@@ -26,10 +26,6 @@ class UserBo extends BaseNegocial<UserSystem> {
 	@Inject
 	private UserDao userDao;
 
-	private static final int MAX_NUMBER_PHONES = 3;
-
-	private static final int MAX_NUMBER_EMAILS = 3;
-
 	@Override
 	public UserDao getDao() {
 		return userDao;
@@ -40,12 +36,7 @@ class UserBo extends BaseNegocial<UserSystem> {
 	 * @param userSystem
 	 */
 	public void validateEntity(UserSystem userSystem) {
-		if (userSystem.getPerson().getEmailAsList().size() > MAX_NUMBER_EMAILS) {
-			throw new BusinessException("User can't have more than 3 emails contacts");
-		}
-		if (userSystem.getPerson().getPhoneAsList().size() > MAX_NUMBER_PHONES) {
-			throw new BusinessException("User can't have more than 3 phones contacts");
-		}
+		
 	}
 
 	@Override

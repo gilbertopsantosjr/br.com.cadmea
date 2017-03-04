@@ -5,8 +5,6 @@ package br.com.cadmea.web.ctrl;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Gilberto Santos
@@ -15,26 +13,29 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ManageMenuCtrl {
 	
-	@RequestMapping(value ="/admin", method = RequestMethod.GET)
+	@RequestMapping(value ="/")
 	public String welcome() {
 		return "index";
 	}
-	
-	@RequestMapping("/admin/managerPermission")
-	public ModelAndView index(){
-		ModelAndView mv = new ModelAndView("index");
-		mv.addObject("page", "managerPermission");
-		return mv;
+
+	@RequestMapping("/register")
+	public String register(){
+		return "register";
 	}
 	
 	@RequestMapping("/login")
 	public String login(){
-		return "loginForm";
+		return "login";
+	}
+	
+	@RequestMapping("/forgot")
+	public String forgot(){
+		return "forgot";
 	}
 	
 	@RequestMapping("/logout")
 	public String logout(){
-		return "loginForm";
+		return "logout";
 	}
 	
 }

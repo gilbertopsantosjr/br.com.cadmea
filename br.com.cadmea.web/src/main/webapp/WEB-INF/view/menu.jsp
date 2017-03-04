@@ -5,8 +5,8 @@
       <a class="navbar-brand" href="#">Administration</a>
     </div>
     <ul class="nav navbar-nav">
-      <li><a href='<c:url value="/admin/listUser"/>'>Manager User</a></li>
-      <li><a href='<c:url value="/admin/listPermission"/>'>Manger Permissions</a></li>
+      <li><a href='<c:url value="#/admin/user/list"/>'>Manager User</a></li>
+      <li><a href='<c:url value="#/admin/user/listPermission"/>'>Manger Permissions</a></li>
     </ul>
   </div>
 </nav>

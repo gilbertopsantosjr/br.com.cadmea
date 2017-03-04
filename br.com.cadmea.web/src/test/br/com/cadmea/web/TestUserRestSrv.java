@@ -27,7 +27,6 @@ import br.com.cadmea.comuns.orm.enums.Situation;
 import br.com.cadmea.dto.UserFormDto;
 import br.com.cadmea.model.orm.Permission;
 import br.com.cadmea.model.orm.Person;
-import br.com.cadmea.model.orm.Phone;
 import br.com.cadmea.model.orm.UserSystem;
 import br.com.cadmea.spring.util.GenericResponse;
 
@@ -40,20 +39,13 @@ public class TestUserRestSrv extends AbstractTestUnit {
   @Test
   public void a_testRegisterNewUser() throws Exception {
 
-    Phone phone = new Phone();
-    phone.setNumber("556292392765");
-    phone.setIsDefault(Boolean.TRUE);
-
-    Set<Phone> phones = new HashSet<>();
-    phones.add(phone);
-
     Person person = new Person();
     person.setRegister("70792585100");
     person.setDateOfBirth(getDate(1988, 3, 18));
     person.setRelationship(Relationship.NAMORANDO);
-    person.setName("Gilbert Pereira dos Santos Junior");
+    person.setName("Gilberto");
+    person.setSurname("Pereira dos Santos Junior");
     person.setGender(Gender.MASCULINO);
-    person.setPhones(phones);
 
     Permission permission = new Permission();
     permission.setRole("ROLE_ADMIN");

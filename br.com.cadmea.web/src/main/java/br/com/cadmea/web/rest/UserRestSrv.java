@@ -87,7 +87,7 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
 			final UserSystem userSystem = getService().getUserBy(email);
 
 			if (userSystem == null)
-				new NotFoundException("user.not.found");
+				throw new NotFoundException("user.not.found");
 
 			found.setEntity(userSystem);
 

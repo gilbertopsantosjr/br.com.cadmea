@@ -14,10 +14,10 @@ import br.com.cadmea.model.BaseEntityPersistent;
  *
  */
 @Entity
-@Table(name = "email")
+@Table(name = "social_network")
 @AttributeOverrides(@AttributeOverride(name = "id",
-    column = @Column(name = "ema_id", nullable = false)))
-public class Email extends BaseEntityPersistent {
+    column = @Column(name = "soc_id", nullable = false)))
+public class SocialNetwork extends BaseEntityPersistent {
 
   /**
    *
@@ -25,13 +25,13 @@ public class Email extends BaseEntityPersistent {
   private static final long serialVersionUID = -2679869157137625329L;
 
   @NotNull
-  @Column(name = "ema_address", nullable = false)
+  @Column(name = "soc_address", nullable = false)
   private String address;
 
   @Column(name = "is_default", nullable = false)
   private Boolean isDefault;
 
-  public Email() {
+  public SocialNetwork() {
     super();
   }
 

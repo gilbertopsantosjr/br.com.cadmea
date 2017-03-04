@@ -6,17 +6,10 @@ package br.com.cadmea.web.ctrl;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -32,19 +25,17 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.cadmea.comuns.orm.enums.Gender;
 import br.com.cadmea.comuns.orm.enums.Relationship;
 import br.com.cadmea.comuns.orm.enums.Situation;
-import br.com.cadmea.model.orm.Email;
 import br.com.cadmea.model.orm.Person;
-import br.com.cadmea.model.orm.Phone;
 import br.com.cadmea.model.orm.UserSystem;
 import br.com.cadmea.web.business.UserSrv;
 
 /**
  * @author Gilberto Santos
  */
-@Controller
+//@Controller
 public class ManagerUserCtrl {
 
-	@Inject
+	//@Inject
 	private UserSrv userSrv;
 
 	private static final List<Situation> situationList = Arrays.asList(Situation.values());
@@ -53,14 +44,14 @@ public class ManagerUserCtrl {
 
 	private static final List<Relationship> relationshipList = Arrays.asList(Relationship.values());
 
-	@InitBinder
+	//@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
 	}
 
-	@RequestMapping("/admin/listUser")
+	//@RequestMapping("/admin/listUser")
 	public ModelAndView managerUser() {
 		ModelAndView mv = new ModelAndView("index");
 		mv.addObject("page", "listUser");
@@ -68,20 +59,20 @@ public class ManagerUserCtrl {
 		return mv;
 	}
 
-	@RequestMapping("/admin/formUser")
+	//@RequestMapping("/admin/formUser")
 	public ModelAndView formUser() {
 		ModelAndView mv = factoryForm(null);
 		return mv;
 	}
 
-	@RequestMapping("/admin/updateUser/{id}")
+	//@RequestMapping("/admin/updateUser/{id}")
 	public ModelAndView updateUser(@PathVariable Long id) {
 		UserSystem userSystem = userSrv.find(id);
 		ModelAndView mv = factoryForm(userSystem);
 		return mv;
 	}
 
-	@RequestMapping("/admin/saveUser")
+	//@RequestMapping("/admin/saveUser")
 	public ModelAndView saveUser(@Valid @ModelAttribute UserSystem userSystem, BindingResult result, Model m) {
 		ModelAndView mv = factoryForm(userSystem);
 		if (result.hasErrors()) {
@@ -95,7 +86,7 @@ public class ManagerUserCtrl {
 		return mv;
 	}
 
-	@RequestMapping("/admin/excludeUser/{id}")
+	//@RequestMapping("/admin/excludeUser/{id}")
 	public String excludeUser(@PathVariable Long id) {
 		UserSystem entidade = userSrv.find(id);
 		userSrv.remove(entidade);
@@ -107,14 +98,6 @@ public class ManagerUserCtrl {
 		if (userSystem == null) {
 			userSystem = new UserSystem();
 			userSystem.setPerson(new Person());
-
-			Set<Email> emails = new HashSet<Email>();
-			emails.add(new Email());
-			userSystem.getPerson().setEmails(emails);
-
-			Set<Phone> phones = new HashSet<Phone>();
-			phones.add(new Phone());
-			userSystem.getPerson().setPhones(phones);
 		}
 
 		ModelAndView mv = new ModelAndView("index", "userSystem", userSystem);

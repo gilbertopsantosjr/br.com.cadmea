@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -50,13 +51,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     final String allRoles = prepareAllRoles();
-
-    http.csrf().disable().httpBasic().and().authorizeRequests()
-        // Global Authority to OPTIONS (permit all).
-        .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-        .antMatchers(ServicePath.PUBLIC_ROOT_PATH + ServicePath.ALL).permitAll()
-
-        .antMatchers(HttpMethod.GET, ServicePath.PRIVATE_ROOT_PATH)
+    http
+    	.csrf().disable().authorizeRequests()
+    	
+    	.antMatchers("/resources/**").permitAll()
+    	.antMatchers("/register").permitAll()
+    	.antMatchers("/login").permitAll()
+    	.antMatchers("/logout").permitAll()
+    	
+    	.antMatchers(ServicePath.PUBLIC_ROOT_PATH + ServicePath.ALL).permitAll()
+    	
+    	.antMatchers(HttpMethod.GET, ServicePath.PRIVATE_ROOT_PATH)
         .access(allRoles)
         .antMatchers(HttpMethod.POST, ServicePath.PRIVATE_ROOT_PATH)
         .access(allRoles)
@@ -64,13 +69,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .access(allRoles)
         .antMatchers(HttpMethod.DELETE, ServicePath.PRIVATE_ROOT_PATH)
         .access(allRoles)
-
-        .anyRequest().fullyAuthenticated().and()
-        // Logout configuration.
-        .logout()
-        .logoutRequestMatcher(
-            new AntPathRequestMatcher(ServicePath.LOGOUT_PATH))
-        .logoutSuccessHandler(headerHandler);
+    	
+        .anyRequest().fullyAuthenticated()
+        
+        .and()
+    .formLogin()                      
+        .loginPage(ServicePath.LOGIN_PATH)
+        .and()
+    .httpBasic()
+    	.and()
+    	.logout()
+    	.permitAll();
+  
   }
 
   private String prepareAllRoles() {
