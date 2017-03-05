@@ -14,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -30,7 +31,10 @@ import br.com.cadmea.model.BaseEntityPersistent;
 @Entity
 @Table(name = "cadmea_user_system")
 @AttributeOverrides(@AttributeOverride(name = "id", column = @Column(name = "usu_id", nullable = false)))
-@NamedQuery(name = "UserSystem.loginByUsername", query = "SELECT u.id, u.email, u.nickname, p.name FROM UserSystem as u INNER JOIN u.person as p WHERE u.email = :email and u.situation = 1")
+@NamedQueries({
+@NamedQuery(name = "UserSystem.loginByUsername", query = "SELECT u.id, u.email, u.nickname, p.name FROM UserSystem as u INNER JOIN u.person as p INNER JOIN u.systems sys WHERE u.email = :email and u.situation = 1 "),
+@NamedQuery(name = "UserSystem.loginByUsernameAndSystem", query = "SELECT u.id, u.email, u.nickname, p.name FROM UserSystem as u INNER JOIN u.person as p INNER JOIN u.systems sys WHERE u.email = :email and u.situation = 1 and sys.id = :sysId ")
+})
 public class UserSystem extends BaseEntityPersistent {
 
 	/**
@@ -90,11 +94,24 @@ public class UserSystem extends BaseEntityPersistent {
 	@JoinTable(name = "cadmea_permissions_per_user", joinColumns = {
 			@JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "permission_id") })
 	private Set<Permission> permissions;
+	
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, fetch = FetchType.EAGER, targetEntity = CadmeaSystem.class)
+	@JoinTable(name = "cadmea_systems_per_user", joinColumns = {
+			@JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "system_id") })
+	private Set<CadmeaSystem> systems;
 
 	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "pes_id", referencedColumnName = "pes_id", nullable = false)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Person person;
+	
+	public Set<CadmeaSystem> getSystems() {
+		return systems;
+	}
+
+	public void setSystems(Set<CadmeaSystem> systems) {
+		this.systems = systems;
+	}
 
 	public boolean isRememberMe() {
 		return rememberMe;

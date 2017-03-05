@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.cadmea.comuns.util.ValidadorUtil;
 import br.com.cadmea.dto.UserFormDto;
+import br.com.cadmea.model.orm.CadmeaSystem;
 import br.com.cadmea.model.orm.PasswordResetToken;
 import br.com.cadmea.model.orm.UserSystem;
 import br.com.cadmea.spring.rest.GenericRestService;
@@ -36,6 +37,7 @@ import br.com.cadmea.spring.rest.exceptions.RestException;
 import br.com.cadmea.spring.security.orm.UserAccess;
 import br.com.cadmea.spring.util.GenericResponse;
 import br.com.cadmea.spring.util.SmtpEmailSender;
+import br.com.cadmea.web.business.CadmeaSystemSrv;
 import br.com.cadmea.web.business.UserSrv;
 
 /**
@@ -50,6 +52,9 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
 
 	@Inject
 	private UserSrv userSrv;
+	
+	@Inject
+	private CadmeaSystemSrv cadmeaSystemSrv;
 
 	@Inject
 	private SmtpEmailSender smtpEmailSender;
@@ -83,14 +88,25 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
 
 		UserFormDto found = new UserFormDto();
 		try {
+			CadmeaSystem cadmeaSystem =  cadmeaSystemSrv.findBy(formDto.getSystemName());
+			if(cadmeaSystem == null) 
+				throw new NotFoundException("system.not.found");
+			
 			final String email = formDto.getEntity().getEmail();
-			final UserSystem userSystem = getService().getUserBy(email);
+			UserSystem userSystem = getService().getUserBy(email);
 
 			if (userSystem == null)
 				throw new NotFoundException("user.not.found");
 
+			final Long sysId = cadmeaSystem.getId();
+			
+			userSystem = getService().getUserBy(email, sysId);
+			if(userSystem == null)
+				throw new NotFoundException("user.not.allow.in.system");
+			
 			found.setEntity(userSystem);
-
+			found.setUrl(cadmeaSystem.getUlr());
+			
 			UserAccess userAccess = new UserAccess(userSystem.getPerson().getName());
 			userSystem.getPermissions().forEach(a -> {
 				userAccess.getRoles().add(a.getRole());
@@ -119,6 +135,9 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
 	private void isValidRequest(UserFormDto formDto) {
 		if (!ValidadorUtil.isValid(formDto) && !ValidadorUtil.isValid(formDto.getEntity()))
 			throw new PreconditionRequiredException("Invalid Object !");
+		
+		if (!ValidadorUtil.isValid(formDto.getSystemName()))
+			throw new PreconditionRequiredException("System name is required !");
 
 		if (!ValidadorUtil.isValid(formDto.getEntity().getEmail())
 				&& !ValidadorUtil.isValid(formDto.getEntity().getEmail()))

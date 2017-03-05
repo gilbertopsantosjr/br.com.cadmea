@@ -34,11 +34,12 @@ app.controller('userController', function( $scope, $http, $location, $routeParam
 app.controller('loginController', function( $scope, $http, $location, $routeParams) {
 	
 	$scope.verify = function() {
+		console.log($scope.login);
 		$http.post("/api/public/user/authentication/", $scope.login)
 		.success(
 			function(response){
 				$scope.login = {}
-				window.location = "/admin";
+				window.location = response.url;
 			}		
 		).error(
 			function(data, status, headers, config){

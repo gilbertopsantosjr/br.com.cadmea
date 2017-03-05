@@ -8,9 +8,7 @@ import java.util.Date;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
-import org.springframework.validation.ObjectError;
 
-import br.com.cadmea.comuns.exceptions.BusinessException;
 import br.com.cadmea.comuns.orm.enums.Result;
 import br.com.cadmea.comuns.orm.enums.Situation;
 import br.com.cadmea.infra.negocio.BaseNegocial;

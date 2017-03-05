@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import br.com.cadmea.baseservico.BaseMaintenanceSrvImpl;
+import br.com.cadmea.comuns.exceptions.BusinessException;
 import br.com.cadmea.comuns.orm.enums.Result;
 import br.com.cadmea.model.orm.PasswordResetToken;
 import br.com.cadmea.model.orm.UserSystem;
@@ -37,18 +38,40 @@ public class UserSrv extends BaseMaintenanceSrvImpl<UserSystem, UserBo> {
    * try to get a {@link User} of system by params
    *
    * @param email
+   * @param sysId
+   * @return {@link User} if found
+   */
+  public UserSystem getUserBy(final String email, Long sysId) {
+    if (email == null || email.isEmpty())
+      throw new BusinessException("Email can't be null or empty");
+
+    if (sysId == null)
+        throw new BusinessException("System can't be null");
+    
+    Map<String, Object> params = new HashMap<>();
+    params.put("email", email);
+    params.put("sysId", sysId);
+    
+    return getBo().findByNamedQuery("loginByUsernameAndSystem", params, Result.UNIQUE);
+  }
+  
+  /**
+   * try to get a {@link User} of system by params
+   *
+   * @param email
    * @param password
    * @return {@link User} if found
    */
   public UserSystem getUserBy(final String email) {
     if (email == null || email.isEmpty())
-      throw new RuntimeException("Email can't be null or empty");
+      throw new BusinessException("Email can't be null or empty");
 
     Map<String, Object> params = new HashMap<>();
     params.put("email", email);
-
+    
     return getBo().findByNamedQuery("loginByUsername", params, Result.UNIQUE);
   }
+
 
   /**
    * create a PasswordResetToken

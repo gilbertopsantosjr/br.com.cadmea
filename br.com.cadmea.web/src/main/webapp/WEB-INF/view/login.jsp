@@ -43,6 +43,8 @@
 		<form class="col s12" ng-controller="loginController as login" ng-submit="verify();" name="formulario">
 	  	 	<div class="formLogin">
 	  	 	
+	  	 	<input type="text" ng-show="false"  id="systemName" ng-init="login.systemName = '1CADS'"  ng-model="login.systemName"  />
+	  	 	
 	  	 	<div class="row">
 		  	 	<div class="input-field">
 		          <i class="material-icons prefix">email</i>
@@ -69,7 +71,7 @@
 	  	 	</div>
 	  	 	
 	  	 	<div class="row center">
-		 		<button class="btn-auth btn-google large" >
+		 		<button class="btn-auth btn-cadmea large" >
    					Sign in with <b>Cadmea </b>
 				</button>
 			</div>

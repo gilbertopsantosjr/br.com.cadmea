@@ -107,13 +107,13 @@ public class UserAccess extends UserSystem
 
   @Override
   public void valueBound(HttpSessionBindingEvent arg0) {
-    logger.info("user :" + this.getUsername() + " as log ing "
+    logger.info("user logged :" + this.getUsername() + " as log ing "
         + sdf.format(new Date()));
   }
 
   @Override
   public void valueUnbound(HttpSessionBindingEvent arg0) {
-    logger.info("user :" + this.getUsername() + " as log out "
+    logger.info("user logout :" + this.getUsername() + " as log out "
         + sdf.format(new Date()));
   }
 

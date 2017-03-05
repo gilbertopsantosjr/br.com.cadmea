@@ -32,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
   @Autowired
   private DataSource dataSource;
 
-  @Value("${cadmea.users.sql.loginByUsername:SELECT u.usu_id as id, u.usu_pwd as password, u.usu_email as email, u.usu_nickname as nickname, u.usu_situation FROM cadmea_user_system u WHERE u.usu_email = ? and u.usu_situation = 1}")
+  @Value("${cadmea.users.sql.loginByUsername:SELECT u.usu_id as id, u.usu_pwd as password, u.usu_email as email, u.usu_nickname as nickname, u.usu_situation FROM cadmea_user_system u INNER_JOIN System sys ON sys.sys_id = u.user_id WHERE u.usu_email = ? and u.usu_situation = 1 and sys.sys_id = ? }")
   private String sqlUser;
 
   @Value("${cadmea.users.sql.rolesByUser:SELECT p.role as per_role_nome FROM cadmea_permissions_per_user ppu INNER JOIN cadmea_user_permission p ON ppu.permission_id = p.per_id WHERE ppu.user_id = ?}")

@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Repository;
 
 import br.com.cadmea.model.dao.DaoGenericoImp;
-import br.com.cadmea.model.orm.Permission;
 import br.com.cadmea.model.orm.Person;
 import br.com.cadmea.model.orm.UserSystem;
 

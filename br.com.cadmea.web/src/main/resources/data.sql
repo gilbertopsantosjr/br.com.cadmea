@@ -14,3 +14,16 @@ values
 insert into cadmea_user_permission (role) values ('ROLE_ADMIN');
 
 insert into cadmea_permissions_per_user (user_id, permission_id) values (1, 1);
+
+insert into cadmea_system (sys_identity, sys_name, sys_url) values ('1CADS', 'Cadmea System', '/private/index.jsp');
+
+insert into cadmea_system (sys_identity, sys_name, sys_url) values ('2MTFU', 'Message to the future', '/dashboard');
+
+insert into cadmea_system (sys_identity, sys_name, sys_url) values ('HCSUT', 'Health Care System', '/dashboard');
+
+/* add permissao para o usuario acessar o cadmea system, somente administradores devem possuir esse */
+insert into cadmea_systems_per_user (user_id, system_id) values (1, 1);
+
+/* add permissao para o usuario acessar o Message to the future system, aberto ao publico se cadastrar */
+insert into cadmea_systems_per_user (user_id, system_id) values (1, 2);
+
