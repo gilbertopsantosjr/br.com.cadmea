@@ -28,13 +28,14 @@ app.config(function($routeProvider) {
 });
 
 app.controller('userController', function( $scope, $http, $location, $routeParams) {
-	
+	$scope.verify = function() {
+		
+	}
 });
 
 app.controller('loginController', function( $scope, $http, $location, $routeParams) {
 	
 	$scope.verify = function() {
-		console.log($scope.login);
 		$http.post("/api/public/user/authentication/", $scope.login)
 		.success(
 			function(response){

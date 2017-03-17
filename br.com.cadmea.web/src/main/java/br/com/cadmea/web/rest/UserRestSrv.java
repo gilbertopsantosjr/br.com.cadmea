@@ -120,7 +120,6 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
 			throw e;
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new RestException(e);
 		}
 
@@ -133,18 +132,18 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
 	 * @param formDto
 	 */
 	private void isValidRequest(UserFormDto formDto) {
-		if (!ValidadorUtil.isValid(formDto) && !ValidadorUtil.isValid(formDto.getEntity()))
+		if (!ValidadorUtil.isValid(formDto) || !ValidadorUtil.isValid(formDto.getEntity()))
 			throw new PreconditionRequiredException("Invalid Object !");
 		
 		if (!ValidadorUtil.isValid(formDto.getSystemName()))
 			throw new PreconditionRequiredException("System name is required !");
 
-		if (!ValidadorUtil.isValid(formDto.getEntity().getEmail())
-				&& !ValidadorUtil.isValid(formDto.getEntity().getEmail()))
+		if ( !ValidadorUtil.isValid(formDto.getEntity().getEmail()) )
 			throw new PreconditionRequiredException("Username is required !");
-
-		if (!ValidadorUtil.isValid(formDto.getEntity().getPassword())
-				&& !ValidadorUtil.isValid(formDto.getEntity().getPassword()))
+		else if ( !ValidadorUtil.isValidEmail(formDto.getEntity().getEmail()) )
+			throw new PreconditionRequiredException("Email must be valid !"); 
+			
+		if ( !ValidadorUtil.isValid(formDto.getEntity().getPassword()) )
 			throw new PreconditionRequiredException("Password is required !");
 	}
 

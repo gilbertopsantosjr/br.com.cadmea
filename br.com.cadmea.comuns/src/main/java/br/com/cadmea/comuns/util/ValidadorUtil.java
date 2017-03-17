@@ -11,7 +11,7 @@ import java.text.ParseException;
  */
 public class ValidadorUtil {
 
-	static public boolean validaEmail(String email) {
+	static public boolean isValidEmail(String email) {
 		EmailValidator validator = new EmailValidator();
 		return validator.validate(email);
 	}

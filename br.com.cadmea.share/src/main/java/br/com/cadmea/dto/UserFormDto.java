@@ -14,7 +14,8 @@ public class UserFormDto extends FormDto<UserSystem> {
 
 	private String systemName;
 	private String url;
-
+	private String repeatPassword;
+	
 	public String getSystemName() {
 		return systemName;
 	}
@@ -30,5 +31,15 @@ public class UserFormDto extends FormDto<UserSystem> {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
+	public String getRepeatPassword() {
+		return repeatPassword;
+	}
+
+	public void setRepeatPassword(String repeatPassword) {
+		this.repeatPassword = repeatPassword;
+	}
+	
+	
 	
 }

@@ -15,13 +15,19 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.social.config.annotation.EnableSocial;
+import org.springframework.social.connect.ConnectionFactoryLocator;
+import org.springframework.social.connect.UsersConnectionRepository;
+import org.springframework.social.connect.web.ProviderSignInController;
 
 import br.com.cadmea.spring.rest.ServicePath;
+import br.com.cadmea.spring.util.FacebookSignInAdapter;
 
 @EnableWebSecurity
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 @PropertySource(value = "classpath:cadmea.properties",
     ignoreResourceNotFound = true)
+@EnableSocial
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Value("${cadmea.users.roles:ROLE_ADMIN}")
@@ -34,6 +40,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Lazy
   @Autowired
   private HeaderHandler headerHandler;
+  
+  //Adding Social Authentication
+  @Autowired
+  private ConnectionFactoryLocator connectionFactoryLocator;
+
+  @Autowired
+  private UsersConnectionRepository usersConnectionRepository;
 
   @Override
   public void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -44,6 +57,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Bean(name = "passwordEncoder")
   public PasswordEncoder passwordencoder() {
     return new BCryptPasswordEncoder();
+  }
+  
+  @Bean
+  public ProviderSignInController providerSignInController() {
+      return new ProviderSignInController(
+        connectionFactoryLocator, 
+        usersConnectionRepository, 
+        new FacebookSignInAdapter());
   }
 
   @Override
@@ -56,6 +77,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     	.antMatchers("/register").permitAll()
     	.antMatchers("/login").permitAll()
     	.antMatchers("/logout").permitAll()
+    	.antMatchers("/forgot").permitAll()
+    	.antMatchers("/showRecoveryPassword").permitAll()
+    	.antMatchers("/connect/**").permitAll()
+    	.antMatchers("/social/**", "/signin/**","/signup/**").permitAll()
     	
     	.antMatchers(ServicePath.PUBLIC_ROOT_PATH + ServicePath.ALL).permitAll()
     	
@@ -74,9 +99,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     .formLogin()                      
         .loginPage(ServicePath.LOGIN_PATH)
         .and()
-    .httpBasic()
-    	.and()
     	.logout()
+	    	.logoutUrl(ServicePath.LOGOUT_PATH)
+			.deleteCookies("JSESSIONID")
+			.logoutSuccessUrl(ServicePath.LOGIN_PATH)
     	.permitAll();
   
   }

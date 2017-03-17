@@ -19,15 +19,13 @@
     <hgroup>
 	  <h3>Cadmea System</h3>
 	</hgroup>
-	
-	<hr/>
-   
 </header>
 
 <main ng-app="cadmea">
 
  	<div class="row center">
-		<a class="btn-auth btn-facebook large" href="#">
+ 	
+		<a class="btn-auth btn-facebook large" href="/social/facebook/signin">
    			Sign in with <b>Facebook</b>
 		</a>
 		
@@ -43,30 +41,30 @@
 		<form class="col s12" ng-controller="loginController as login" ng-submit="verify();" name="formulario">
 	  	 	<div class="formLogin">
 	  	 	
-	  	 	<input type="text" ng-show="false"  id="systemName" ng-init="login.systemName = '1CADS'"  ng-model="login.systemName"  />
-	  	 	
-	  	 	<div class="row">
-		  	 	<div class="input-field">
-		          <i class="material-icons prefix">email</i>
-		          <input id="email" ng-model="login.entity.email" type="email" class="validate">
-		          <label for="email"  data-error="wrong" data-success="right">Email</label>
-		        </div>
-	  	 	</div>
-	  	 	
-  	 		<div class="row">
-		  	 	<div class="input-field">
-		          <i class="material-icons prefix">lock_open</i>
-		          <input id="password" ng-model="login.entity.password" type="password" class="validate">
-		          <label for="password">Password</label>
-		        </div>
-		    </div>   
-	        
-	        <div class="row">
-		        <div class="input-field">
-			      <input type="checkbox" id="remember" />
-			      <label for="remember">Remember me</label>
+		  	 	<input type="text" ng-show="false"  id="systemName" ng-init="login.systemName = '1CADS'"  ng-model="login.systemName"  />
+		  	 	
+		  	 	<div class="row">
+			  	 	<div class="input-field">
+			          <i class="material-icons prefix">email</i>
+			          <input id="email" ng-model="login.entity.email" type="email" class="validate">
+			          <label for="email"  data-error="wrong" data-success="right">Email</label>
+			        </div>
 		  	 	</div>
-		  	</div>	
+		  	 	
+	  	 		<div class="row">
+			  	 	<div class="input-field">
+			          <i class="material-icons prefix">lock_open</i>
+			          <input id="password" ng-model="login.entity.password" type="password" class="validate">
+			          <label for="password">Password</label>
+			        </div>
+			    </div>   
+		        
+		        <div class="row">
+			        <div class="input-field">
+				      <input type="checkbox" id="remember" />
+				      <label for="remember">Remember me</label>
+			  	 	</div>
+			  	</div>	
 	  	 	
 	  	 	</div>
 	  	 	

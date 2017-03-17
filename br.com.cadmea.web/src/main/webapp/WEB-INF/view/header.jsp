@@ -29,3 +29,15 @@
 
 
 <script type="text/javascript" src="${js}/app.js"></script>
+
+<style type="text/css">
+	body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+</style>
