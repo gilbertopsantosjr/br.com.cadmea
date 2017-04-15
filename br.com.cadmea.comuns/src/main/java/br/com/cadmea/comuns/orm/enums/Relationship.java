@@ -4,17 +4,21 @@ import br.com.cadmea.comuns.orm.DomainElement;
 
 public enum Relationship implements DomainElement {
 
-  NAO_HA_RESPOSTA("Não ha respostas."), SOLTEIRO("Solteiro"), CASADO("Casado"),
-  NAMORANDO("Namorando"), CELIBATO("Celibato"), DIVORCIADO("Divorciado");
+  NAO_HA_RESPOSTA(0), SOLTEIRO(1), CASADO(2),
+  NAMORANDO(3), CELIBATO(4), DIVORCIADO(5);
 
-  private String descricao;
+  private int value;
 
-  Relationship(String d) {
-    this.descricao = d;
+  private Relationship(int v) {
+    this.value = v;
+  }
+  
+  public int getValue(){
+	  return value;
   }
 
   @Override
   public String getDescription() {
-    return this.descricao;
+    return this.name();
   }
 }

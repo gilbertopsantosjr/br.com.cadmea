@@ -2,6 +2,7 @@ package br.com.cadmea.web.rest;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +30,7 @@ import br.com.cadmea.comuns.util.ValidadorUtil;
 import br.com.cadmea.dto.UserFormDto;
 import br.com.cadmea.model.orm.CadmeaSystem;
 import br.com.cadmea.model.orm.PasswordResetToken;
+import br.com.cadmea.model.orm.SocialNetwork;
 import br.com.cadmea.model.orm.UserSystem;
 import br.com.cadmea.spring.rest.GenericRestService;
 import br.com.cadmea.spring.rest.ServicePath;
@@ -62,6 +65,9 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
 	private UserFormDto userDTo;
 
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private HttpServletRequest servletRequest;
 
 	@Override
 	protected void beforeLoadClass() {
@@ -73,6 +79,14 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
 	protected void beforeSave() {
 		final String hashPassword = passwordEncoder.encode(getViewForm().getEntity().getPassword());
 		getViewForm().getEntity().setPassword(hashPassword);
+		
+		if(servletRequest.getAttribute("socialNetwork")!=null){
+			SocialNetwork socialNetwork = (SocialNetwork) servletRequest.getAttribute("socialNetwork");
+			if(socialNetwork!=null){
+				getViewForm().getEntity().setSocialNetworks(new HashSet<>());
+				getViewForm().getEntity().getSocialNetworks().add(socialNetwork);
+			}
+		}
 	}
 
 	/**

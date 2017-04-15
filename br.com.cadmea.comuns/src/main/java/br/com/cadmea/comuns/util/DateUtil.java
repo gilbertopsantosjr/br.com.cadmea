@@ -135,7 +135,7 @@ public class DateUtil {
    * @param strDate
    * @return
    */
-  public static Date parseData(String strDate) {
+  public static Date parseDate(String strDate) {
     SimpleDateFormat format = new SimpleDateFormat(FMT_DATA);
     try {
       return format.parse(strDate);
@@ -380,7 +380,7 @@ public class DateUtil {
    */
   public static boolean ehMenorDeIdade(Date data) {
     return DateUtil.retornaAnoEntreDatas(data,
-        DateUtil.parseData(DateUtil.retornaDataAtual("dd/MM/yyyy"))) < 18;
+        DateUtil.parseDate(DateUtil.retornaDataAtual("dd/MM/yyyy"))) < 18;
   }
 
   /**

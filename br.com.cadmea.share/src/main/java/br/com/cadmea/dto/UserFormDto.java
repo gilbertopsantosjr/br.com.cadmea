@@ -15,7 +15,16 @@ public class UserFormDto extends FormDto<UserSystem> {
 	private String systemName;
 	private String url;
 	private String repeatPassword;
+	private String pictureProfile;
 	
+	public String getPictureProfile() {
+		return pictureProfile;
+	}
+
+	public void setPictureProfile(String pictureProfile) {
+		this.pictureProfile = pictureProfile;
+	}
+
 	public String getSystemName() {
 		return systemName;
 	}
@@ -39,7 +48,14 @@ public class UserFormDto extends FormDto<UserSystem> {
 	public void setRepeatPassword(String repeatPassword) {
 		this.repeatPassword = repeatPassword;
 	}
-	
-	
+
+	@Override
+	public boolean validate() {
+		if(!getEntity().getPassword().equalsIgnoreCase(getRepeatPassword())){
+			setMessage("Password's not match !");
+			return false;
+		}
+		return super.validate();
+	}
 	
 }

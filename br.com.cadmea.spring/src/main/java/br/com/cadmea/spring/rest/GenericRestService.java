@@ -74,18 +74,18 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
     getViewForm().setEntity(formDto.getEntity());
 
     if (!getViewForm().validate())
-      throw new PreconditionRequiredException("004");
+      throw new PreconditionRequiredException(getViewForm().getMessage());
 
     try {
       beforeSave();
-
+      
       getViewForm()
           .setEntity((E) getService().insert(getViewForm().getEntity()));
 
       afterSave();
 
     } catch (Exception e) {
-      e.printStackTrace();
+    	//ExceptionUtil 
       throw new RestException(e);
 
     } finally {
@@ -121,7 +121,7 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
     getViewForm().setEntity(formDto.getEntity());
 
     if (!getViewForm().validate())
-      throw new PreconditionRequiredException("004");
+        throw new PreconditionRequiredException(getViewForm().getMessage());
 
     try {
       beforeUpdate();

@@ -4,17 +4,21 @@ import br.com.cadmea.comuns.orm.DomainElement;
 
 public enum Gender implements DomainElement {
 
-  MASCULINO("Masculino"), FEMININO("Feminino");
+	MALE(0), FEMALE(1);
 
-  private Gender(String d) {
-    descricao = d;
-  }
+	private Gender(int d) {
+		this.value = d;
+	}
 
-  private String descricao;
+	private int value;
 
-  @Override
-  public String getDescription() {
-    return descricao;
-  }
+	public int getValue() {
+		return value;
+	}
+
+	@Override
+	public String getDescription() {
+		return name();
+	}
 
 }

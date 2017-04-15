@@ -29,7 +29,18 @@ app.config(function($routeProvider) {
 
 app.controller('userController', function( $scope, $http, $location, $routeParams) {
 	$scope.verify = function() {
-		
+		console.log($scope.user);
+		$http.post("/api/public/user/create/", $scope.user)
+		.success(
+			function(response){
+				
+			}		
+		).error(
+			function(data, status, headers, config){
+				console.log(data);
+				erro("Error: " + data.message);
+			}
+		)
 	}
 });
 

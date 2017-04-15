@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -99,12 +100,25 @@ public class UserSystem extends BaseEntityPersistent {
 	@JoinTable(name = "cadmea_systems_per_user", joinColumns = {
 			@JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "system_id") })
 	private Set<CadmeaSystem> systems;
+	
+	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, fetch = FetchType.EAGER, targetEntity = SocialNetwork.class)
+	@JoinTable(name = "cadmea_social_per_user", joinColumns = {
+			@JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "system_id") })
+	private Set<SocialNetwork> socialNetworks;
 
 	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "pes_id", referencedColumnName = "pes_id", nullable = false)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Person person;
 	
+	public Set<SocialNetwork> getSocialNetworks() {
+		return socialNetworks;
+	}
+
+	public void setSocialNetworks(Set<SocialNetwork> socialNetworks) {
+		this.socialNetworks = socialNetworks;
+	}
+
 	public Set<CadmeaSystem> getSystems() {
 		return systems;
 	}

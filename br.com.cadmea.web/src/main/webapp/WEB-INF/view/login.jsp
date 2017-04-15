@@ -24,10 +24,11 @@
 <main ng-app="cadmea">
 
  	<div class="row center">
- 	
-		<a class="btn-auth btn-facebook large" href="/social/facebook/signin">
-   			Sign in with <b>Facebook</b>
-		</a>
+ 		<form action="/connect/facebook" method="POST">
+			<button type="submit" class="btn-auth btn-facebook large">
+	   			Sign in with <b>Facebook</b>
+			</button>
+		</form>
 		
 		<a class="btn-auth btn-google large" href="#">
    			Sign in with <b>Google </b>

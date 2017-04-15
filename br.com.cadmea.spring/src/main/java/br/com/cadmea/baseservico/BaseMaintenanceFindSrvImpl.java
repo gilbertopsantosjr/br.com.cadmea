@@ -19,88 +19,86 @@ import br.com.cadmea.infra.negocio.Negocial;
  * @param <E>
  * @param <B>
  */
-public abstract class BaseMaintenanceFindSrvImpl<E extends EntityPersistent, B extends Negocial<E>>
-    implements BaseMaintenanceFindSrv<E> {
+public abstract class BaseMaintenanceFindSrvImpl<E extends EntityPersistent, B extends Negocial<E>> {
 
-  /**
-   * Retorna instância de BO.
-   *
-   * @return O BO que será utilizado nas operações de manutenção
-   */
-  protected abstract B getBo();
+	/**
+	 * Retorna instância de BO.
+	 *
+	 * @return O BO que será utilizado nas operações de manutenção
+	 */
+	protected abstract B getBo();
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see
-   * br.com.cadmea.baseservico.BaseMaintenanceFindSrv#find(java.io.Serializable)
-   */
-  @Override
-  public E find(Serializable identificador) {
-    return getBo().find(identificador);
-  }
+	/**
+	 * obtem uma entidade pelo seu identificador natural id
+	 * 
+	 * @param id
+	 * @return E
+	 */
+	public E find(Serializable identificador) {
+		return getBo().find(identificador);
+	}
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see br.com.cadmea.baseservico.BaseMaintenanceFindSrv#find(java.util.Map)
-   */
-  @Override
-  public Collection<E> find(Map<String, Object> params) {
-    return getBo().find(params);
-  }
+	/**
+	 * obtem uma entidade conforme os parametros de entrada
+	 * @param params exemplo <code> params.put("nomeDaVariavel", objetoDeValor); </code>
+	 * @return E
+	 */
+	public Collection<E> find(Map<String, Object> params) {
+		return getBo().find(params);
+	}
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see br.com.cadmea.baseservico.BaseMaintenanceFindSrv#find(java.util.Map,
-   * br.com.cadmea.comuns.orm.enums.Result)
-   */
-  @Override
-  public E find(Map<String, Object> params, Result res) {
-    return getBo().find(params, res);
-  }
+	/**
+	 * obtem uma coleção de entidades conforme os parametros de entrada <br/>
+     * @param params exemplo <code> params.put("nomeDaVariavel", objetoDeValor); </code>
+     * @param orderBy pode ser ordenada exemplo <code> "nomeDaVariavel" </code>
+	 * @param order informa se a ordenação sera ASC ou DESC exemplo <code> true para ASC , false para DESC </code>
+	 * @return Collection<E>
+	 */
+	public E find(Map<String, Object> params, Result res) {
+		return getBo().find(params, res);
+	}
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see
-   * br.com.cadmea.baseservico.BaseMaintenanceFindSrv#find(java.lang.String,
-   * java.lang.Object)
-   */
-  @Override
-  public E find(String propNome, Object valor) {
-    Map<String, Object> params = new HashMap<String, Object>();
-    params.put(propNome, valor);
-    return getBo().find(params, Result.UNIQUE);
-  }
+	/**
+	 * find only one entity by propName
+	 * @param propNome
+	 * @param valor
+	 * @return E
+	 */
+	public E find(String propNome, Object valor) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put(propNome, valor);
+		return getBo().find(params, Result.UNIQUE);
+	}
 
-  @Override
-  public Collection<E> find(String namedQuery, Map<String, Object> parameters)
-      throws DaoException {
-    return getBo().findByNamedQuery(namedQuery, parameters);
-  }
+	/**
+	 * 
+	 * @param namedQuery
+	 * @param parameters
+	 * @return
+	 * @throws DaoException
+	 */
+	public Collection<E> find(String namedQuery, Map<String, Object> parameters) throws DaoException {
+		return getBo().findByNamedQuery(namedQuery, parameters);
+	}
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see br.com.cadmea.baseservico.BaseMaintenanceFindSrv#listAll()
-   */
-  @Override
-  public Collection<E> listAll() {
-    return getBo().findAll();
-  }
+	/**
+	 * obtem todos instancias persistidas para entidade E 
+	 * retorna todos objetos da entidade
+	 * @return Collection<E>
+	 */
+	
+	public Collection<E> listAll() {
+		return getBo().findAll();
+	}
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see
-   * br.com.cadmea.baseservico.BaseMaintenanceFindSrv#listAll(java.util.Map,
-   * int, int)
-   */
-  @Override
-  public Collection<E> listAll(Map<String, Object> params, int de, int ate) {
-    return getBo().findAll(de, ate);
-  }
+	/**
+	 * obtem todos instancias persistidas para entidade E retorna todos objetos
+	 * da entidade
+	 * 
+	 * @return Collection<E>
+	 */
+	public Collection<E> listAll(Map<String, Object> params, int de, int ate) {
+		return getBo().findAll(de, ate);
+	}
 
 }

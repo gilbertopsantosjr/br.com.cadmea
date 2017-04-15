@@ -39,6 +39,7 @@ public interface BaseServico<E extends EntityPersistent> {
 	 * @param entidade
 	 */
 	void remove(E entidade);
+	
 	/**
 	 * obtem uma entidade pelo seu identificador natural id
 	 * @param id

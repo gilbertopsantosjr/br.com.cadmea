@@ -45,7 +45,7 @@ public class TestUserRestSrv extends AbstractTestUnit {
     person.setRelationship(Relationship.NAMORANDO);
     person.setName("Gilberto");
     person.setSurname("Pereira dos Santos Junior");
-    person.setGender(Gender.MASCULINO);
+    person.setGender(Gender.MALE);
 
     Permission permission = new Permission();
     permission.setRole("ROLE_ADMIN");

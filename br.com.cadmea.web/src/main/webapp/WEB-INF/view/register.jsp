@@ -20,7 +20,10 @@
 
 <main ng-app="cadmea">
 	<div class="row">
-		<form ng-controller="userController as user" ng-submit="save();">
+		
+		<span> ${messages} </span>
+		
+		<form ng-controller="userController as user" ng-submit="verify();">
 			
 			<div class="col s12">
       			<ul class="tabs">
@@ -46,10 +49,10 @@
 				</div>
 				
 				<div class="input-field col s6">
-  					<button class="btn waves-effect waves-light" type="submit" name="action">Cancel
+  					<button class="btn waves-effect waves-light" type="reset" name="cancel">Cancel
     					<i class="material-icons right">cancel</i>
   					</button>
-  					<button class="btn waves-effect waves-light" type="submit" name="action">Submit
+  					<button class="btn waves-effect waves-light" type="submit" name="save">Submit
     					<i class="material-icons right">save</i>
   					</button>
 				</div>

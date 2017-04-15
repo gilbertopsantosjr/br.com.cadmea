@@ -4,10 +4,12 @@
 
 <h2>
 Hi, 
-<c:out value="${first_name}"></c:out>
-<c:out value="${last_name}"></c:out>
+<c:out value="${userSystem.entity.person.name}" />
+<c:out value="${userSystem.entity.person.surname}" />
 </h2>
 
-<c:out value="${email}" />
+last visited : <c:out value="${userSystem.entity.lastVisit}" /> 
+
+<c:out value="${userSystem.entity.email}" />
 <br/>
-<img src="<c:out value="${picture}" />"  />
+<img src="<c:out value="${userSystem.pictureProfile}" />"  />

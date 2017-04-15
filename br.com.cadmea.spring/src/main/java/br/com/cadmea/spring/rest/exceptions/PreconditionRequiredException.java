@@ -7,12 +7,13 @@ import br.com.cadmea.comuns.exceptions.BusinessException;
 
 @ResponseStatus(HttpStatus.PRECONDITION_REQUIRED)
 public class PreconditionRequiredException extends BusinessException {
-  /**
-   *
-   */
-  private static final long serialVersionUID = -2599832067129917109L;
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -2599832067129917109L;
 
-  public PreconditionRequiredException(String messageKey) {
-    super(messageKey);
-  }
+	public PreconditionRequiredException(String message) {
+		super(message);
+	}
+
 }
