@@ -9,7 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -68,7 +72,7 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
    * @param FormDto<E>
    * @return ResponseEntity<Void> Rest.Status.Ok
    */
-  @RequestMapping(value = "/create/", method = RequestMethod.POST)
+  @PostMapping(path = "/create/")
   protected ResponseEntity<Void> create(@RequestBody Dto formDto) {
 
     getViewForm().setEntity(formDto.getEntity());
@@ -115,7 +119,7 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
    * @param formDto
    * @return ResponseEntity<E> the entity up to date Rest.Status.Ok
    */
-  @RequestMapping(value = "/update/", method = RequestMethod.PUT)
+  @PutMapping(path = "/update/")
   protected ResponseEntity<E> update(@RequestBody Dto formDto) {
 
     getViewForm().setEntity(formDto.getEntity());
@@ -153,13 +157,13 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
   }
 
   /**
-   * the rest service /exclude/ to remove an old entity
+   * the rest service /remove/ to remove an old entity
    *
    * @param IdEntity
    * @return ResponseEntity<E> the entity up to date Rest.Status.Ok
    *
    */
-  @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
+  @DeleteMapping(path = "/remove/{id}")
   protected ResponseEntity<Void> exclude(@PathVariable("id") String IdEntity) {
     E entidade = getService().find(Long.valueOf(IdEntity));
     if (entidade == null) {
@@ -194,7 +198,7 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
    * @param id
    * @return ResponseEntity<E> the entity up to date Rest.Status.Ok
    */
-  @RequestMapping(value = "/load/{id}", method = RequestMethod.GET)
+  @GetMapping(path = "/load/{id}")
   protected ResponseEntity<E> load(@PathVariable String id) {
     logger.info("requesting an entity by id");
     try {
@@ -223,7 +227,7 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
    * @return ResponseEntity<Collection<E>> the entities up to date
    *         Rest.Status.Ok
    */
-  @RequestMapping(value = "/get", method = RequestMethod.GET)
+  @GetMapping
   protected ResponseEntity<Collection<E>> findAll() {
     Collection<E> list = getService().find(getViewForm().getParams());
     if (list.isEmpty())

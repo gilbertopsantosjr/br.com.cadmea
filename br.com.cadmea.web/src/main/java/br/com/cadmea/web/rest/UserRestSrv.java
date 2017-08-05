@@ -20,9 +20,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -94,7 +95,7 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
 	 * @param formDto
 	 * @return
 	 */
-	@RequestMapping(value = "/authentication/", method = RequestMethod.POST)
+	@PostMapping(path = "/authentication/")
 	public ResponseEntity<UserFormDto> logIn(@RequestBody UserFormDto formDto) {
 		logger.info("starting logIn service");
 
@@ -167,7 +168,7 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
 	 * @param userEmail
 	 * @return
 	 */
-	@RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
+	@PostMapping(path = "/resetPassword")
 	public GenericResponse recoveryPassword(HttpServletRequest request, @RequestParam("email") String userEmail) {
 		logger.info("starting recoveryPassword service");
 
@@ -203,7 +204,7 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
 	 * @param password
 	 * @return
 	 */
-	@RequestMapping(value = "/savePassword", method = RequestMethod.POST)
+	@PostMapping(path = "/savePassword")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public GenericResponse savePassword(@RequestParam("password") String password) {
 		UserSystem user = (UserSystem) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -220,7 +221,7 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
 	 * @param token
 	 * @return arguments to allow client build the form
 	 */
-	@RequestMapping(value = "/showChangePassword", method = RequestMethod.GET)
+	@GetMapping(value = "/showChangePassword")
 	public GenericResponse showChangePasswordPage(HttpServletRequest request, @RequestParam("id") long id,
 			@RequestParam("token") String token) {
 		Locale locale = request.getLocale();
