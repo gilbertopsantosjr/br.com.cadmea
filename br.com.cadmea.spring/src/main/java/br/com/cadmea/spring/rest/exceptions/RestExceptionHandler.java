@@ -33,7 +33,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 				.withStatus(status.value())
 				.withTitle("Cadmea Exception")
 				.withDetails(ex.getMessage())
-				.withDeveloperMessage(ex.getClass().getName())
+				.withDeveloperMessage("An unhandle exception occurs:" + ex.getClass().getName())
 				.build();
 		
 		return new ResponseEntity<> (reDetails, status);

@@ -76,7 +76,7 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
 	 */
 	@PostMapping(path = "/create")
 	protected ResponseEntity<Void> create(@RequestBody Dto formDto) {
-
+		logger.info("create an entity:" + formDto.getEntity());
 		getViewForm().setEntity(formDto.getEntity());
 
 		if (!getViewForm().validate())
@@ -88,9 +88,6 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
 			afterSave();
 		} catch (ValidationException c){
 			throw c;
-		} catch (Exception e) {
-			// ExceptionUtil
-			throw new RestException(e);
 		} finally {
 			getViewForm().newInstance();
 		}
@@ -120,9 +117,8 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
 	 */
 	@PutMapping(path = "/update")
 	protected ResponseEntity<E> update(@RequestBody Dto formDto) {
-
 		verifyIfEntityExists(formDto.getEntity().getId());
-		
+		logger.info("update an entity:" + formDto.getEntity());
 		getViewForm().setEntity(formDto.getEntity());
 
 		if (!getViewForm().validate())
@@ -130,14 +126,10 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
 
 		try {
 			beforeUpdate();
-
 			getService().save(getViewForm().getEntity());
-
 			afterUpdate();
-
-		} catch (Exception e) {
-			throw new RestException(e);
-
+		} catch (ValidationException c){
+			throw c;
 		} finally {
 			getViewForm().newInstance();
 		}
@@ -166,15 +158,11 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
 	 */
 	@DeleteMapping(path = "/remove/{id}")
 	protected ResponseEntity<Void> exclude(@PathVariable("id") Long id) {
+		logger.info("excludes a entity as resource");
 		verifyIfEntityExists(id);
-		try {
-			beforeExclude();
-			getService().remove(  getService().find(id) );
-			afterExclude();
-		} catch (Exception e) {
-			throw new RestException(e);
-		}
-
+		beforeExclude();
+		getService().remove(  getService().find(id) );
+		afterExclude();
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
@@ -189,8 +177,6 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
 			getService().find(id);
 		} catch (BusinessException e) {
 			throw new NotFoundException(e);
-		} catch (Exception e) {
-			throw new RestException("An unhandle exception occurs:" + e);
 		}
 	}
 
@@ -216,14 +202,10 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
 	protected ResponseEntity<E> load(@PathVariable Long id) {
 		logger.info("requesting an entity by id");
 		verifyIfEntityExists(id);
-		try {
-			beforeGetById();
-			getViewForm().newInstance();
-			getViewForm().setEntity( getService().find(id) );
-			afterGetById();
-		} catch (Exception e) {
-			throw new RestException(e);
-		}
+		beforeGetById();
+		getViewForm().newInstance();
+		getViewForm().setEntity( getService().find(id) );
+		afterGetById();
 		return new ResponseEntity<E>(getViewForm().getEntity(), HttpStatus.OK);
 	}
 
@@ -241,6 +223,7 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
 	 */
 	@GetMapping
 	protected ResponseEntity<Collection<E>> findAll() {
+		logger.info("requesting all entities");
 		Collection<E> list = Collections.EMPTY_LIST;
 		list = getService().find(getViewForm().getParams());
 		return new ResponseEntity<Collection<E>>(list, HttpStatus.OK);
