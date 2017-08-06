@@ -1,8 +1,11 @@
 package br.com.cadmea.spring.rest;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import javax.annotation.PostConstruct;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,15 +18,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import br.com.cadmea.comuns.dto.DomainTransferObject;
 import br.com.cadmea.comuns.dto.FormDto;
+import br.com.cadmea.comuns.exceptions.BusinessException;
 import br.com.cadmea.comuns.exceptions.SystemException;
 import br.com.cadmea.comuns.orm.EntityPersistent;
 import br.com.cadmea.spring.rest.exceptions.NotFoundException;
-import br.com.cadmea.spring.rest.exceptions.PreconditionRequiredException;
+import br.com.cadmea.spring.rest.exceptions.PreConditionRequiredException;
 import br.com.cadmea.spring.rest.exceptions.RestException;
 
 /**
@@ -31,216 +33,224 @@ import br.com.cadmea.spring.rest.exceptions.RestException;
  */
 @SuppressWarnings("unchecked")
 public abstract class GenericRestService<E extends EntityPersistent, Dto extends DomainTransferObject<E>>
-    implements ServiceMap<E> {
+		implements ServiceMap<E> {
 
-  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-  /**
-   * an event that occurs when starting a conversation with a client
-   */
-  protected void startingConversation() {
+	/**
+	 * an event that occurs when starting a conversation with a client
+	 */
+	protected void startingConversation() {
 
-  };
+	};
 
-  /**
-   * an event that occurs just before loaded this object
-   */
-  protected void beforeLoadClass() {
-  }
+	/**
+	 * an event that occurs just before loaded this object
+	 */
+	protected void beforeLoadClass() {
+	}
 
-  @PostConstruct
-  public void init() {
-    beforeLoadClass();
-    afterLoadClass();
-  }
+	@PostConstruct
+	public void init() {
+		beforeLoadClass();
+		afterLoadClass();
+	}
 
-  /**
-   * an event that occurs just after loaded this object
-   */
-  protected void afterLoadClass() {
-  }
+	/**
+	 * an event that occurs just after loaded this object
+	 */
+	protected void afterLoadClass() {
+	}
 
-  /**
-   * an event that occurs just before a client trying to save some entity
-   */
-  protected void beforeSave() {
-  }
+	/**
+	 * an event that occurs just before a client trying to save some entity
+	 */
+	protected void beforeSave() {
+	}
 
-  /**
-   * the rest service /create/ to create a new entity
-   *
-   * @param FormDto<E>
-   * @return ResponseEntity<Void> Rest.Status.Ok
-   */
-  @PostMapping(path = "/create/")
-  protected ResponseEntity<Void> create(@RequestBody Dto formDto) {
+	/**
+	 * the rest service /create to create a new entity
+	 *
+	 * @param FormDto<E>
+	 * @return ResponseEntity<Void> Rest.Status.Ok
+	 */
+	@PostMapping(path = "/create")
+	protected ResponseEntity<Void> create(@RequestBody Dto formDto) {
 
-    getViewForm().setEntity(formDto.getEntity());
+		getViewForm().setEntity(formDto.getEntity());
 
-    if (!getViewForm().validate())
-      throw new PreconditionRequiredException(getViewForm().getMessage());
+		if (!getViewForm().validate())
+			throw new PreConditionRequiredException(getViewForm().getMessage());
 
-    try {
-      beforeSave();
-      
-      getViewForm()
-          .setEntity((E) getService().insert(getViewForm().getEntity()));
+		try {
+			beforeSave();
+			getViewForm().setEntity((E) getService().insert(getViewForm().getEntity()));
+			afterSave();
+		} catch (ValidationException c){
+			throw c;
+		} catch (Exception e) {
+			// ExceptionUtil
+			throw new RestException(e);
+		} finally {
+			getViewForm().newInstance();
+		}
 
-      afterSave();
+		HttpHeaders headers = new HttpHeaders();
 
-    } catch (Exception e) {
-    	//ExceptionUtil 
-      throw new RestException(e);
+		return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+	}
 
-    } finally {
-      getViewForm().newInstance();
-    }
+	/**
+	 * an event that occurs just after a client trying to save some entity
+	 */
+	protected void afterSave() {
+	}
 
-    HttpHeaders headers = new HttpHeaders();
+	/**
+	 * an event that occurs just before a client trying to update some entity
+	 */
+	protected void beforeUpdate() {
+	}
 
-    return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-  }
+	/**
+	 * the rest service /update/ to updated a old entity
+	 *
+	 * @param formDto
+	 * @return ResponseEntity<E> the entity up to date Rest.Status.Ok
+	 */
+	@PutMapping(path = "/update")
+	protected ResponseEntity<E> update(@RequestBody Dto formDto) {
 
-  /**
-   * an event that occurs just after a client trying to save some entity
-   */
-  protected void afterSave() {
-  }
+		verifyIfEntityExists(formDto.getEntity().getId());
+		
+		getViewForm().setEntity(formDto.getEntity());
 
-  /**
-   * an event that occurs just before a client trying to update some entity
-   */
-  protected void beforeUpdate() {
-  }
+		if (!getViewForm().validate())
+			throw new PreConditionRequiredException(getViewForm().getMessage());
 
-  /**
-   * the rest service /update/ to updated a old entity
-   *
-   * @param formDto
-   * @return ResponseEntity<E> the entity up to date Rest.Status.Ok
-   */
-  @PutMapping(path = "/update/")
-  protected ResponseEntity<E> update(@RequestBody Dto formDto) {
+		try {
+			beforeUpdate();
 
-    getViewForm().setEntity(formDto.getEntity());
+			getService().save(getViewForm().getEntity());
 
-    if (!getViewForm().validate())
-        throw new PreconditionRequiredException(getViewForm().getMessage());
+			afterUpdate();
 
-    try {
-      beforeUpdate();
+		} catch (Exception e) {
+			throw new RestException(e);
 
-      getService().save(getViewForm().getEntity());
+		} finally {
+			getViewForm().newInstance();
+		}
 
-      afterUpdate();
+		return new ResponseEntity<E>(getViewForm().getEntity(), HttpStatus.OK);
+	}
 
-    } catch (Exception e) {
-      throw new RestException(e);
+	/**
+	 * an event that occurs just after a client trying to update some entity
+	 */
+	protected void afterUpdate() {
+	}
 
-    } finally {
-      getViewForm().newInstance();
-    }
+	/**
+	 * an event that occurs just before a client trying to exclude some entity
+	 */
+	protected void beforeExclude() {
+	}
 
-    return new ResponseEntity<E>(getViewForm().getEntity(), HttpStatus.OK);
-  }
+	/**
+	 * the rest service /remove/ to remove an old entity
+	 *
+	 * @param IdEntity
+	 * @return ResponseEntity<E> the entity up to date Rest.Status.Ok
+	 *
+	 */
+	@DeleteMapping(path = "/remove/{id}")
+	protected ResponseEntity<Void> exclude(@PathVariable("id") Long id) {
+		verifyIfEntityExists(id);
+		try {
+			beforeExclude();
+			getService().remove(  getService().find(id) );
+			afterExclude();
+		} catch (Exception e) {
+			throw new RestException(e);
+		}
 
-  /**
-   * an event that occurs just after a client trying to update some entity
-   */
-  protected void afterUpdate() {
-  }
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
 
-  /**
-   * an event that occurs just before a client trying to exclude some entity
-   */
-  protected void beforeExclude() {
-  }
+	/**
+	 * throw a REST qualified exception
+	 * verify if this entity exists as a server resource 
+	 * the consult/select would be cached in order to avoid ask to a new resource
+	 * @param id
+	 */
+	private void verifyIfEntityExists(Long id) {
+		try {
+			getService().find(id);
+		} catch (BusinessException e) {
+			throw new NotFoundException(e);
+		} catch (Exception e) {
+			throw new RestException("An unhandle exception occurs:" + e);
+		}
+	}
 
-  /**
-   * the rest service /remove/ to remove an old entity
-   *
-   * @param IdEntity
-   * @return ResponseEntity<E> the entity up to date Rest.Status.Ok
-   *
-   */
-  @DeleteMapping(path = "/remove/{id}")
-  protected ResponseEntity<Void> exclude(@PathVariable("id") String IdEntity) {
-    E entidade = getService().find(Long.valueOf(IdEntity));
-    if (entidade == null) {
-      throw new NotFoundException(IdEntity);
-    }
-    try {
-      beforeExclude();
-      getService().remove(entidade);
-      afterExclude();
-    } catch (Exception e) {
-      throw new RestException(e);
-    }
+	/**
+	 * an event that occurs just after a client trying to exclude some entity
+	 */
+	protected void afterExclude() {
+	}
 
-    return new ResponseEntity<Void>(HttpStatus.OK);
-  }
+	/**
+	 * an event that occurs just before a client trying to get some entity
+	 */
+	protected void beforeGetById() {
+	}
 
-  /**
-   * an event that occurs just after a client trying to exclude some entity
-   */
-  protected void afterExclude() {
-  }
+	/**
+	 * the rest service /get/ to remove an old entity
+	 *
+	 * @param id
+	 * @return ResponseEntity<E> the entity up to date Rest.Status.Ok
+	 */
+	@GetMapping(path = "/load/{id}")
+	protected ResponseEntity<E> load(@PathVariable Long id) {
+		logger.info("requesting an entity by id");
+		verifyIfEntityExists(id);
+		try {
+			beforeGetById();
+			getViewForm().newInstance();
+			getViewForm().setEntity( getService().find(id) );
+			afterGetById();
+		} catch (Exception e) {
+			throw new RestException(e);
+		}
+		return new ResponseEntity<E>(getViewForm().getEntity(), HttpStatus.OK);
+	}
 
-  /**
-   * an event that occurs just before a client trying to get some entity
-   */
-  protected void beforeGetById() {
-  }
+	/**
+	 * an event that occurs just after a client trying to get some entity
+	 */
+	protected void afterGetById() {
+	}
 
-  /**
-   * the rest service /get/ to remove an old entity
-   *
-   * @param id
-   * @return ResponseEntity<E> the entity up to date Rest.Status.Ok
-   */
-  @GetMapping(path = "/load/{id}")
-  protected ResponseEntity<E> load(@PathVariable String id) {
-    logger.info("requesting an entity by id");
-    try {
-      E entidade = getService().find(Long.valueOf(id));
-      beforeGetById();
-      getViewForm().newInstance();
-      getViewForm().setEntity(entidade);
-      afterGetById();
-    } catch (SystemException e) {
-      throw new NotFoundException(e.getMessage());
-    } catch (Exception e) {
-      throw new RestException(e);
-    }
-    return new ResponseEntity<E>(getViewForm().getEntity(), HttpStatus.OK);
-  }
+	/**
+	 * get a list from the criteria setted in {@link FormDto#getParams()}
+	 *
+	 * @return ResponseEntity<Collection<E>> the entities up to date
+	 *         Rest.Status.Ok
+	 */
+	@GetMapping
+	protected ResponseEntity<Collection<E>> findAll() {
+		Collection<E> list = Collections.EMPTY_LIST;
+		list = getService().find(getViewForm().getParams());
+		return new ResponseEntity<Collection<E>>(list, HttpStatus.OK);
+	}
 
-  /**
-   * an event that occurs just after a client trying to get some entity
-   */
-  protected void afterGetById() {
-  }
+	/**
+	 * ends the conversation with the client
+	 */
+	protected void finalizarConversacao() {
 
-  /**
-   * get a list from the criteria setted in {@link FormDto#getParams()}
-   *
-   * @return ResponseEntity<Collection<E>> the entities up to date
-   *         Rest.Status.Ok
-   */
-  @GetMapping
-  protected ResponseEntity<Collection<E>> findAll() {
-    Collection<E> list = getService().find(getViewForm().getParams());
-    if (list.isEmpty())
-      throw new NotFoundException("");
-
-    return new ResponseEntity<Collection<E>>(list, HttpStatus.OK);
-  }
-
-  /**
-   * ends the conversation with the client
-   */
-  protected void finalizarConversacao() {
-
-  };
+	};
 
 }

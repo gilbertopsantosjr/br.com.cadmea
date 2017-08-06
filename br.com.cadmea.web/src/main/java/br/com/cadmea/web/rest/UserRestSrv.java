@@ -36,7 +36,7 @@ import br.com.cadmea.model.orm.UserSystem;
 import br.com.cadmea.spring.rest.GenericRestService;
 import br.com.cadmea.spring.rest.ServicePath;
 import br.com.cadmea.spring.rest.exceptions.NotFoundException;
-import br.com.cadmea.spring.rest.exceptions.PreconditionRequiredException;
+import br.com.cadmea.spring.rest.exceptions.PreConditionRequiredException;
 import br.com.cadmea.spring.rest.exceptions.RestException;
 import br.com.cadmea.spring.security.orm.UserAccess;
 import br.com.cadmea.spring.util.GenericResponse;
@@ -148,18 +148,18 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
 	 */
 	private void isValidRequest(UserFormDto formDto) {
 		if (!ValidadorUtil.isValid(formDto) || !ValidadorUtil.isValid(formDto.getEntity()))
-			throw new PreconditionRequiredException("Invalid Object !");
+			throw new PreConditionRequiredException("Invalid Object !");
 		
 		if (!ValidadorUtil.isValid(formDto.getSystemName()))
-			throw new PreconditionRequiredException("System name is required !");
+			throw new PreConditionRequiredException("System name is required !");
 
 		if ( !ValidadorUtil.isValid(formDto.getEntity().getEmail()) )
-			throw new PreconditionRequiredException("Username is required !");
+			throw new PreConditionRequiredException("Username is required !");
 		else if ( !ValidadorUtil.isValidEmail(formDto.getEntity().getEmail()) )
-			throw new PreconditionRequiredException("Email must be valid !"); 
+			throw new PreConditionRequiredException("Email must be valid !"); 
 			
 		if ( !ValidadorUtil.isValid(formDto.getEntity().getPassword()) )
-			throw new PreconditionRequiredException("Password is required !");
+			throw new PreConditionRequiredException("Password is required !");
 	}
 
 	/**

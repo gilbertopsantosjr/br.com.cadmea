@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 import br.com.cadmea.spring.rest.exceptions.ExceptionHandlingController;
+import br.com.cadmea.spring.rest.exceptions.RestExceptionHandler;
 import br.com.cadmea.spring.util.JsonDateSerializer;
 
 @Target({ ElementType.TYPE, ElementType.ANNOTATION_TYPE })
@@ -23,7 +24,7 @@ import br.com.cadmea.spring.util.JsonDateSerializer;
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = {  DataSourceAutoConfiguration.class, JpaRepositoriesAutoConfiguration.class, HibernateJpaAutoConfiguration.class })
 @PropertySource("classpath:cadmea.properties")
-@Import(value = {ExceptionHandlingController.class, JsonDateSerializer.class})
+@Import(value = {ExceptionHandlingController.class, JsonDateSerializer.class, RestExceptionHandler.class})
 public @interface CadmeaSpring {
   String basePackage() default "";
 }

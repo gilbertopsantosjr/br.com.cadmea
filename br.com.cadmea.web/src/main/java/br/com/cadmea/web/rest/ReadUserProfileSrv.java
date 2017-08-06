@@ -27,7 +27,7 @@ import br.com.cadmea.dto.UserFormDto;
 import br.com.cadmea.model.orm.UserSystem;
 import br.com.cadmea.spring.rest.GenericRestService;
 import br.com.cadmea.spring.rest.ServicePath;
-import br.com.cadmea.spring.rest.exceptions.PreconditionRequiredException;
+import br.com.cadmea.spring.rest.exceptions.PreConditionRequiredException;
 import br.com.cadmea.spring.rest.exceptions.RestException;
 import br.com.cadmea.spring.security.orm.UserAccess;
 import br.com.cadmea.web.PermissionBean;

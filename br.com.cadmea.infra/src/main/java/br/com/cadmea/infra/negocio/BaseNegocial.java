@@ -56,8 +56,8 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
    */
   @Override
   @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-  public E find(Serializable identificador) {
-    E entidade = getDao().find(identificador);
+  public E find(Serializable id) {
+    E entidade = getDao().find(id);
     if (entidade == null) {
       throw new BusinessException(DefaultMessages.NOT_FOUND);
     }
@@ -238,7 +238,7 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
    *         contrario.
    */
   protected boolean isThere(E entidade) {
-    return true;
+    return false;
   }
 
 }
