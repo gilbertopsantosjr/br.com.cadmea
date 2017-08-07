@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateExceptionTranslator;
 import org.springframework.orm.hibernate5.support.OpenSessionInViewFilter;
@@ -38,6 +39,7 @@ import br.com.cadmea.spring.util.JsonDateSerializer;
 @EnableTransactionManagement(proxyTargetClass = true)
 @EntityScan(basePackages = { "br.com.cadmea.model.orm" },
     basePackageClasses = { Jsr310JpaConverters.class })
+@EnableSpringDataWebSupport
 public class PersistenceConfig {
 
   private static final String PROPERTY_NAME_HIBERNATE_MAX_FETCH_DEPTH = "cadmea.hibernate.max_fetch_depth";

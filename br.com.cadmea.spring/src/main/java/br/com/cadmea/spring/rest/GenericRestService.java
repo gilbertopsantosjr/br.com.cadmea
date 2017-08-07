@@ -4,11 +4,11 @@ import java.util.Collection;
 import java.util.Collections;
 
 import javax.annotation.PostConstruct;
-import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +22,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import br.com.cadmea.comuns.dto.DomainTransferObject;
 import br.com.cadmea.comuns.dto.FormDto;
 import br.com.cadmea.comuns.exceptions.BusinessException;
-import br.com.cadmea.comuns.exceptions.SystemException;
 import br.com.cadmea.comuns.orm.EntityPersistent;
 import br.com.cadmea.spring.rest.exceptions.NotFoundException;
 import br.com.cadmea.spring.rest.exceptions.PreConditionRequiredException;
-import br.com.cadmea.spring.rest.exceptions.RestException;
 
 /**
  * @author Gilberto Santos
@@ -222,10 +220,10 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
 	 *         Rest.Status.Ok
 	 */
 	@GetMapping
-	protected ResponseEntity<Collection<E>> findAll() {
+	protected ResponseEntity<Collection<E>> findAll(Pageable pageRequest) {
 		logger.info("requesting all entities");
 		Collection<E> list = Collections.EMPTY_LIST;
-		list = getService().find(getViewForm().getParams());
+		list = getService().listAll(getViewForm().getParams(), pageRequest.getPageNumber(),  pageRequest.getPageSize());
 		return new ResponseEntity<Collection<E>>(list, HttpStatus.OK);
 	}
 

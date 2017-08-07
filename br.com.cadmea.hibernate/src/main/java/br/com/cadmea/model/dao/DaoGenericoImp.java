@@ -16,7 +16,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.RollbackException;
 import javax.persistence.TypedQuery;
-import javax.validation.ValidationException;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -365,10 +364,8 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent, ID extends 
 		Collection<T> results = null;
 		try {
 			Criteria criteria = novoCriteria();
-			if (de > 0)
-				criteria.setFirstResult(de);
-			if (ate > 0)
-				criteria.setMaxResults(ate);
+			criteria.setFirstResult((de - 1) * ate);
+			criteria.setMaxResults(ate);
 			criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 			results = obter(params, criteria);
 		} catch (Exception e) {
