@@ -9,6 +9,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -25,9 +26,9 @@ import br.com.cadmea.spring.util.FacebookSignInAdapter;
 
 @EnableWebSecurity
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
-@PropertySource(value = "classpath:cadmea.properties",
-    ignoreResourceNotFound = true)
-@EnableSocial
+@PropertySource(value = "classpath:cadmea.properties", ignoreResourceNotFound = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableSocial
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Value("${cadmea.users.roles:ROLE_ADMIN}")
@@ -42,11 +43,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   private HeaderHandler headerHandler;
   
   //Adding Social Authentication
-  @Autowired
-  private ConnectionFactoryLocator connectionFactoryLocator;
+  //@Autowired
+  //private ConnectionFactoryLocator connectionFactoryLocator;
 
-  @Autowired
-  private UsersConnectionRepository usersConnectionRepository;
+  //@Autowired
+  //private UsersConnectionRepository usersConnectionRepository;
 
   @Override
   public void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -58,14 +59,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   public PasswordEncoder passwordencoder() {
     return new BCryptPasswordEncoder();
   }
-  
+
+  /**
   @Bean
   public ProviderSignInController providerSignInController() {
       return new ProviderSignInController(
         connectionFactoryLocator, 
         usersConnectionRepository, 
         new FacebookSignInAdapter());
-  }
+  }*/
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {

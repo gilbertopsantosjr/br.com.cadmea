@@ -1,51 +1,31 @@
 package br.com.cadmea.model.orm;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
 import br.com.cadmea.model.BaseEntityPersistent;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Gilberto Santos
- *
  */
 @Entity
-@Table(name = "phone")
+@Data
+@Table(name = "cadmea_phone")
 @AttributeOverrides(@AttributeOverride(name = "id",
-    column = @Column(name = "pho_id", nullable = false)))
+        column = @Column(name = "pho_id", nullable = false)))
+@EqualsAndHashCode(callSuper = false)
 public class Phone extends BaseEntityPersistent {
 
-  /**
-   *
-   */
-  private static final long serialVersionUID = -7461192408651374226L;
 
-  @NotNull
-  @Column(name = "pho_number", nullable = false, length = 15)
-  private String number;
+    @NotNull
+    @Column(name = "pho_number", nullable = false, length = 15)
+    private String number;
 
-  @NotNull
-  @Column(name = "is_default", nullable = false)
-  private Boolean isDefault;
+    @NotNull
+    @Column(name = "is_default", nullable = false)
+    private Boolean isDefault;
 
-  public String getNumber() {
-    return number;
-  }
-
-  public void setNumber(String number) {
-    this.number = number;
-  }
-
-  public Boolean getIsDefault() {
-    return isDefault;
-  }
-
-  public void setIsDefault(Boolean isDefault) {
-    this.isDefault = isDefault;
-  }
 
 }

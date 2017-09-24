@@ -3,8 +3,8 @@
  */
 package br.com.cadmea.spring.rest.exceptions;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Gilberto Santos
@@ -16,9 +16,9 @@ public class RestExceptionDetails {
 	private String details;
 	private long timestamp;
 	private String developerMessage;
-	private Map<String, String> validationFields;
+	private Set<String> validationFields;
 
-	private RestExceptionDetails(final String title, final int status, final String details, final long timestamp, final String developerMessage, final Map<String, String> validationFields) {
+	private RestExceptionDetails(final String title, final int status, final String details, final long timestamp, final String developerMessage, final Set<String> validationFields) {
 		this.title = title;
 		this.status = status;
 		this.details = details;
@@ -47,7 +47,7 @@ public class RestExceptionDetails {
 		return developerMessage;
 	}
 	
-	public Map<String, String> getValidationFields() {
+	public Set<String> getValidationFields() {
 		return validationFields;
 	}
 
@@ -57,7 +57,7 @@ public class RestExceptionDetails {
 		private String details;
 		private long timestamp;
 		private String developerMessage;
-		private Map<String, String> validationFields = new HashMap<String, String>();
+		private Set<String> validationFields = new HashSet<String>();
 		
 		public static Builder newBuilder(){
 			return new Builder();
@@ -89,7 +89,7 @@ public class RestExceptionDetails {
 		}
 		
 		public Builder withValidationField(String field, String message){
-			validationFields.put(field, message);
+			validationFields.add(field + " : " + message);
 			return this;
 		}
 		

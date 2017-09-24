@@ -1,90 +1,51 @@
 package br.com.cadmea.model.orm;
 
-import java.util.Set;
+import br.com.cadmea.model.BaseEntityPersistent;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import br.com.cadmea.model.BaseEntityPersistent;
-
+/**
+ * authorized a user of system
+ *
+ * @author Gilberto Santos
+ */
 @Entity
+@Data
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "cadmea_system")
 @AttributeOverrides(@AttributeOverride(name = "id", column = @Column(name = "usu_id", nullable = false)))
 public class CadmeaSystem extends BaseEntityPersistent {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     * these values should be get from a rest service in gilbertosantos.com
+     */
 
-	@NotNull
-	@Size(min = 3, max = 50)
-	@Column(name = "sys_identity", nullable = false, length = 150, unique = true)
-	private String identity;
-	
-	@NotNull
-	@Size(min = 3, max = 150)
-	@Column(name = "sys_name", nullable = false, length = 150)
-	private String name;
+    @NotNull
+    @Size(min = 3, max = 50)
+    @Column(name = "sys_identity", nullable = false, length = 150, unique = true)
+    private String identity;
 
-	@Column(name = "sys_description", nullable = true)
-	private String description;
-	
-	/* this would be the url the login system should call after validate the login */
-	@Column(name = "sys_url", nullable = false, length= 150)
-	private String ulr;
+    @NotNull
+    @Size(min = 3, max = 150)
+    @Column(name = "sys_name", nullable = false, length = 150)
+    private String name;
 
-	@ManyToMany(targetEntity = UserSystem.class, mappedBy = "systems")
-	@JsonIgnore
-	private Set<UserSystem> users;
-	
-	
-	public String getIdentity() {
-		return identity;
-	}
+    @Column(name = "sys_description", nullable = true)
+    private String description;
 
-	public void setIdentity(String identity) {
-		this.identity = identity;
-	}
+    /* this would be the url the login system should call after validate the login */
+    @Column(name = "sys_url", nullable = false, length = 150)
+    private String ulr;
 
-	public String getUlr() {
-		return ulr;
-	}
+    @ManyToMany(targetEntity = UserSystem.class, mappedBy = "systems")
+    @JsonIgnore
+    private Set<UserSystem> users;
 
-	public void setUlr(String ulr) {
-		this.ulr = ulr;
-	}
-
-	public Set<UserSystem> getUsers() {
-		return users;
-	}
-
-	public void setUsers(Set<UserSystem> users) {
-		this.users = users;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
 
 }

@@ -68,8 +68,7 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
 
 	/**
 	 * the rest service /create to create a new entity
-	 *
-	 * @param FormDto<E>
+	 * @param formDto
 	 * @return ResponseEntity<Void> Rest.Status.Ok
 	 */
 	@PostMapping(path = "/create")
@@ -150,16 +149,16 @@ public abstract class GenericRestService<E extends EntityPersistent, Dto extends
 	/**
 	 * the rest service /remove/ to remove an old entity
 	 *
-	 * @param IdEntity
+	 * @param id
 	 * @return ResponseEntity<E> the entity up to date Rest.Status.Ok
 	 *
 	 */
 	@DeleteMapping(path = "/remove/{id}")
 	protected ResponseEntity<Void> exclude(@PathVariable("id") Long id) {
-		logger.info("excludes a entity as resource");
 		verifyIfEntityExists(id);
+		logger.info("excludes a entity as resource:" + id );
 		beforeExclude();
-		getService().remove(  getService().find(id) );
+		getService().remove( getService().find(id) );
 		afterExclude();
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}

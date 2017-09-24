@@ -367,6 +367,7 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent, ID extends 
 			criteria.setFirstResult((de - 1) * ate);
 			criteria.setMaxResults(ate);
 			criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+            criteria.addOrder(Order.desc("id"));
 			results = obter(params, criteria);
 		} catch (Exception e) {
 			log.error("erro ao listar", e);

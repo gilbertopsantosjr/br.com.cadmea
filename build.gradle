@@ -1,18 +1,17 @@
-
 apply plugin: 'maven'
 apply plugin: 'java'
 
 allprojects {
-    
+
     ext.RepoConfigurator = {
-     	mavenCentral()
-    	mavenLocal()
-    	maven {url 'https://oss.sonatype.org/content/repositories/snapshots/'}
-        maven {url = uri('http://192.168.50.10:18081/nexus/content/groups/public') }
+        mavenCentral()
+        mavenLocal()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url = uri('http://192.168.50.10:18081/nexus/content/groups/public') }
     }
-	
-	buildscript.repositories RepoConfigurator
-	repositories RepoConfigurator    
+
+    buildscript.repositories RepoConfigurator
+    repositories RepoConfigurator
 
 }
 
@@ -23,31 +22,28 @@ ext {
 
 subprojects {
 
-	sourceSets {
-		main{
-			java {
-				srcDir 'src/main/java'
-			}
-		}
-		test {
-			java {
-				srcDir 'src/test/java'
-			}
-		}
-	}
+    sourceSets {
+        main {
+            java { srcDirs = ["src/main/java"] }
+            resources { srcDirs = ["src/main/resources"] }
+        }
+        test {
+            java { srcDirs = ["src/test/java"] }
+            resources { srcDirs = ["src/test/resources"] }
+        }
+    }
 
 
     apply plugin: 'java'
     apply plugin: 'maven'
-	apply plugin: 'eclipse'
-	
+
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
     group 'br.com.cadmea'
     version '1.0-SNAPSHOT'
-    
-    sourceSets.main.java.srcDirs = ['src/main/java', 'src/test/java'] 
+
+    sourceSets.main.java.srcDirs = ['src/main/java', 'src/test/java']
 
     tasks.withType(Javadoc).all { enabled = false }
 
@@ -70,12 +66,12 @@ subprojects {
     }
 
     jar {
-     	
+
         afterEvaluate { Project project ->
             dependsOn configurations.runtime
 
             def dependencies = configurations.runtime.resolve().collect { it.toURI().toString() }.join(' ')
-            
+
             manifest {
                 attributes(
                         "Manifest-Version": "1.0",
@@ -94,14 +90,14 @@ subprojects {
         repositories {
             mavenDeployer {
                 afterEvaluate { Project project ->
-                      repository(
-				        url: "${nexusUrl}/content/repositories/releases") {
-				          authentication(userName: nexusUsername, password: nexusPassword)
-				      }
-				      snapshotRepository(
-				        url: "${nexusUrl}/content/repositories/snapshots") {
-				          authentication(userName: nexusUsername, password: nexusPassword)
-				      }
+                    repository(
+                            url: "${nexusUrl}/content/repositories/releases") {
+                        authentication(userName: nexusUsername, password: nexusPassword)
+                    }
+                    snapshotRepository(
+                            url: "${nexusUrl}/content/repositories/snapshots") {
+                        authentication(userName: nexusUsername, password: nexusPassword)
+                    }
                     pom.version = CADMEA_VERSION
                     pom.artifactId = project.name
                     pom.groupId = "br.com.cadmea"

@@ -3,65 +3,39 @@
  */
 package br.com.cadmea.model.orm;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import br.com.cadmea.model.BaseEntityPersistent;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
-import br.com.cadmea.model.BaseEntityPersistent;
-
 /**
  * @author Gilberto Santos
- *
  */
 @Entity
-@Table(name = "country")
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Table(name = "cadmea_country")
 @AttributeOverrides(@AttributeOverride(name = "id",
-    column = @Column(name = "pai_id", nullable = false)))
+        column = @Column(name = "pai_id", nullable = false)))
 public class Country extends BaseEntityPersistent {
 
-  /**
-   *
-   */
-  private static final long serialVersionUID = 1732697967209359284L;
+    @Min(3)
+    @Max(250)
+    @Column(nullable = true, name = "con_name", length = 255, unique = true)
+    private String name;
 
-  @Min(3)@Max(250)
-  @Column(nullable = true, name = "con_name", length = 255, unique = true)
-  private String name;
+    @Min(3)
+    @Max(25)
+    @Column(nullable = false, name = "con_language", length = 25)
+    private String language;
 
-  @Min(3)@Max(25)
-  @Column(nullable = false, name = "con_language", length = 25)
-  private String language;
+    @Min(3)
+    @Max(5)
+    @Column(nullable = true, name = "co_code", length = 5)
+    private String code;
 
-  @Min(3)@Max(5)
-  @Column(nullable = true, name = "co_code", length = 5)
-  private String code;
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getLanguage() {
-    return language;
-  }
-
-  public void setLanguage(String language) {
-    this.language = language;
-  }
-
-  public String getCode() {
-    return code;
-  }
-
-  public void setCode(String code) {
-    this.code = code;
-  }
 
 }

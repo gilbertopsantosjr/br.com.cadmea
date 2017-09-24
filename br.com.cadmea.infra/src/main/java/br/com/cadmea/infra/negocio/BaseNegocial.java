@@ -103,7 +103,7 @@ public abstract class BaseNegocial<E extends BaseEntityPersistent>
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void remove(E entidade) {
     if (!isThere(entidade))
-      throw new BusinessException(DefaultMessages.NOT_FOUND);
+      throw new BusinessException("isThere method not implemented or returned false " + DefaultMessages.NOT_FOUND);
     getDao().remove(entidade);
   }
 
