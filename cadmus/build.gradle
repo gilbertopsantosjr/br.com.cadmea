@@ -1,0 +1,40 @@
+apply plugin: 'java-gradle-plugin'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+group = 'br.com.cadmus'
+version = '1.0-SNAPSHOT'
+
+gradlePlugin {
+    plugins {
+        customPlugin {
+            id = 'br.com.cadmus'
+            implementationClass = 'br.com.cadmus.CadmusGradlePlugin'
+        }
+    }
+}
+
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url "http://repo.spring.io/libs-release" }
+}
+
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+}
+
+sourceSets {
+    main {
+        java { srcDirs = ["src/main/java"] }
+        resources { srcDirs = ["src/main/resources"] }
+    }
+    test {
+        java { srcDirs = ["src/test/java"] }
+        resources { srcDirs = ["src/test/resources"] }
+    }
+}

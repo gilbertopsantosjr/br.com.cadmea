@@ -1,9 +1,0 @@
-rootProject.name = 'br.com.cadmea'
-
-include ':br.com.cadmea.comuns'
-include ':br.com.cadmea.hibernate'
-include ':br.com.cadmea.infra'
-include ':br.com.cadmea.spring'
-include ':br.com.cadmea.web'
-include ':br.com.cadmea.share'
-include ':br.com.cadmea.bigdata'
