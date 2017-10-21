@@ -1,0 +1,12 @@
+#Logging
+logging.level.org.springframework.web=ERROR
+logging.level.br.com.cadmea=ERROR
+logging.level.=error
+#DEBUG
+debug=false 
+server.port=8080
+# SECURITY
+security.basic.enabled=false
+#spring
+spring.main.banner-mode=off
+spring.profiles.active=system_test

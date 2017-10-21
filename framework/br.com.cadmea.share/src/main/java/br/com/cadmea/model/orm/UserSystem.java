@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
@@ -76,19 +77,19 @@ public class UserSystem extends BaseEntityPersistent {
             CascadeType.REMOVE}, fetch = FetchType.LAZY, targetEntity = Permission.class)
     @JoinTable(name = "cadmea_permissions_per_user", joinColumns = {
             @JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "per_id")})
-    private Set<Permission> permissions;
+    private Set<Permission> permissions = Collections.EMPTY_SET;
 
     @JsonIgnore
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, targetEntity = CadmeaSystem.class)
     @JoinTable(name = "cadmea_systems_per_user", joinColumns = {
             @JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "system_id")})
-    private Set<CadmeaSystem> systems;
+    private Set<CadmeaSystem> systems = Collections.EMPTY_SET;
 
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, targetEntity = SocialNetwork.class)
     @JoinTable(name = "cadmea_social_per_user", joinColumns = {
             @JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "system_id")})
-    private Set<SocialNetwork> socialNetworks;
+    private Set<SocialNetwork> socialNetworks = Collections.EMPTY_SET;
 
     @JsonIgnore
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)

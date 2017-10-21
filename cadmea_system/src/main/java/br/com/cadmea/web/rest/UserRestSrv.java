@@ -1,15 +1,16 @@
 package br.com.cadmea.web.rest;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-
+import br.com.cadmea.comuns.util.ValidadorUtil;
+import br.com.cadmea.dto.UserFormDto;
+import br.com.cadmea.model.orm.PasswordResetToken;
+import br.com.cadmea.model.orm.SocialNetwork;
+import br.com.cadmea.model.orm.UserSystem;
+import br.com.cadmea.spring.rest.GenericRestService;
+import br.com.cadmea.spring.rest.ServicePath;
+import br.com.cadmea.spring.rest.exceptions.PreConditionRequiredException;
+import br.com.cadmea.spring.security.orm.UserAccess;
+import br.com.cadmea.spring.util.GenericResponse;
+import br.com.cadmea.web.business.UserSrv;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,246 +20,160 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import br.com.cadmea.comuns.util.ValidadorUtil;
-import br.com.cadmea.dto.UserFormDto;
-import br.com.cadmea.model.orm.CadmeaSystem;
-import br.com.cadmea.model.orm.PasswordResetToken;
-import br.com.cadmea.model.orm.SocialNetwork;
-import br.com.cadmea.model.orm.UserSystem;
-import br.com.cadmea.spring.rest.GenericRestService;
-import br.com.cadmea.spring.rest.ServicePath;
-import br.com.cadmea.spring.rest.exceptions.NotFoundException;
-import br.com.cadmea.spring.rest.exceptions.PreConditionRequiredException;
-import br.com.cadmea.spring.rest.exceptions.RestException;
-import br.com.cadmea.spring.security.orm.UserAccess;
-import br.com.cadmea.spring.util.GenericResponse;
-import br.com.cadmea.spring.util.SmtpEmailSender;
-import br.com.cadmea.web.business.CadmeaSystemSrv;
-import br.com.cadmea.web.business.UserSrv;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Locale;
 
 /**
  * @author Gilberto Santos
- *
  */
 @RestController
 @RequestMapping(path = ServicePath.PUBLIC_ROOT_PATH + "/user")
 public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
-	@Inject
-	private UserSrv userSrv;
-	
-	@Inject
-	private CadmeaSystemSrv cadmeaSystemSrv;
+    @Inject
+    private UserSrv userSrv;
 
-	@Inject
-	private SmtpEmailSender smtpEmailSender;
+    private UserFormDto userDTo;
 
-	private UserFormDto userDTo;
+    @Autowired
+    private HttpServletRequest servletRequest;
 
-	private BCryptPasswordEncoder passwordEncoder;
-	
-	@Autowired
-	private HttpServletRequest servletRequest;
+    @Override
+    protected void beforeLoadClass() {
+        userDTo = new UserFormDto();
+    }
 
-	@Override
-	protected void beforeLoadClass() {
-		userDTo = new UserFormDto();
-		passwordEncoder = new BCryptPasswordEncoder();
-	}
+    @Override
+    protected void beforeSave() {
+        if (servletRequest.getAttribute("socialNetwork") != null) {
+            final SocialNetwork socialNetwork = (SocialNetwork) servletRequest.getAttribute("socialNetwork");
+            if (socialNetwork != null) {
+                getViewForm().getEntity().setSocialNetworks(new HashSet<>());
+                getViewForm().getEntity().getSocialNetworks().add(socialNetwork);
+            }
+        }
+    }
 
-	@Override
-	protected void beforeSave() {
-		final String hashPassword = passwordEncoder.encode(getViewForm().getEntity().getPassword());
-		getViewForm().getEntity().setPassword(hashPassword);
-		
-		if(servletRequest.getAttribute("socialNetwork")!=null){
-			SocialNetwork socialNetwork = (SocialNetwork) servletRequest.getAttribute("socialNetwork");
-			if(socialNetwork!=null){
-				getViewForm().getEntity().setSocialNetworks(new HashSet<>());
-				getViewForm().getEntity().getSocialNetworks().add(socialNetwork);
-			}
-		}
-	}
+    /**
+     * @param formDto
+     * @return
+     */
+    @PostMapping(path = "/authentication/")
+    public ResponseEntity<UserAccess> logIn(@RequestBody final UserFormDto formDto) {
+        logger.info("starting logIn service");
 
-	/**
-	 * 
-	 * @param formDto
-	 * @return
-	 */
-	@PostMapping(path = "/authentication/")
-	public ResponseEntity<UserFormDto> logIn(@RequestBody UserFormDto formDto) {
-		logger.info("starting logIn service");
+        isValidRequest(formDto);
 
-		isValidRequest(formDto);
+        final String systemName = formDto.getSystemName();
+        final String email = formDto.getEntity().getEmail();
 
-		UserFormDto found = new UserFormDto();
-		try {
-			CadmeaSystem cadmeaSystem =  cadmeaSystemSrv.findBy(formDto.getSystemName());
-			if(cadmeaSystem == null) 
-				throw new NotFoundException("system.not.found");
-			
-			final String email = formDto.getEntity().getEmail();
-			UserSystem userSystem = getService().getUserBy(email);
+        final UserAccess found = userSrv.authentication(systemName, email);
 
-			if (userSystem == null)
-				throw new NotFoundException("user.not.found");
+        return new ResponseEntity<UserAccess>(found, HttpStatus.OK);
+    }
 
-			final Long sysId = cadmeaSystem.getId();
-			
-			userSystem = getService().getUserBy(email, sysId);
-			if(userSystem == null)
-				throw new NotFoundException("user.not.allow.in.system");
-			
-			found.setEntity(userSystem);
-			found.setUrl(cadmeaSystem.getUlr());
-			
-			UserAccess userAccess = new UserAccess(userSystem.getPerson().getName());
-			userSystem.getPermissions().forEach(a -> {
-				userAccess.getRoles().add(a.getRole());
-			});
+    /**
+     * check if the {@link UserFormDto} is a valid on request
+     *
+     * @param formDto
+     */
+    private void isValidRequest(final UserFormDto formDto) {
+        if (!ValidadorUtil.isValid(formDto) || !ValidadorUtil.isValid(formDto.getEntity())) {
+            throw new PreConditionRequiredException("Invalid Object !");
+        }
 
-			Authentication auth = new UsernamePasswordAuthenticationToken(userAccess, null,
-					userAccess.getAuthorities());
-			SecurityContextHolder.getContext().setAuthentication(auth);
+        if (!ValidadorUtil.isValid(formDto.getSystemName())) {
+            throw new PreConditionRequiredException("System name is required !");
+        }
 
-		} catch (NotFoundException e) {
-			throw e;
+        if (!ValidadorUtil.isValid(formDto.getEntity().getEmail())) {
+            throw new PreConditionRequiredException("Username is required !");
+        } else if (!ValidadorUtil.isValidEmail(formDto.getEntity().getEmail())) {
+            throw new PreConditionRequiredException("Email must be valid !");
+        }
 
-		} catch (Exception e) {
-			throw new RestException(e);
-		}
+        if (!ValidadorUtil.isValid(formDto.getEntity().getPassword())) {
+            throw new PreConditionRequiredException("Password is required !");
+        }
+    }
 
-		return new ResponseEntity<UserFormDto>(found, HttpStatus.OK);
-	}
+    /**
+     * @param request
+     * @param userEmail
+     * @return
+     */
+    @PostMapping(path = "/resetPassword")
+    public GenericResponse recoveryPassword(final HttpServletRequest request, @RequestParam("email") final String userEmail) {
+        userSrv.resetPassword(userEmail);
+        return new GenericResponse("recoveryPassword", "");
+    }
 
-	/**
-	 * check if the {@link UserFormDto} is a valid on request
-	 * 
-	 * @param formDto
-	 */
-	private void isValidRequest(UserFormDto formDto) {
-		if (!ValidadorUtil.isValid(formDto) || !ValidadorUtil.isValid(formDto.getEntity()))
-			throw new PreConditionRequiredException("Invalid Object !");
-		
-		if (!ValidadorUtil.isValid(formDto.getSystemName()))
-			throw new PreConditionRequiredException("System name is required !");
+    /**
+     * change to the new password
+     *
+     * @param password
+     * @return
+     */
+    @PostMapping(path = "/savePassword")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public GenericResponse savePassword(@RequestParam("password") final String password) {
+        userSrv.changeUserPassword(password);
+        return new GenericResponse("message.resetPasswordSuc", "");
+    }
 
-		if ( !ValidadorUtil.isValid(formDto.getEntity().getEmail()) )
-			throw new PreConditionRequiredException("Username is required !");
-		else if ( !ValidadorUtil.isValidEmail(formDto.getEntity().getEmail()) )
-			throw new PreConditionRequiredException("Email must be valid !"); 
-			
-		if ( !ValidadorUtil.isValid(formDto.getEntity().getPassword()) )
-			throw new PreConditionRequiredException("Password is required !");
-	}
+    /**
+     * Show the form to allow the user change his password
+     *
+     * @param request
+     * @param id
+     * @param token
+     * @return arguments to allow client build the form
+     */
+    @GetMapping(value = "/showChangePassword")
+    public GenericResponse showChangePasswordPage(final HttpServletRequest request, @RequestParam("id") final long id,
+                                                  @RequestParam("token") final String token) {
+        final Locale locale = request.getLocale();
+        final PasswordResetToken passToken = userSrv.getPasswordResetToken(token);
+        final UserSystem user = passToken.getUser();
 
-	/**
-	 * 
-	 * @param request
-	 * @param userEmail
-	 * @return
-	 */
-	@PostMapping(path = "/resetPassword")
-	public GenericResponse recoveryPassword(HttpServletRequest request, @RequestParam("email") String userEmail) {
-		logger.info("starting recoveryPassword service");
+        GenericResponse response = new GenericResponse("Ok");
+        response.setLocale(locale);
 
-		UserSystem user = userSrv.getUserBy(userEmail);
-		if (user == null) {
-			throw new NotFoundException("user");
-		}
+        if (passToken == null || user.getId() != id) {
+            response = new GenericResponse("message.resetPasswordSuc", "auth.message.invalidToken");
+        }
 
-		String token = UUID.randomUUID().toString();
-		userSrv.createPasswordResetTokenForUser(user, token);
+        final Calendar cal = Calendar.getInstance();
+        if ((passToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+            response = new GenericResponse("message.resetPasswordSuc", "auth.message.expired");
+        }
 
-		String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+        final UserAccess userAccess = new UserAccess(user.getPerson().getName());
+        user.getPermissions().forEach(a -> {
+            userAccess.getRoles().add(a.getRole());
+        });
 
-		final String to = user.getEmail();
-		final String subject = "Recovery password";
-		final Map<String, Object> msg = new HashMap<String, Object>();
+        final Authentication auth = new UsernamePasswordAuthenticationToken(userAccess, null, userAccess.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
 
-		appUrl = appUrl + "/api/private/user/changePassword?id=" + user.getId() + "&token=" + token;
+        return response;
+    }
 
-		msg.put("url", appUrl);
-		msg.put("nickname", user.getNickname());
-		msg.put("fromNickname", "Cadmea Framework");
-		msg.put("message", "Please , don't reply this email");
+    @Override
+    public UserSrv getService() {
+        return userSrv;
+    }
 
-		smtpEmailSender.send(to, subject, msg, request.getLocale());
-
-		return new GenericResponse("recoveryPassword", "");
-	}
-
-	/**
-	 * change to the new password
-	 *
-	 * @param password
-	 * @return
-	 */
-	@PostMapping(path = "/savePassword")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public GenericResponse savePassword(@RequestParam("password") String password) {
-		UserSystem user = (UserSystem) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		final String hashPassword = passwordEncoder.encode(password);
-		userSrv.changeUserPassword(user, hashPassword);
-		return new GenericResponse("message.resetPasswordSuc", "");
-	}
-
-	/**
-	 * Show the form to allow the user change his password
-	 *
-	 * @param request
-	 * @param id
-	 * @param token
-	 * @return arguments to allow client build the form
-	 */
-	@GetMapping(value = "/showChangePassword")
-	public GenericResponse showChangePasswordPage(HttpServletRequest request, @RequestParam("id") long id,
-			@RequestParam("token") String token) {
-		Locale locale = request.getLocale();
-		PasswordResetToken passToken = userSrv.getPasswordResetToken(token);
-		UserSystem user = passToken.getUser();
-
-		GenericResponse response = new GenericResponse("Ok");
-		response.setLocale(locale);
-
-		if (passToken == null || user.getId() != id) {
-			response = new GenericResponse("message.resetPasswordSuc", "auth.message.invalidToken");
-		}
-
-		Calendar cal = Calendar.getInstance();
-		if ((passToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
-			response = new GenericResponse("message.resetPasswordSuc", "auth.message.expired");
-		}
-
-		UserAccess userAccess = new UserAccess(user.getPerson().getName());
-		user.getPermissions().forEach(a -> {
-			userAccess.getRoles().add(a.getRole());
-		});
-
-		Authentication auth = new UsernamePasswordAuthenticationToken(userAccess, null, userAccess.getAuthorities());
-		SecurityContextHolder.getContext().setAuthentication(auth);
-
-		return response;
-	}
-
-	@Override
-	public UserSrv getService() {
-		return userSrv;
-	}
-
-	@Override
-	public UserFormDto getViewForm() {
-		return userDTo;
-	}
+    @Override
+    public UserFormDto getViewForm() {
+        return userDTo;
+    }
 
 }

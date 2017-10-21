@@ -1,1 +1,3 @@
 rootProject.name = 'cadmea_system'
+
+includeBuild '../framework'
