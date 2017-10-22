@@ -6,20 +6,23 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.orm.hibernate5.support.OpenSessionInViewFilter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.Filter;
 import java.util.Date;
 
 
 @Configuration
-@PropertySource(value = "classpath:config/application-${spring.profiles.active}.properties")
+@PropertySource(value = "classpath:config/cadmea-${spring.profiles.active}.properties")
 @Import(PersistenceDatabaseConfig.class)
 public class CoreConfig {
 
@@ -49,6 +52,28 @@ public class CoreConfig {
     @Bean(name = "passwordEncoder")
     public PasswordEncoder passwordencoder() {
         return new BCryptPasswordEncoder();
+    }
+
+
+    /**
+     * @return FilterRegistrationBean
+     */
+    @Bean
+    public FilterRegistrationBean registerOpenEntityManagerInViewFilterBean() {
+        final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        registrationBean.setFilter(openSessionInView());
+        registrationBean.addUrlPatterns("/api/*");
+        return registrationBean;
+    }
+    
+    /**
+     * openSessionInView
+     *
+     * @return
+     */
+    @Bean
+    public Filter openSessionInView() {
+        return new OpenSessionInViewFilter();
     }
 
 
