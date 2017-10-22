@@ -1,59 +1,57 @@
-	
-	apply plugin: 'application'
-	apply plugin: 'org.springframework.boot'
-	apply plugin: 'idea'
-	apply plugin: 'maven'
-	apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'idea'
+apply plugin: 'maven'
+apply plugin: 'java'
 
-	repositories {
-		mavenCentral()
-		mavenLocal()
-	}
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
 
-	buildscript {
-	    repositories {
-			maven { url "http://repo.spring.io/libs-release" }
-		}
-		
-		dependencies {
-	       classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
-		} 
-	} 
+buildscript {
+    ext {
+        springBootVersion = '1.5.8.RELEASE'
+    }
+    repositories {
+        maven { url "http://repo.spring.io/libs-release" }
+    }
 
     dependencies {
-
-		compile('br.com.cadmea:br.com.cadmea.share:1.0-SNAPSHOT') { changing = true }
-		compile('br.com.cadmea:br.com.cadmea.spring:1.0-SNAPSHOT') { changing = true }
-
-		compile 'com.google.code.gson:gson:2.8.2'
-		compile 'mysql:mysql-connector-java:5.1.44'
-
-		compile 'org.springframework.boot:spring-boot-starter-web:1.4.2.RELEASE'
-		compile "org.springframework.boot:spring-boot-starter-tomcat:1.4.2.RELEASE"
-		compile 'commons-fileupload:commons-fileupload:1.2'
-		compile 'javax.servlet:jstl:1.2'
-		compile 'org.eclipse.jdt.core.compiler:ecj:4.6.1'
-		compile 'org.glassfish.web:el-impl:2.2'
-		compile 'org.apache.tomcat.embed:tomcat-embed-jasper:8.5.9'
-		compile 'org.apache.tomcat.embed:tomcat-embed-el:8.5.9'
-		compile 'commons-httpclient:commons-httpclient:3.1'
-		
-		testCompileOnly('org.springframework.boot:spring-boot-starter-test:1.4.2.RELEASE') 
-		testCompileOnly('org.springframework.security:spring-security-test:4.1.3.RELEASE')
-		testCompileOnly 'junit:junit:4.12'
-		 
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
-    
-    springBoot {  
-    	mainClass = 'br.com.cadmea.web.StartCadmeaSystem'
-	}
-	
-	applicationDefaultJvmArgs = ["-XX:MaxHeapSize=512m", 
-	"-Xmx512m", "-XX:+CMSClassUnloadingEnabled", "-Xdebug", "-Dserver.port=8090", 
-	"-agentpath:/Applications/Java/jrebel/lib/libjrebel64.dylib", 
-	"-Djava.compiler=NONE"] 
-	
-	
-	
-	
-	
+}
+
+dependencies {
+
+    compile('br.com.cadmea:br.com.cadmea.share:1.0-SNAPSHOT') { changing = true }
+    compile('br.com.cadmea:br.com.cadmea.spring:1.0-SNAPSHOT') { changing = true }
+
+    compile 'com.google.code.gson:gson:2.8.2'
+    compile 'mysql:mysql-connector-java:5.1.44'
+
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile "org.springframework.boot:spring-boot-starter-tomcat"
+
+    compile 'commons-fileupload:commons-fileupload:1.2'
+    compile 'commons-httpclient:commons-httpclient:3.1'
+
+    testCompileOnly('org.springframework.boot:spring-boot-starter-test')
+    testCompileOnly('org.springframework.security:spring-security-test')
+    testCompileOnly 'junit:junit:4.12'
+
+}
+
+springBoot {
+    mainClass = 'br.com.cadmea.web.StartCadmeaSystem'
+}
+
+/*
+applicationDefaultJvmArgs = ["-XX:MaxHeapSize=512m",
+"-Xmx512m", "-XX:+CMSClassUnloadingEnabled", "-Xdebug", "-Dserver.port=8090",
+"-agentpath:/Applications/Java/jrebel/lib/libjrebel64.dylib",
+"-Djava.compiler=NONE"] */
+
+
+
+

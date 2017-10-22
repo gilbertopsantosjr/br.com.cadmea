@@ -43,8 +43,6 @@ subprojects {
     group 'br.com.cadmea'
     version '1.0-SNAPSHOT'
 
-    sourceSets.main.java.srcDirs = ['src/main/java', 'src/test/java']
-
     tasks.withType(Javadoc).all { enabled = false }
 
     configurations {

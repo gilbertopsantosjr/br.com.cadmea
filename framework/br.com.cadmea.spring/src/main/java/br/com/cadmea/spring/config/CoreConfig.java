@@ -1,19 +1,55 @@
 package br.com.cadmea.spring.config;
 
+import br.com.cadmea.spring.util.JsonDateSerializer;
+import com.fasterxml.jackson.databind.Module;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.annotation.PostConstruct;
+import java.util.Date;
 
 
 @Configuration
 @PropertySource(value = "classpath:config/application-${spring.profiles.active}.properties")
+@Import(PersistenceDatabaseConfig.class)
 public class CoreConfig {
 
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Value("${spring.profiles.active}")
+    private String profile;
+
+    @PostConstruct
+    public void init() {
+        logger.info("core config profile:" + profile);
+    }
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
     }
+
+    @Bean
+    public Module jsonDateSerializer() {
+        final SimpleModule module = new SimpleModule();
+        module.addSerializer(Date.class, new JsonDateSerializer.Serialize());
+        module.addDeserializer(Date.class, new JsonDateSerializer.Deserialize());
+        return module;
+    }
+
+    @Bean(name = "passwordEncoder")
+    public PasswordEncoder passwordencoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 
 }

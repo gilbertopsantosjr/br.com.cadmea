@@ -2,9 +2,6 @@ package br.com.cadmea.spring.tx;
 
 import br.com.cadmea.model.util.LocalDateConverter;
 import br.com.cadmea.model.util.LocalDateTimeConverter;
-import br.com.cadmea.spring.util.JsonDateSerializer;
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -31,7 +28,6 @@ import javax.servlet.Filter;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -59,13 +55,6 @@ public class PersistenceConfig {
         loadEnvVariables();
     }
 
-    @Bean
-    public Module customModule() {
-        final SimpleModule module = new SimpleModule();
-        module.addSerializer(Date.class, new JsonDateSerializer.Serialize());
-        module.addDeserializer(Date.class, new JsonDateSerializer.Deserialize());
-        return module;
-    }
 
     private void loadEnvVariables() {
         try {
