@@ -1,18 +1,9 @@
-/**
- * 
- */
 package br.com.cadmea.web.business;
 
-import org.springframework.stereotype.Repository;
-
-import br.com.cadmea.model.dao.DaoGenericoImp;
+import br.com.cadmea.model.dao.DaoGenerico;
 import br.com.cadmea.model.orm.SocialNetwork;
+import org.springframework.transaction.annotation.Transactional;
 
-/**
- * @author Gilberto Santos
- *
- */
-@Repository
-class SocialNetworkDao extends DaoGenericoImp<SocialNetwork, Long> {
-
+@Transactional
+public interface SocialNetworkDao extends DaoGenerico<SocialNetwork> {
 }

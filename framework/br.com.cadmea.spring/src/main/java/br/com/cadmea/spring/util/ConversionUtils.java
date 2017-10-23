@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package br.com.cadmea.spring.util;
 
@@ -31,55 +31,52 @@ import org.springframework.core.convert.converter.GenericConverter;
  * @author Stephane Nicoll
  * @since 3.0
  */
-abstract class ConversionUtils {
+public abstract class ConversionUtils {
 
-	public static Object invokeConverter(GenericConverter converter, Object source, TypeDescriptor sourceType,
-			TypeDescriptor targetType) {
+    public static Object invokeConverter(final GenericConverter converter, final Object source, final TypeDescriptor sourceType,
+                                         final TypeDescriptor targetType) {
 
-		try {
-			return converter.convert(source, sourceType, targetType);
-		}
-		catch (ConversionFailedException ex) {
-			throw ex;
-		}
-		catch (Throwable ex) {
-			throw new ConversionFailedException(sourceType, targetType, source, ex);
-		}
-	}
+        try {
+            return converter.convert(source, sourceType, targetType);
+        } catch (final ConversionFailedException ex) {
+            throw ex;
+        } catch (final Throwable ex) {
+            throw new ConversionFailedException(sourceType, targetType, source, ex);
+        }
+    }
 
-	public static boolean canConvertElements(TypeDescriptor sourceElementType, TypeDescriptor targetElementType,
-			ConversionService conversionService) {
+    public static boolean canConvertElements(final TypeDescriptor sourceElementType, final TypeDescriptor targetElementType,
+                                             final ConversionService conversionService) {
 
-		if (targetElementType == null) {
-			// yes
-			return true;
-		}
-		if (sourceElementType == null) {
-			// maybe
-			return true;
-		}
-		if (conversionService.canConvert(sourceElementType, targetElementType)) {
-			// yes
-			return true;
-		}
-		else if (sourceElementType.getType().isAssignableFrom(targetElementType.getType())) {
-			// maybe
-			return true;
-		}
-		else {
-			// no
-			return false;
-		}
-	}
+        if (targetElementType == null) {
+            // yes
+            return true;
+        }
+        if (sourceElementType == null) {
+            // maybe
+            return true;
+        }
+        if (conversionService.canConvert(sourceElementType, targetElementType)) {
+            // yes
+            return true;
+        } else if (sourceElementType.getType().isAssignableFrom(targetElementType.getType())) {
+            // maybe
+            return true;
+        } else {
+            // no
+            return false;
+        }
+    }
 
-	public static Class<?> getEnumType(Class<?> targetType) {
-		Class<?> enumType = targetType;
-		while (enumType != null && !enumType.isEnum()) {
-			enumType = enumType.getSuperclass();
-		}
-		if (enumType == null) 
-			System.out.println("The target type " + targetType.getName() + " does not refer to an enum");
-		return enumType;
-	}
+    public static Class<?> getEnumType(final Class<?> targetType) {
+        Class<?> enumType = targetType;
+        while (enumType != null && !enumType.isEnum()) {
+            enumType = enumType.getSuperclass();
+        }
+        if (enumType == null) {
+            System.out.println("The target type " + targetType.getName() + " does not refer to an enum");
+        }
+        return enumType;
+    }
 
 }

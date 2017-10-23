@@ -1,15 +1,9 @@
 package br.com.cadmea.web.business;
 
-import java.util.List;
-
-import org.springframework.stereotype.Repository;
-
-import br.com.cadmea.model.dao.DaoGenericoImp;
+import br.com.cadmea.model.dao.DaoGenerico;
 import br.com.cadmea.model.orm.PasswordResetToken;
+import org.springframework.transaction.annotation.Transactional;
 
-@Repository
-class PasswordResetTokenDao extends DaoGenericoImp<PasswordResetToken, Long> {
-
-	
-
+@Transactional
+public interface PasswordResetTokenDao extends DaoGenerico<PasswordResetToken> {
 }

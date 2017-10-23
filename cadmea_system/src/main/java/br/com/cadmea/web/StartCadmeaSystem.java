@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 @CadmeaSpring
-@ComponentScan("hatuna.matata")
+@ComponentScan("br.com.cadmea.web")
 public class StartCadmeaSystem implements CommandLineRunner {
 
     public static void main(final String[] args) {

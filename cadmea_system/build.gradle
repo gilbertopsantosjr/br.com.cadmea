@@ -32,6 +32,7 @@ dependencies {
 
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile "org.springframework.boot:spring-boot-starter-tomcat"
+    compile "org.springframework.boot:spring-boot-starter-aop"
 
     compile 'commons-fileupload:commons-fileupload:1.2'
     compile 'commons-httpclient:commons-httpclient:3.1'
