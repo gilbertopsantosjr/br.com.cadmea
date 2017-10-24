@@ -1,10 +1,11 @@
 /**
  *
  */
-package br.com.cadmea.web.business;
+package br.com.cadmea.web.bo;
 
 import br.com.cadmea.infra.negocio.BaseNegocial;
 import br.com.cadmea.model.orm.CadmeaSystem;
+import br.com.cadmea.web.dao.CadmeaSystemDao;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -13,7 +14,7 @@ import javax.inject.Inject;
  * @author Gilberto Santos
  */
 @Component
-class CadmeaSystemBo extends BaseNegocial<CadmeaSystem> {
+public class CadmeaSystemBo extends BaseNegocial<CadmeaSystem> {
 
     @Inject
     private CadmeaSystemDao dao;

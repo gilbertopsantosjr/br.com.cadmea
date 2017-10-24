@@ -1,5 +1,7 @@
 package br.com.cadmea.spring.config;
 
+import br.com.cadmea.spring.beans.SmtpEmailSender;
+import br.com.cadmea.spring.beans.StringToEnumConverterFactory;
 import br.com.cadmea.spring.util.JsonDateSerializer;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -49,9 +51,19 @@ public class CoreConfig {
         return module;
     }
 
-    @Bean(name = "passwordEncoder")
+    @Bean
     public PasswordEncoder passwordencoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SmtpEmailSender smtpEmailSender() {
+        return new SmtpEmailSender();
+    }
+
+    @Bean
+    public StringToEnumConverterFactory stringToEnumConverterFactory() {
+        return new StringToEnumConverterFactory();
     }
 
 
@@ -65,7 +77,7 @@ public class CoreConfig {
         registrationBean.addUrlPatterns("/api/*");
         return registrationBean;
     }
-    
+
     /**
      * openSessionInView
      *

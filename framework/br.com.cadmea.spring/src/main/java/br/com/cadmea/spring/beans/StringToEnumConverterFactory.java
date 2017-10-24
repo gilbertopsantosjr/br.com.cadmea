@@ -2,7 +2,6 @@ package br.com.cadmea.spring.beans;
 
 
 import br.com.cadmea.spring.util.ConversionUtils;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.stereotype.Component;
@@ -30,9 +29,8 @@ import org.springframework.stereotype.Component;
  * @author Stephane Nicoll
  * @since 3.0
  */
-@Lazy
-@Component("br.com.cadmea.spring.beans.StringToEnumConverterFactory")
-final class StringToEnumConverterFactory implements ConverterFactory<String, Enum> {
+@Component
+public final class StringToEnumConverterFactory implements ConverterFactory<String, Enum> {
 
     @Override
     public <T extends Enum> Converter<String, T> getConverter(final Class<T> targetType) {

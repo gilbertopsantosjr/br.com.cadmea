@@ -1,7 +1,7 @@
 /**
  *
  */
-package br.com.cadmea.web.business;
+package br.com.cadmea.web.dao;
 
 import br.com.cadmea.comuns.exceptions.SystemException;
 import br.com.cadmea.model.dao.DaoGenericoImp;
@@ -18,7 +18,7 @@ import java.util.Map;
  * @author Gilberto Santos
  */
 @Repository
-class PermissionDaoImp extends DaoGenericoImp<Permission, Long> implements PermissionDao {
+public class PermissionDaoImp extends DaoGenericoImp<Permission, Long> implements PermissionDao {
 
 
     /**
@@ -28,6 +28,7 @@ class PermissionDaoImp extends DaoGenericoImp<Permission, Long> implements Permi
      * @return a List<Permission>
      * @throws SystemException
      */
+    @Override
     public List<Permission> getPermissionsOf(final UserSystem user) {
         if (user == null) {
             throw new SystemException("User is required for this operation");

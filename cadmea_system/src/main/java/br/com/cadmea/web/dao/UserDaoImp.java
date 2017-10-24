@@ -1,4 +1,4 @@
-package br.com.cadmea.web.business;
+package br.com.cadmea.web.dao;
 
 import br.com.cadmea.model.dao.DaoGenericoImp;
 import br.com.cadmea.model.orm.Person;
@@ -14,7 +14,7 @@ import java.util.List;
  * @author Gilberto Santos
  */
 @Repository
-class UserDaoImp extends DaoGenericoImp<UserSystem, Long> implements UserDao {
+public class UserDaoImp extends DaoGenericoImp<UserSystem, Long> implements UserDao {
 
     @Inject
     private PermissionDao permissionDao;

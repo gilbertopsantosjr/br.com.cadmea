@@ -10,7 +10,7 @@ import br.com.cadmea.spring.rest.ServicePath;
 import br.com.cadmea.spring.rest.exceptions.PreConditionRequiredException;
 import br.com.cadmea.spring.security.orm.UserAccess;
 import br.com.cadmea.spring.util.GenericResponse;
-import br.com.cadmea.web.business.UserSrv;
+import br.com.cadmea.web.srv.UserSrv;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

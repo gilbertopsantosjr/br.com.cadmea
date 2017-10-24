@@ -1,11 +1,12 @@
 /**
  *
  */
-package br.com.cadmea.web.business;
+package br.com.cadmea.web.srv;
 
 import br.com.cadmea.baseservico.BaseMaintenanceSrvImpl;
 import br.com.cadmea.comuns.orm.enums.Result;
 import br.com.cadmea.model.orm.CadmeaSystem;
+import br.com.cadmea.web.bo.CadmeaSystemBo;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;

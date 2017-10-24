@@ -17,8 +17,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
-@Lazy
-@Component("br.com.cadmea.spring.beans.SmtpEmailSender")
+@Component
 @ConditionalOnClass(JavaMailSender.class)
 public class SmtpEmailSender {
 

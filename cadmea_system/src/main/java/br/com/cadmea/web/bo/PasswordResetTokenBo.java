@@ -1,12 +1,13 @@
 /**
  *
  */
-package br.com.cadmea.web.business;
+package br.com.cadmea.web.bo;
 
 import br.com.cadmea.comuns.exceptions.BusinessException;
 import br.com.cadmea.comuns.orm.enums.Result;
 import br.com.cadmea.infra.negocio.BaseNegocial;
 import br.com.cadmea.model.orm.PasswordResetToken;
+import br.com.cadmea.web.dao.PasswordResetTokenDao;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -17,7 +18,7 @@ import java.util.Map;
  * @author Gilberto Santos
  */
 @Component
-class PasswordResetTokenBo extends BaseNegocial<PasswordResetToken> {
+public class PasswordResetTokenBo extends BaseNegocial<PasswordResetToken> {
 
     @Inject
     private PasswordResetTokenDao dao;

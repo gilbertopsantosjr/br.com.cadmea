@@ -1,7 +1,7 @@
 /**
  *
  */
-package br.com.cadmea.web.business;
+package br.com.cadmea.web.srv;
 
 import br.com.cadmea.baseservico.BaseMaintenanceSrvImpl;
 import br.com.cadmea.comuns.orm.enums.Result;
@@ -11,16 +11,20 @@ import br.com.cadmea.model.orm.UserSystem;
 import br.com.cadmea.spring.beans.SmtpEmailSender;
 import br.com.cadmea.spring.rest.exceptions.NotFoundException;
 import br.com.cadmea.spring.security.orm.UserAccess;
+import br.com.cadmea.web.bo.PasswordResetTokenBo;
+import br.com.cadmea.web.bo.UserBo;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -38,22 +42,23 @@ public class UserSrv extends BaseMaintenanceSrvImpl<UserSystem, UserBo> {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
+    @Inject
     private UserBo userBo;
 
-    @Autowired
+    @Inject
     private PasswordResetTokenBo passwordResetTokenBo;
 
-    @Autowired
+    @Inject
     private SmtpEmailSender smtpEmailSender;
 
+    @Lazy
     @Autowired
     private HttpServletRequest request;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    @Inject
+    private PasswordEncoder passwordEncoder;
 
-    @Autowired
+    @Inject
     private CadmeaSystemSrv cadmeaSystemSrv;
 
     @Override
