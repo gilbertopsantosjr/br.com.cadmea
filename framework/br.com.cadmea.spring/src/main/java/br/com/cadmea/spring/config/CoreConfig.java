@@ -17,14 +17,10 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.orm.hibernate5.support.OpenSessionInViewFilter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.Filter;
 import java.util.Date;
-import java.util.Locale;
 
 
 @Configuration
@@ -43,7 +39,7 @@ public class CoreConfig {
     }
 
     @Bean
-    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+    public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
@@ -54,7 +50,7 @@ public class CoreConfig {
         module.addDeserializer(Date.class, new JsonDateSerializer.Deserialize());
         return module;
     }
-
+/*
     @Bean
     public LocaleResolver localeResolver() {
         final SessionLocaleResolver slr = new SessionLocaleResolver();
@@ -67,7 +63,7 @@ public class CoreConfig {
         final LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
         lci.setParamName("lang");
         return lci;
-    }
+    } */
 
     @Bean
     public PasswordEncoder passwordencoder() {

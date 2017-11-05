@@ -53,11 +53,9 @@ public class UserSystem extends BaseEntityPersistent {
     private LocalDateTime dateRegister;
 
     @Column(name = "usu_dt_expired", nullable = true)
-    @Temporal(TemporalType.DATE)
     private LocalDateTime dateExpire;
 
     @Column(nullable = false, name = "usu_last_visit")
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime lastVisit;
 
     @Column(nullable = false, length = 1, name = "usu_situation")

@@ -2,6 +2,7 @@ package br.com.cadmea.spring.annotations;
 
 import br.com.cadmea.spring.config.CoreConfig;
 import br.com.cadmea.spring.rest.exceptions.RestExceptionHandler;
+import br.com.cadmea.spring.util.SwaggerConfig;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
@@ -16,7 +17,7 @@ import java.lang.annotation.*;
 @Documented
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, JpaRepositoriesAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
-@Import(value = {CoreConfig.class, RestExceptionHandler.class})
+@Import(value = {CoreConfig.class, SwaggerConfig.class, RestExceptionHandler.class})
 public @interface CadmeaSpring {
     String basePackage() default "";
 }

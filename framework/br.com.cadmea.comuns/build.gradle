@@ -12,10 +12,10 @@ dependencies {
     compile 'commons-beanutils:commons-beanutils:1.9.3'
 
     // allows rest mapping a link to an exiting resource
-    compile 'org.springframework.hateoas:spring-hateoas:0.24.0.RELEASE'
+    //compile 'org.springframework.hateoas:spring-hateoas:0.24.0.RELEASE'
 
     // allows internacionalization
-    compile 'org.springframework.boot:spring-boot-starter-thymeleaf:1.5.2.RELEASE'
+    //compile 'org.springframework.boot:spring-boot-starter-thymeleaf:1.5.2.RELEASE'
 
     // allow json annotation
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.1'
