@@ -3,7 +3,7 @@
  */
 package br.com.cadmea.spring.util;
 
-import br.com.cadmea.spring.security.orm.UserAccess;
+import br.com.cadmea.spring.pojos.UserAccess;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;

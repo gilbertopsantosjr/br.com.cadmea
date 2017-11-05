@@ -21,7 +21,7 @@ public class SocialNetworkBo extends BaseNegocial<SocialNetwork> {
     private SocialNetworkDao dao;
 
     @Override
-    protected SocialNetworkDao getDao() {
+    public SocialNetworkDao getDao() {
         return dao;
     }
 

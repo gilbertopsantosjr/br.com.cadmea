@@ -2,16 +2,15 @@ package br.com.cadmea.model.orm;
 
 import br.com.cadmea.comuns.orm.enums.Situation;
 import br.com.cadmea.model.BaseEntityPersistent;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
@@ -51,16 +50,15 @@ public class UserSystem extends BaseEntityPersistent {
     private String password;
 
     @Column(name = "usu_dt_register", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date dateRegister;
+    private LocalDateTime dateRegister;
 
     @Column(name = "usu_dt_expired", nullable = true)
     @Temporal(TemporalType.DATE)
-    private Date dateExpire;
+    private LocalDateTime dateExpire;
 
     @Column(nullable = false, name = "usu_last_visit")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date lastVisit;
+    private LocalDateTime lastVisit;
 
     @Column(nullable = false, length = 1, name = "usu_situation")
     @Enumerated(EnumType.ORDINAL)
@@ -72,26 +70,25 @@ public class UserSystem extends BaseEntityPersistent {
     @Column(nullable = false, length = 1, name = "usu_terms")
     private boolean readTerms;
 
-    @JsonIgnore
+    @Column(length = 5, name = "usu_favorite_language")
+    private String favoriteLanguage;
+
     @ManyToMany(cascade = {CascadeType.PERSIST,
             CascadeType.REMOVE}, fetch = FetchType.LAZY, targetEntity = Permission.class)
     @JoinTable(name = "cadmea_permissions_per_user", joinColumns = {
             @JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "per_id")})
-    private Set<Permission> permissions = Collections.EMPTY_SET;
+    private List<Permission> permissions = Collections.EMPTY_LIST;
 
-    @JsonIgnore
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, targetEntity = CadmeaSystem.class)
     @JoinTable(name = "cadmea_systems_per_user", joinColumns = {
             @JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "system_id")})
-    private Set<CadmeaSystem> systems = Collections.EMPTY_SET;
+    private List<CadmeaSystem> systems = Collections.EMPTY_LIST;
 
-    @JsonIgnore
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, targetEntity = SocialNetwork.class)
     @JoinTable(name = "cadmea_social_per_user", joinColumns = {
             @JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "system_id")})
-    private Set<SocialNetwork> socialNetworks = Collections.EMPTY_SET;
+    private List<SocialNetwork> socialNetworks = Collections.EMPTY_LIST;
 
-    @JsonIgnore
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "pes_id", referencedColumnName = "pes_id", nullable = false)
     private Person person;

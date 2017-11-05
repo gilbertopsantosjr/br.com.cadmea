@@ -1,14 +1,13 @@
 package br.com.cadmea.model.orm;
 
 import br.com.cadmea.model.BaseEntityPersistent;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Set;
+import java.util.List;
 
 /**
  * authorized a user of system
@@ -43,9 +42,8 @@ public class CadmeaSystem extends BaseEntityPersistent {
     @Column(name = "sys_url", nullable = false, length = 150)
     private String ulr;
 
-    @JsonIgnore
-    @ManyToMany( fetch = FetchType.LAZY, targetEntity = UserSystem.class, mappedBy = "systems")
-    private Set<UserSystem> users;
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = UserSystem.class, mappedBy = "systems")
+    private List<UserSystem> users;
 
 
 }

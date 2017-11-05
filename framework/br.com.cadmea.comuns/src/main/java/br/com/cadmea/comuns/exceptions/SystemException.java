@@ -5,66 +5,71 @@ import java.util.Locale;
 
 /**
  * Exceção de sistema.
- * 
+ *
  * @author Gilberto Santos
  * @version 1.0
  */
-@SuppressWarnings("serial")
 public class SystemException extends RuntimeException {
 
-	private Locale locale;
-	private List<String> messages;
-	
-	/**
-	 * Cria o objeto.
-	 */
-	public SystemException() {
-		
-	}
+    private Locale locale;
+    private List<String> messages;
 
-	/**
-	 * Cria o objeto e atribui a mensagem da exceção.
-	 * 
-	 * @param mensagem Mensagem da exceção
-	 */
-	public SystemException(String _chave)  {
-		super(_chave);
-	}
+    /**
+     * Cria o objeto.
+     */
+    public SystemException() {
 
-	/**
-	 * Cria o objeto e atribui a mensagem e a causa da exceção.
-	 * 
-	 * @param mensagem Mensagem da exceção
-	 * @param causa Causa da exceção
-	 */
-	public SystemException(String mensagem, Throwable causa) {
-		super(mensagem, causa);
-	}
+    }
 
-	/**
-	 * Cria o objeto e atribui a causa da exceção.
-	 * 
-	 * @param causa Causa da exceção
-	 */
-	public SystemException(Throwable causa) {
-		super(causa);
-	}
-	
-	
-	public List<String> getMessages() {
-		return messages;
-	}
+    public SystemException(final List<SystemException> exceptions) {
+        for (final SystemException e : exceptions) {
+            messages.add(e.getMessage());
+        }
+    }
 
-	public void setMessages(List<String> messages) {
-		this.messages = messages;
-	}
+    /**
+     * Cria o objeto e atribui a mensagem da exceção.
+     *
+     * @param mensagem Mensagem da exceção
+     */
+    public SystemException(final String _chave) {
+        super(_chave);
+    }
 
-	public Locale getLocale() {
-		return locale;
-	}
+    /**
+     * Cria o objeto e atribui a mensagem e a causa da exceção.
+     *
+     * @param mensagem Mensagem da exceção
+     * @param causa    Causa da exceção
+     */
+    public SystemException(final String mensagem, final Throwable causa) {
+        super(mensagem, causa);
+    }
 
-	public void setLocale(Locale locale) {
-		this.locale = locale;
-	}
+    /**
+     * Cria o objeto e atribui a causa da exceção.
+     *
+     * @param causa Causa da exceção
+     */
+    public SystemException(final Throwable causa) {
+        super(causa);
+    }
+
+
+    public List<String> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(final List<String> messages) {
+        this.messages = messages;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(final Locale locale) {
+        this.locale = locale;
+    }
 
 }

@@ -1,14 +1,13 @@
+dependencies {
 
-    dependencies {
-        
-        compile project(":br.com.cadmea.hibernate")
-        
-        compileOnly "javax.inject:javax.inject:1"
-        compileOnly "org.aspectj:aspectjrt:1.6.11"
-        compileOnly "org.aspectj:aspectjweaver:1.6.11"
-        
-        compileOnly 'org.springframework:spring-tx:4.2.5.RELEASE'
-    }
+    compile project(":br.com.cadmea.hibernate")
+
+    compileOnly "javax.inject:javax.inject:1"
+    compileOnly "org.aspectj:aspectjrt:1.6.11"
+    compileOnly "org.aspectj:aspectjweaver:1.6.11"
+
+    compileOnly 'org.springframework:spring-tx:4.2.5.RELEASE'
+}
 
 
 

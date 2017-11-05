@@ -18,7 +18,7 @@ import java.util.Map;
  * @author Gilberto Santos
  */
 @Repository
-public class PermissionDaoImp extends DaoGenericoImp<Permission, Long> implements PermissionDao {
+public class PermissionDaoImp extends DaoGenericoImp<Permission> implements PermissionDao {
 
 
     /**

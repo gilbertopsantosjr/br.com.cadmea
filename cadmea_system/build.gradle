@@ -47,11 +47,10 @@ springBoot {
     mainClass = 'br.com.cadmea.web.StartCadmeaSystem'
 }
 
-/*
 applicationDefaultJvmArgs = ["-XX:MaxHeapSize=512m",
-"-Xmx512m", "-XX:+CMSClassUnloadingEnabled", "-Xdebug", "-Dserver.port=8090",
-"-agentpath:/Applications/Java/jrebel/lib/libjrebel64.dylib",
-"-Djava.compiler=NONE"] */
+                             "-Xmx512m", "-XX:+CMSClassUnloadingEnabled", "-Xdebug", "-Dserver.port=8080",
+                             "-agentpath:/Applications/Java/jrebel/lib/libjrebel64.dylib",
+                             "-Djava.compiler=NONE"]
 
 
 

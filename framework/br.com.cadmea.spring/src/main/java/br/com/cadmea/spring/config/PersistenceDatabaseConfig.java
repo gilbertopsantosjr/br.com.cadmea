@@ -33,7 +33,7 @@ import java.util.Properties;
 @Configuration
 @Import(SecurityConfig.class)
 @EnableTransactionManagement(proxyTargetClass = true)
-@EntityScan(basePackages = {"br.com.cadmea.model"},
+@EntityScan(basePackages = {"br.com.cadmea.model.orm"},
         basePackageClasses = {Jsr310JpaConverters.class, LocalDateConverter.class, LocalDateTimeConverter.class})
 @EnableSpringDataWebSupport
 public class PersistenceDatabaseConfig {
@@ -55,7 +55,7 @@ public class PersistenceDatabaseConfig {
     @Value("${cadmea.hibernate.generate_sql:true}")
     private String PROPERTY_NAME_HIBERNATE_GENERATE_SQL;
 
-    @Value("${cadmea.hibernate.hbm2ddl.auto:create-drop}")
+    @Value("${cadmea.hibernate.hbm2ddl.auto:validate}")
     private String PROPERTY_NAME_HIBERNATE_UPDATE_SQL;
 
     @Value("${cadmea.hibernate.dialect:org.hibernate.dialect.H2Dialect}")
@@ -175,10 +175,12 @@ public class PersistenceDatabaseConfig {
 
     private Properties jpaHibernateProperties() {
         final Properties properties = new Properties();
-        properties.put(removeCadmea(PROPERTY_NAME_HIBERNATE_UPDATE_SQL), PROPERTY_NAME_HIBERNATE_UPDATE_SQL);
-        properties.put(removeCadmea(PROPERTY_NAME_HIBERNATE_MAX_FETCH_DEPTH), PROPERTY_NAME_HIBERNATE_MAX_FETCH_DEPTH);
-        properties.put(removeCadmea(PROPERTY_NAME_HIBERNATE_JDBC_FETCH_SIZE), PROPERTY_NAME_HIBERNATE_JDBC_FETCH_SIZE);
-        properties.put(removeCadmea(PROPERTY_NAME_HIBERNATE_JDBC_BATCH_SIZE), PROPERTY_NAME_HIBERNATE_JDBC_BATCH_SIZE);
+        properties.put("hibernate.hbm2ddl.auto", PROPERTY_NAME_HIBERNATE_UPDATE_SQL);
+        properties.put("hibernate.max_fetch_depth", PROPERTY_NAME_HIBERNATE_MAX_FETCH_DEPTH);
+        properties.put("hibernate.jdbc.fetch_size", PROPERTY_NAME_HIBERNATE_JDBC_FETCH_SIZE);
+        properties.put("hibernate.jdbc.batch_size", PROPERTY_NAME_HIBERNATE_JDBC_BATCH_SIZE);
+        properties.put("hibernate.show_sql", PROPERTY_NAME_HIBERNATE_SHOW_SQL);
+        properties.put("hibernate.generate_sql", PROPERTY_NAME_HIBERNATE_GENERATE_SQL);
 
         //properties.put("hibernate.default_schema", "public");
         properties.put("hibernate.current_session_context_class", "thread"); // Contexto de sessão a ser usado
@@ -190,6 +192,7 @@ public class PersistenceDatabaseConfig {
         properties.put("hibernate.generate_statistics", false); // Estatisticas de processos SQL
         properties.put("hibernate.use_sql_comments", false);
         properties.put("hibernate.connection.pool_size", 50); //Poll de conexão
+        properties.put("hibernate.format_sql", false);
 
         return properties;
     }

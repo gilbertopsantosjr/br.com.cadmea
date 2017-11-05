@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${spring.profiles.active}")
     private String profile;
 
-    @Value("${cadmea.users.roles:ROLE_ADMIN}")
+    @Value("${cadmea.users.roles:ROLE_NONE}")
     private String ROLES;
 
     @Lazy
@@ -50,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
     }
+
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {

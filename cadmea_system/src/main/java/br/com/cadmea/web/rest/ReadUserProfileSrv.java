@@ -3,7 +3,7 @@
  */
 package br.com.cadmea.web.rest;
 
-import br.com.cadmea.dto.UserFormDto;
+import br.com.cadmea.dto.UserCreateStc;
 import br.com.cadmea.model.orm.UserSystem;
 import br.com.cadmea.spring.rest.GenericRestService;
 import br.com.cadmea.spring.rest.ServicePath;
@@ -28,19 +28,19 @@ import java.util.HashSet;
  */
 @RestController
 @RequestMapping(path = ServicePath.PRIVATE_ROOT_PATH + "/user")
-public class ReadUserProfileSrv extends GenericRestService<UserSystem, UserFormDto> {
+public class ReadUserProfileSrv extends GenericRestService<UserCreateStc> {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Inject
     private UserSrv userSrv;
 
-    private UserFormDto userDTo;
+    private UserCreateStc userDTo;
 
     @Override
     @PostConstruct
     public void init() {
-        userDTo = new UserFormDto();
+        userDTo = new UserCreateStc();
     }
 
     /**
@@ -48,15 +48,15 @@ public class ReadUserProfileSrv extends GenericRestService<UserSystem, UserFormD
      * @return
      */
     @RequestMapping(value = "/read/{id}", method = RequestMethod.GET)
-    public ResponseEntity<UserFormDto> readUserProfile(@PathVariable("id") final String id) {
+    public ResponseEntity<UserCreateStc> readUserProfile(@PathVariable("id") final String id) {
         logger.info("starting readUserProfile service");
         final UserSystem entity = getService().find(Long.valueOf(id));
         if (entity != null) {
-            final UserFormDto found = new UserFormDto();
-            found.setEntity(entity);
-            return new ResponseEntity<UserFormDto>(found, HttpStatus.OK);
+            final UserCreateStc found = new UserCreateStc();
+            //found.setEntity(entity);
+            return new ResponseEntity<UserCreateStc>(found, HttpStatus.OK);
         }
-        return new ResponseEntity<UserFormDto>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<UserCreateStc>(HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -71,7 +71,7 @@ public class ReadUserProfileSrv extends GenericRestService<UserSystem, UserFormD
         entity.setId(user.getId());
         entity.setEmail(user.getEmail());
         entity.setSituation(user.getSituation());
-        entity.setDateExpire(user.getDateExpire());
+        //entity.setDateExpire(user.getDateExpire());
 
         entity.setPermissions(new HashSet<>());
 
@@ -90,9 +90,5 @@ public class ReadUserProfileSrv extends GenericRestService<UserSystem, UserFormD
         return userSrv;
     }
 
-    @Override
-    public UserFormDto getViewForm() {
-        return userDTo;
-    }
 
 }

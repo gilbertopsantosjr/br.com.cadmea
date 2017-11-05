@@ -9,8 +9,6 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Date;
 import java.util.Set;
 
 /**
@@ -31,6 +29,10 @@ public class Person extends BaseEntityPersistent {
     @NotNull
     @Column(nullable = false, length = 250, name = "surname")
     private String surname;
+
+    //personal private number
+    @Column(nullable = false, length = 50, name = "serial_person_number")
+    private String register;
 
     @NotNull
     @Enumerated

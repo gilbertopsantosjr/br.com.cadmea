@@ -5,7 +5,7 @@ import br.com.cadmea.model.orm.PasswordResetToken;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class PasswordResetTokenDaoImp extends DaoGenericoImp<PasswordResetToken, Long> implements PasswordResetTokenDao {
+public class PasswordResetTokenDaoImp extends DaoGenericoImp<PasswordResetToken> implements PasswordResetTokenDao {
 
 
 }

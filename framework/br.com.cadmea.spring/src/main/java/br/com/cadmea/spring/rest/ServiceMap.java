@@ -1,31 +1,26 @@
 package br.com.cadmea.spring.rest;
 
-import java.util.logging.Logger;
-
+import br.com.cadmea.comuns.dto.Structurable;
+import br.com.cadmea.comuns.srv.BaseService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.com.cadmea.comuns.dto.FormDto;
-import br.com.cadmea.comuns.orm.EntityPersistent;
-import br.com.cadmea.comuns.srv.BaseServico;
+import java.util.logging.Logger;
 
 /**
  * @author Gilberto Santos
- *
  */
 @CrossOrigin(origins = "*")
 @RequestMapping(consumes = "application/json", produces = "application/json")
-public interface ServiceMap<E extends EntityPersistent> {
+public interface ServiceMap<E extends Structurable> {
 
-  public static final Logger logger = Logger.getAnonymousLogger();
+    Logger logger = Logger.getAnonymousLogger();
 
-  public static final String REGISTER_SAVE_SUCCESS = "save.success";
-  public static final String REGISTRO_EXCLUIDO_COM_SUCESSO = "remove.success";
+    String REGISTER_SAVE_SUCCESS = "save.success";
+    String REGISTRO_EXCLUIDO_COM_SUCESSO = "remove.success";
 
-  public static final String OBJID = "objId";
+    String OBJID = "objId";
 
-  public abstract FormDto<E> getViewForm();
-
-  public abstract BaseServico<E> getService();
+    BaseService<E> getService();
 
 }

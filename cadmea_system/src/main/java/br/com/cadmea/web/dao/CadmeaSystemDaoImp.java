@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
  * @author Gilberto Santos
  */
 @Repository
-public class CadmeaSystemDaoImp extends DaoGenericoImp<CadmeaSystem, Long> implements CadmeaSystemDao {
+public class CadmeaSystemDaoImp extends DaoGenericoImp<CadmeaSystem> implements CadmeaSystemDao {
 
 }

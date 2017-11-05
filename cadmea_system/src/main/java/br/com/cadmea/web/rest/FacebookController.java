@@ -4,8 +4,9 @@
 package br.com.cadmea.web.rest;
 
 import br.com.cadmea.comuns.exceptions.BusinessException;
-import br.com.cadmea.comuns.util.ValidadorUtil;
-import br.com.cadmea.dto.UserFormDto;
+import br.com.cadmea.comuns.util.ValidatorUtil;
+import br.com.cadmea.dto.SocialNetworkStruct;
+import br.com.cadmea.dto.UserCreateStc;
 import br.com.cadmea.model.orm.Person;
 import br.com.cadmea.model.orm.SocialNetwork;
 import br.com.cadmea.model.orm.UserSystem;
@@ -73,19 +74,19 @@ public class FacebookController {
 
             socialNetwork = new SocialNetwork();
 
-            if (ValidadorUtil.isValid(userProfile.getId())) {
+            if (ValidatorUtil.isValid(userProfile.getId())) {
                 socialNetwork.setIdNetwork(userProfile.getId());
             }
 
-            if (ValidadorUtil.isValid(userProfile.getLink())) {
+            if (ValidatorUtil.isValid(userProfile.getLink())) {
                 socialNetwork.setLink(userProfile.getLink());
             }
 
-            if (ValidadorUtil.isValid(userProfile.getEmail())) {
+            if (ValidatorUtil.isValid(userProfile.getEmail())) {
                 socialNetwork.setPrimaryContact(userProfile.getEmail());
             }
 
-            if (ValidadorUtil.isValid(facebook.getBaseGraphApiUrl())) {
+            if (ValidatorUtil.isValid(facebook.getBaseGraphApiUrl())) {
                 socialNetwork.setPictureProfile(facebook.getBaseGraphApiUrl() + userProfile.getId() + "/picture");
             }
 
@@ -116,18 +117,21 @@ public class FacebookController {
 
         socialNetwork.setUserSystem(userSystem);
 
-        final UserFormDto body = new UserFormDto();
-        body.setEntity(userSystem);
+        final UserCreateStc body = new UserCreateStc();
+        //body.setEntity(userSystem);
 
-        socialNetworkSrv.save(socialNetwork);
+        final SocialNetworkStruct socialNetworkStruct = new SocialNetworkStruct();
+        //socialNetworkStruct.setEntity(socialNetwork);
 
-        final HttpEntity<UserFormDto> request = new HttpEntity<UserFormDto>(body, headers);
+        socialNetworkSrv.save(socialNetworkStruct);
+
+        final HttpEntity<UserCreateStc> request = new HttpEntity<UserCreateStc>(body, headers);
 
         final URI uri = new URI(servletRequest.getAttribute("contextPath") + ":" + servletRequest.getServerPort() + "/api/public/user/authentication/");
 
         // call the REST Service and get response 
         final RestTemplate rest = new RestTemplate();
-        final ResponseEntity<UserFormDto> response = rest.postForEntity(uri, request, UserFormDto.class);
+        final ResponseEntity<UserCreateStc> response = rest.postForEntity(uri, request, UserCreateStc.class);
         response.getBody().setPictureProfile(socialNetwork.getPictureProfile());
         response.getBody().getEntity().setEmail(userProfile.getEmail());
 

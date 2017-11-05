@@ -3,21 +3,21 @@
  */
 package br.com.cadmea.web.srv;
 
-import br.com.cadmea.baseservico.BaseMaintenanceSrvImpl;
-import br.com.cadmea.comuns.orm.enums.Result;
+import br.com.cadmea.comuns.orm.enums.Situation;
+import br.com.cadmea.comuns.util.DateUtil;
+import br.com.cadmea.comuns.validator.Validator;
+import br.com.cadmea.dto.UserAuthenticationStc;
+import br.com.cadmea.dto.UserCreateStc;
+import br.com.cadmea.infra.negocio.BaseServiceSrvImpl;
 import br.com.cadmea.model.orm.CadmeaSystem;
-import br.com.cadmea.model.orm.PasswordResetToken;
 import br.com.cadmea.model.orm.UserSystem;
 import br.com.cadmea.spring.beans.SmtpEmailSender;
+import br.com.cadmea.spring.pojos.UserAccess;
 import br.com.cadmea.spring.rest.exceptions.NotFoundException;
-import br.com.cadmea.spring.security.orm.UserAccess;
-import br.com.cadmea.web.bo.PasswordResetTokenBo;
 import br.com.cadmea.web.bo.UserBo;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,9 +25,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -38,7 +37,7 @@ import java.util.UUID;
  * sendo uma layer para validar, nao permitindo chegar objetos invalidos ate o negocio
  */
 @Service
-public class UserSrv extends BaseMaintenanceSrvImpl<UserSystem, UserBo> {
+public class UserSrv extends BaseServiceSrvImpl<UserCreateStc> {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -46,14 +45,10 @@ public class UserSrv extends BaseMaintenanceSrvImpl<UserSystem, UserBo> {
     private UserBo userBo;
 
     @Inject
-    private PasswordResetTokenBo passwordResetTokenBo;
+    private PasswordResetTokenSrv passwordResetTokenSrv;
 
     @Inject
     private SmtpEmailSender smtpEmailSender;
-
-    @Lazy
-    @Autowired
-    private HttpServletRequest request;
 
     @Inject
     private PasswordEncoder passwordEncoder;
@@ -61,47 +56,61 @@ public class UserSrv extends BaseMaintenanceSrvImpl<UserSystem, UserBo> {
     @Inject
     private CadmeaSystemSrv cadmeaSystemSrv;
 
+    @Value("${spring.profiles.active}")
+    private String profile;
+
+    @Value("${cadmea.url.system.changePassword}")
+    private String cadmeaUrlSystemChangePassword;
+
     @Override
     protected UserBo getBo() {
         return userBo;
     }
 
+    /**
+     * the service layer defines the values defined by business logic
+     *
+     * @param struct
+     * @return
+     */
     @Override
-    public UserSystem insert(final @NotNull UserSystem entidade) {
+    public UserSystem insert(final @NotNull UserCreateStc struct) {
         logger.info(" save userSystem entity ");
-        final String hashPassword = passwordEncoder.encode(entidade.getPassword());
-        entidade.setPassword(hashPassword);
-        return getBo().insert(entidade);
+
+        struct.validate();
+
+        final String hashPassword = passwordEncoder.encode(struct.getPassword());
+        final CadmeaSystem cadmeaSystem = cadmeaSystemSrv.findByName(struct.getSystemName());
+
+        struct.getEntity().setPassword(hashPassword);
+        struct.getEntity().setSystems(Arrays.asList(cadmeaSystem));
+        struct.getEntity().setDateRegister(DateUtil.getDate());
+        struct.getEntity().setSituation(Situation.DISABLE);
+        struct.getEntity().setLastVisit(DateUtil.getDate());
+
+        return getBo().insert(struct.getEntity());
     }
+
 
     /**
      * search for user in Cadmea System
      *
-     * @param systemName
-     * @param email
+     * @param struct
      * @return {@link UserAccess}
      */
-    public UserAccess authentication(final @NotEmpty String systemName, final @NotEmpty String email) {
+    public UserAccess authentication(final @NotNull UserAuthenticationStc struct) {
         logger.info("starting authentication of user ");
-        final CadmeaSystem cadmeaSystem = cadmeaSystemSrv.findBy(systemName);
 
-        if (cadmeaSystem == null) {
-            throw new NotFoundException("system.not.found");
-        }
+        struct.validate();
 
-        final Long sysId = cadmeaSystem.getId();
-        UserSystem userSystem = getUserBy(email);
+        final CadmeaSystem cadmeaSystem = cadmeaSystemSrv.findBy(struct.getSystemName());
+        Validator.assertNotNull(cadmeaSystem, "system.not.found");
+        Validator.failIfAnyExceptionsFound();
 
-        if (userSystem == null) {
-            throw new NotFoundException("user.not.found");
-        }
+        final UserSystem userSystem = getBo().getUserBy(struct.getUsername(), cadmeaSystem.getId());
+        Validator.assertNotNull(userSystem, "user.not.allow.in.system");
 
-        userSystem = getUserBy(email, sysId);
-
-        if (userSystem == null) {
-            throw new NotFoundException("user.not.allow.in.system");
-        }
-
+        //TODO adding custom SQL to get a person' name without anything else
         final UserAccess userAccess = new UserAccess(userSystem.getPerson().getName());
 
         userSystem.getPermissions().forEach(a -> {
@@ -113,26 +122,27 @@ public class UserSrv extends BaseMaintenanceSrvImpl<UserSystem, UserBo> {
 
         SecurityContextHolder.getContext().setAuthentication(auth);
 
+        userSystem.setLastVisit(DateUtil.getDate());
+        getBo().save(userSystem);
+
         return userAccess;
     }
 
-    /**
-     * @param email
-     */
-    public void resetPassword(final @NotEmpty String email) {
-        logger.info("starting recoveryPassword service");
 
-        final UserSystem user = getUserBy(email);
+    public void resetPassword(final @NotNull UserCreateStc struct) {
+        logger.info("starting recoveryPassword service for:" + struct.getEmail());
+
+        final UserSystem user = getBo().getUserBy(struct.getEmail());
+
         if (user == null) {
             throw new NotFoundException("user");
         }
 
         final String token = UUID.randomUUID().toString();
-        createPasswordResetTokenForUser(user, token);
+        passwordResetTokenSrv.createPasswordResetTokenForUser(user, token);
 
         //TODO criar um builder para gerar essas mensagens
-        String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-        appUrl = appUrl + "/api/private/user/changePassword?id=" + user.getId() + "&token=" + token;
+        final String appUrl = cadmeaUrlSystemChangePassword + user.getId() + "&token=" + token;
 
         final String to = user.getEmail();
         final String subject = "Recovery password";
@@ -144,68 +154,17 @@ public class UserSrv extends BaseMaintenanceSrvImpl<UserSystem, UserBo> {
         msg.put("fromNickname", "Cadmea Framework");
         msg.put("message", "Please , don't reply this email");
 
-        smtpEmailSender.send(to, subject, msg, request.getLocale());
+        smtpEmailSender.send(to, subject, msg);
     }
 
-    /**
-     * try to get a {@link UserSystem} of system by params
-     *
-     * @param email
-     * @param sysId
-     * @return {@link UserSystem} if found
-     */
-    public UserSystem getUserBy(final @NotEmpty String email, final @NotNull Long sysId) {
-        logger.info(" get user by email " + email);
-        final Map<String, Object> params = new HashMap<>();
-        params.put("email", email);
-        params.put("sysId", sysId);
-        return getBo().findByNamedQuery("loginByUsernameAndSystem", params, Result.UNIQUE);
-    }
-
-    /**
-     * try to get a {@link UserSystem} of system by params
-     *
-     * @param email
-     * @return {@link UserSystem} if found
-     */
-    public UserSystem getUserBy(final @NotEmpty String email) {
-        logger.info(" get user by email " + email);
-        final Map<String, Object> params = new HashMap<>();
-        params.put("email", email);
-        return getBo().findByNamedQuery("loginByUsername", params, Result.UNIQUE);
-    }
-
-    /**
-     * create a PasswordResetToken
-     *
-     * @param user
-     * @param token
-     */
-    private void createPasswordResetTokenForUser(final @NotNull UserSystem user, final @NotEmpty String token) {
-        logger.info("create a password reset token for user: " + user.getNickname());
-        final PasswordResetToken passwordResetToken = new PasswordResetToken();
-        passwordResetToken.setToken(token);
-        passwordResetToken.setUser(user);
-        passwordResetToken.setExpiryDate(new Date());
-        passwordResetTokenBo.save(passwordResetToken);
-    }
-
-    /**
-     * @param token
-     * @return {@link PasswordResetToken}
-     */
-    public PasswordResetToken getPasswordResetToken(final @NotEmpty String token) {
-        logger.info(" get Password Reset Token ");
-        return passwordResetTokenBo.getByToken(token);
-    }
 
     /**
      * change the password of user
      */
-    public void changeUserPassword(final @NotEmpty String password) {
+    public void changeUserPassword(final @NotNull UserCreateStc struct) {
         final UserSystem user = (UserSystem) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         logger.info("starting change password for the user:" + user.getNickname());
-        final String hashPassword = passwordEncoder.encode(password);
+        final String hashPassword = passwordEncoder.encode(struct.getPassword());
         user.setPassword(hashPassword);
         getBo().save(user);
     }

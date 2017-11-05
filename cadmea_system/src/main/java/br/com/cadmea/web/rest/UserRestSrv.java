@@ -1,15 +1,15 @@
 package br.com.cadmea.web.rest;
 
-import br.com.cadmea.comuns.util.ValidadorUtil;
-import br.com.cadmea.dto.UserFormDto;
+import br.com.cadmea.dto.UserAuthenticationStc;
+import br.com.cadmea.dto.UserCreateStc;
 import br.com.cadmea.model.orm.PasswordResetToken;
 import br.com.cadmea.model.orm.SocialNetwork;
 import br.com.cadmea.model.orm.UserSystem;
+import br.com.cadmea.spring.pojos.UserAccess;
 import br.com.cadmea.spring.rest.GenericRestService;
 import br.com.cadmea.spring.rest.ServicePath;
-import br.com.cadmea.spring.rest.exceptions.PreConditionRequiredException;
-import br.com.cadmea.spring.security.orm.UserAccess;
 import br.com.cadmea.spring.util.GenericResponse;
+import br.com.cadmea.web.srv.PasswordResetTokenSrv;
 import br.com.cadmea.web.srv.UserSrv;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +24,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.Locale;
 
 /**
@@ -33,21 +34,23 @@ import java.util.Locale;
  */
 @RestController
 @RequestMapping(path = ServicePath.PUBLIC_ROOT_PATH + "/user")
-public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
+public class UserRestSrv extends GenericRestService<UserCreateStc> {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Inject
     private UserSrv userSrv;
 
-    private UserFormDto userDTo;
+    private PasswordResetTokenSrv passwordResetTokenSrv;
+
+    private UserCreateStc userDTo;
 
     @Autowired
     private HttpServletRequest servletRequest;
 
     @Override
     protected void beforeLoadClass() {
-        userDTo = new UserFormDto();
+        userDTo = new UserCreateStc();
     }
 
     @Override
@@ -55,76 +58,44 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
         if (servletRequest.getAttribute("socialNetwork") != null) {
             final SocialNetwork socialNetwork = (SocialNetwork) servletRequest.getAttribute("socialNetwork");
             if (socialNetwork != null) {
-                getViewForm().getEntity().setSocialNetworks(new HashSet<>());
-                getViewForm().getEntity().getSocialNetworks().add(socialNetwork);
+                userDTo.getEntity().setSocialNetworks(Arrays.asList(socialNetwork));
             }
         }
     }
 
     /**
-     * @param formDto
+     * @param struct
      * @return
      */
     @PostMapping(path = "/authentication/")
-    public ResponseEntity<UserAccess> logIn(@RequestBody final UserFormDto formDto) {
+    public ResponseEntity<UserAccess> logIn(@RequestBody final UserAuthenticationStc struct) {
         logger.info("starting logIn service");
-
-        isValidRequest(formDto);
-
-        final String systemName = formDto.getSystemName();
-        final String email = formDto.getEntity().getEmail();
-
-        final UserAccess found = userSrv.authentication(systemName, email);
-
+        final UserAccess found = userSrv.authentication(struct);
         return new ResponseEntity<UserAccess>(found, HttpStatus.OK);
     }
 
+
     /**
-     * check if the {@link UserFormDto} is a valid on request
+     * {Json Response Model}
      *
-     * @param formDto
-     */
-    private void isValidRequest(final UserFormDto formDto) {
-        if (!ValidadorUtil.isValid(formDto) || !ValidadorUtil.isValid(formDto.getEntity())) {
-            throw new PreConditionRequiredException("Invalid Object !");
-        }
-
-        if (!ValidadorUtil.isValid(formDto.getSystemName())) {
-            throw new PreConditionRequiredException("System name is required !");
-        }
-
-        if (!ValidadorUtil.isValid(formDto.getEntity().getEmail())) {
-            throw new PreConditionRequiredException("Username is required !");
-        } else if (!ValidadorUtil.isValidEmail(formDto.getEntity().getEmail())) {
-            throw new PreConditionRequiredException("Email must be valid !");
-        }
-
-        if (!ValidadorUtil.isValid(formDto.getEntity().getPassword())) {
-            throw new PreConditionRequiredException("Password is required !");
-        }
-    }
-
-    /**
-     * @param request
-     * @param userEmail
      * @return
      */
     @PostMapping(path = "/resetPassword")
-    public GenericResponse recoveryPassword(final HttpServletRequest request, @RequestParam("email") final String userEmail) {
-        userSrv.resetPassword(userEmail);
+    public GenericResponse recoveryPassword(final @NotNull UserCreateStc struct) {
+        userSrv.resetPassword(struct);
         return new GenericResponse("recoveryPassword", "");
     }
 
     /**
      * change to the new password
      *
-     * @param password
+     * @param struct
      * @return
      */
     @PostMapping(path = "/savePassword")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public GenericResponse savePassword(@RequestParam("password") final String password) {
-        userSrv.changeUserPassword(password);
+    public GenericResponse savePassword(final @NotNull UserCreateStc struct) {
+        userSrv.changeUserPassword(struct);
         return new GenericResponse("message.resetPasswordSuc", "");
     }
 
@@ -140,7 +111,7 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
     public GenericResponse showChangePasswordPage(final HttpServletRequest request, @RequestParam("id") final long id,
                                                   @RequestParam("token") final String token) {
         final Locale locale = request.getLocale();
-        final PasswordResetToken passToken = userSrv.getPasswordResetToken(token);
+        final PasswordResetToken passToken = passwordResetTokenSrv.getPasswordResetToken(token);
         final UserSystem user = passToken.getUser();
 
         GenericResponse response = new GenericResponse("Ok");
@@ -171,9 +142,5 @@ public class UserRestSrv extends GenericRestService<UserSystem, UserFormDto> {
         return userSrv;
     }
 
-    @Override
-    public UserFormDto getViewForm() {
-        return userDTo;
-    }
 
 }

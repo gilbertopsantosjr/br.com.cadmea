@@ -13,14 +13,15 @@ insert into phone (is_default, pho_number) values (1, '0873404578');
 
 insert into person_member_phone (pes_id, pho_id) values (1, 1);
 
+
 /*
     user: gilbertopsantosjr@gmail.com
     senha: admin
 */
 insert into user_system
-	( usu_dt_expired, usu_dt_register, usu_email, usu_last_visit, usu_nickname, usu_pwd, pes_id, usu_situation, usu_remember, usu_terms)
+	( usu_dt_expired, usu_dt_register, usu_email, usu_last_visit, usu_nickname, usu_pwd, pes_id, usu_situation, usu_remember, usu_terms, usu_favorite_language)
 values
-	( null, current_date(), 'gilbertopsantosjr@gmail.com', current_date(), 'gilbertopsantosjr', '$2a$08$ZlQuc3MkNSWvTh5PdjHZ2uVB34LiSMaI6NT8VI5a8k1PXmtyqxiaq', 1, 1, 0, 1);
+	( null, current_date(), 'gilbertopsantosjr@gmail.com', current_date(), 'gilbertopsantosjr', '$2a$08$ZlQuc3MkNSWvTh5PdjHZ2uVB34LiSMaI6NT8VI5a8k1PXmtyqxiaq', 1, 1, 0, 1, 'pt_br');
 
 
 /* adding Antoly User */
@@ -39,9 +40,9 @@ values
 	( null, current_date(), 'anatoly.slowetzky@gmail.com', current_date(), 'anatoly.slowetzky', '$2a$08$ZlQuc3MkNSWvTh5PdjHZ2uVB34LiSMaI6NT8VI5a8k1PXmtyqxiaq', 2, 1, 0, 1);
 
 /* adding roles  */
-insert into cadmea_user_permission (role) values ('ROLE_ADMIN');
-insert into cadmea_user_permission (role) values ('ROLE_SALES');
-insert into cadmea_user_permission (role) values ('ROLE_MANAGER');
+insert into cadmea_user_permission (role) values ('ROLE_ADMIN'); /* Gilberto */
+insert into cadmea_user_permission (role) values ('ROLE_USER'); /* Mariana */
+insert into cadmea_user_permission (role) values ('ROLE_USER'); /* Anatoly */
 
 /* adding permissino to the role  */
 insert into cadmea_permissions_per_user (per_id, user_id) values (1, 1);

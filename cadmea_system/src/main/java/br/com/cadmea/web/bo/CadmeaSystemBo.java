@@ -21,7 +21,7 @@ public class CadmeaSystemBo extends BaseNegocial<CadmeaSystem> {
 
 
     @Override
-    protected CadmeaSystemDao getDao() {
+    public CadmeaSystemDao getDao() {
         return dao;
     }
 

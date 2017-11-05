@@ -7,14 +7,14 @@ import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author Gilberto Santos
  */
 @Repository
-public class UserDaoImp extends DaoGenericoImp<UserSystem, Long> implements UserDao {
+public class UserDaoImp extends DaoGenericoImp<UserSystem> implements UserDao {
 
     @Inject
     private PermissionDao permissionDao;
@@ -35,7 +35,7 @@ public class UserDaoImp extends DaoGenericoImp<UserSystem, Long> implements User
 
             tmp.setPerson(p);
 
-            tmp.setPermissions(new HashSet<>());
+            tmp.setPermissions(Arrays.asList());
 
             permissionDao.getPermissionsOf(tmp).forEach(permission -> {
                 tmp.getPermissions().add(permission);

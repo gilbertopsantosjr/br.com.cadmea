@@ -24,7 +24,7 @@ public class PasswordResetTokenBo extends BaseNegocial<PasswordResetToken> {
     private PasswordResetTokenDao dao;
 
     @Override
-    protected PasswordResetTokenDao getDao() {
+    public PasswordResetTokenDao getDao() {
         return dao;
     }
 
@@ -39,4 +39,8 @@ public class PasswordResetTokenBo extends BaseNegocial<PasswordResetToken> {
         return getDao().find(params, Result.UNIQUE);
     }
 
+    @Override
+    public void save(final PasswordResetToken entity) {
+        super.save(entity);
+    }
 }

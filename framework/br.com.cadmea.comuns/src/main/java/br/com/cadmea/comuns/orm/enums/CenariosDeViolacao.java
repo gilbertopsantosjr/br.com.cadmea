@@ -1,12 +1,11 @@
 package br.com.cadmea.comuns.orm.enums;
 
 import br.com.cadmea.comuns.orm.DomainElement;
-import br.com.cadmea.comuns.util.Util;
 
 public enum CenariosDeViolacao implements DomainElement {
-	
+
 	/*
-	 * 		{javax.validation.constraints.AssertFalse.message}	=	deve ser falso 
+     * 		{javax.validation.constraints.AssertFalse.message}	=	deve ser falso
 	 * 		{javax.validation.constraints.AssertTrue.message}	=	deve ser verdadeiro
 	 *		{javax.validation.constraints.Digits.message}	=	valor numérico fora dos limites 
 	 *		{javax.validation.constraints.Future.message}	=	deve ser no futuro 
@@ -25,59 +24,59 @@ public enum CenariosDeViolacao implements DomainElement {
 	 *		org.hibernate.validator.constraints.URL.message= deve ser uma URL válida
 	 *		org.hibernate.validator.constraints.CreditCardNumber.message= deve ser um número de cartão de crédito válido
 	 */
-	
-	NAO_PODE_SER_VAZIO(""),
-	NAO_PODE_EXCEDER_TAMANHO_MAXIMO(Util.geraCodigo(Integer.valueOf(Util.generatorNumericCode(3))).toLowerCase()),
-	NAO_PODE_EXCEDER_TAMANHO_MINIMO(Util.geraCodigo(Integer.valueOf(Util.generatorNumericCode(1))).toLowerCase()),
-	NAO_PODE_CONTER_CARACTERES_ESPECIAIS_COM_ACENTUACAO("!@#$%*().çÇáéíóúýÁÉÍÓÚÝàèìòùÀÈÌÒÙãõñäëïöüÿÄËÏÖÜÃÕÑâêîôûÂÊÎÔÛ"),
-	NAO_PODE_CONTER_CARACTERES_ESPECIAIS_EXCETO_ACENTUACAO("!@#$%*()."),
-	NAO_PODE_CONTER_CARACTERES_NUMERICOS("123456789"),
-	NAO_PODE_SER_EM_BRANCO("                                                                                                                                                                                                                                                                                       ");
-	
-	String valor;
-	
-	CenariosDeViolacao(String o){
-		
-		valor = o;
-	}
 
-	@Override
-	public String getDescription() {
-		return valor;
-	}
-	
-	public String getChaveViolacao(){
-		String chave = null;
-		switch (this) {
-			case NAO_PODE_SER_VAZIO:
-				chave = "NotEmpty";
-				break;
-				
-			case NAO_PODE_EXCEDER_TAMANHO_MAXIMO:
-				chave = "Length";
-				break;
-				
-			case NAO_PODE_EXCEDER_TAMANHO_MINIMO:
-				chave = "Length";
-				break;	
-	
-			case NAO_PODE_CONTER_CARACTERES_ESPECIAIS_COM_ACENTUACAO:
-				chave = "Pattern";
-				break;
-				
-			case NAO_PODE_CONTER_CARACTERES_ESPECIAIS_EXCETO_ACENTUACAO:
-				chave = "Pattern";
-				break;
-	
-			case NAO_PODE_CONTER_CARACTERES_NUMERICOS:
-				chave = "Pattern";
-				break;
-				
-			case NAO_PODE_SER_EM_BRANCO:
-				chave = "NotBlank";
-				break;
-		}
-		return chave;
-	}
+    NAO_PODE_SER_VAZIO(""),
+    NAO_PODE_EXCEDER_TAMANHO_MAXIMO("3"),
+    NAO_PODE_EXCEDER_TAMANHO_MINIMO("1"),
+    NAO_PODE_CONTER_CARACTERES_ESPECIAIS_COM_ACENTUACAO("!@#$%*().çÇáéíóúýÁÉÍÓÚÝàèìòùÀÈÌÒÙãõñäëïöüÿÄËÏÖÜÃÕÑâêîôûÂÊÎÔÛ"),
+    NAO_PODE_CONTER_CARACTERES_ESPECIAIS_EXCETO_ACENTUACAO("!@#$%*()."),
+    NAO_PODE_CONTER_CARACTERES_NUMERICOS("123456789"),
+    NAO_PODE_SER_EM_BRANCO("                                                                                                                                                                                                                                                                                       ");
+
+    String valor;
+
+    CenariosDeViolacao(final String o) {
+
+        valor = o;
+    }
+
+    @Override
+    public String getDescription() {
+        return valor;
+    }
+
+    public String getChaveViolacao() {
+        String chave = null;
+        switch (this) {
+            case NAO_PODE_SER_VAZIO:
+                chave = "NotEmpty";
+                break;
+
+            case NAO_PODE_EXCEDER_TAMANHO_MAXIMO:
+                chave = "Length";
+                break;
+
+            case NAO_PODE_EXCEDER_TAMANHO_MINIMO:
+                chave = "Length";
+                break;
+
+            case NAO_PODE_CONTER_CARACTERES_ESPECIAIS_COM_ACENTUACAO:
+                chave = "Pattern";
+                break;
+
+            case NAO_PODE_CONTER_CARACTERES_ESPECIAIS_EXCETO_ACENTUACAO:
+                chave = "Pattern";
+                break;
+
+            case NAO_PODE_CONTER_CARACTERES_NUMERICOS:
+                chave = "Pattern";
+                break;
+
+            case NAO_PODE_SER_EM_BRANCO:
+                chave = "NotBlank";
+                break;
+        }
+        return chave;
+    }
 
 }
