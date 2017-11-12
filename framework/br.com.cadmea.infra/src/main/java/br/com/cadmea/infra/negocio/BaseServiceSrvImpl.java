@@ -1,5 +1,7 @@
 package br.com.cadmea.infra.negocio;
 
+import br.com.cadmea.comuns.dto.Request;
+import br.com.cadmea.comuns.dto.Response;
 import br.com.cadmea.comuns.dto.Structurable;
 import br.com.cadmea.comuns.exceptions.DaoException;
 import br.com.cadmea.comuns.orm.EntityPersistent;
@@ -9,6 +11,7 @@ import br.com.cadmea.comuns.srv.BaseService;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,7 +23,7 @@ import java.util.Map;
  *
  * @version 1.0
  */
-public abstract class BaseServiceSrvImpl<S extends Structurable> implements BaseService<S> {
+public abstract class BaseServiceSrvImpl<R extends Request> implements BaseService {
 
     /**
      * Retorna a instância de BO.
@@ -36,11 +39,29 @@ public abstract class BaseServiceSrvImpl<S extends Structurable> implements Base
      * @param struct
      * @return Serializable
      */
-    @Override
-    public <E extends EntityPersistent> E insert(final S struct) {
+
+    public Response insert(final R struct) {
         struct.validate();
-        final E entity = (E) getBo().insert(struct.getEntity());
-        return entity;
+        final EntityPersistent entity = getBo().insert(struct.getEntity());
+
+        final Response r = new Response() {
+            @Override
+            public List getEntities() {
+                return null;
+            }
+
+            @Override
+            public void setEntity(final EntityPersistent entity) {
+
+            }
+
+            @Override
+            public EntityPersistent getEntity() {
+                return null;
+            }
+        };
+
+        return r;
     }
 
     /**
@@ -50,7 +71,7 @@ public abstract class BaseServiceSrvImpl<S extends Structurable> implements Base
      * @param struct
      */
     @Override
-    public void save(final S struct) {
+    public void save(final R struct) {
         struct.validate();
         getBo().save(struct.getEntity());
     }

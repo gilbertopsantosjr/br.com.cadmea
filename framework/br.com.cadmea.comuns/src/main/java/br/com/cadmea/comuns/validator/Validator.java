@@ -166,6 +166,16 @@ public class Validator {
         }
     }
 
+    /**
+     * @param condictional
+     * @param message
+     */
+    public static void throwIfFail(final Boolean condictional, final String message) {
+        if (condictional) {
+            throw new SystemException(String.format(message));
+        }
+    }
+
     public static void failIfAnyExceptionsFound() {
         if (getInstance().exceptions.size() > 0) {
             throw new SystemException(getInstance().exceptions);

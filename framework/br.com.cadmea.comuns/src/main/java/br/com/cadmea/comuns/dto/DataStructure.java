@@ -5,7 +5,7 @@ import br.com.cadmea.comuns.orm.EntityPersistent;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class DataStructure<E extends EntityPersistent> implements Structurable<E> {
+public abstract class DataStructure<E extends EntityPersistent> implements Request<E> {
 
 
     private E entity;

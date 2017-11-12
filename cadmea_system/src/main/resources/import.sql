@@ -1,4 +1,6 @@
 
+ALTER DATABASE cadmea CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+
 insert into country (cou_code, cou_language,cou_name) values ('55','pt_br','Brasil');
 insert into country (cou_code, cou_language,cou_name) values ('353','en_UK','Ireland');
 

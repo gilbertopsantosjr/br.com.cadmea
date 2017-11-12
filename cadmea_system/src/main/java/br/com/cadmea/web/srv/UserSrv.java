@@ -6,8 +6,8 @@ package br.com.cadmea.web.srv;
 import br.com.cadmea.comuns.orm.enums.Situation;
 import br.com.cadmea.comuns.util.DateUtil;
 import br.com.cadmea.comuns.validator.Validator;
-import br.com.cadmea.dto.UserAuthenticationStc;
-import br.com.cadmea.dto.UserCreateStc;
+import br.com.cadmea.dto.user.UserSystemRequest;
+import br.com.cadmea.dto.user.UserSystemResponse;
 import br.com.cadmea.infra.negocio.BaseServiceSrvImpl;
 import br.com.cadmea.model.orm.CadmeaSystem;
 import br.com.cadmea.model.orm.UserSystem;
@@ -37,7 +37,7 @@ import java.util.UUID;
  * sendo uma layer para validar, nao permitindo chegar objetos invalidos ate o negocio
  */
 @Service
-public class UserSrv extends BaseServiceSrvImpl<UserCreateStc> {
+public class UserSrv extends BaseServiceSrvImpl<UserSystemRequest> {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -73,8 +73,9 @@ public class UserSrv extends BaseServiceSrvImpl<UserCreateStc> {
      * @param struct
      * @return
      */
+
     @Override
-    public UserSystem insert(final @NotNull UserCreateStc struct) {
+    public UserSystemResponse insert(final @NotNull UserSystemRequest struct) {
         logger.info(" save userSystem entity ");
 
         struct.validate();
@@ -88,7 +89,13 @@ public class UserSrv extends BaseServiceSrvImpl<UserCreateStc> {
         struct.getEntity().setSituation(Situation.DISABLE);
         struct.getEntity().setLastVisit(DateUtil.getDate());
 
-        return getBo().insert(struct.getEntity());
+        final UserSystem userSystem = getBo().insert(struct.getEntity());
+        Validator.throwIfFail(userSystem == null, "user.not.allow.in.system");
+
+        final UserSystemResponse response = new UserSystemResponse();
+        response.setEntity(userSystem);
+
+        return response;
     }
 
 
@@ -98,17 +105,16 @@ public class UserSrv extends BaseServiceSrvImpl<UserCreateStc> {
      * @param struct
      * @return {@link UserAccess}
      */
-    public UserAccess authentication(final @NotNull UserAuthenticationStc struct) {
+    public UserAccess authentication(final @NotNull UserSystemRequest struct) {
         logger.info("starting authentication of user ");
 
         struct.validate();
 
         final CadmeaSystem cadmeaSystem = cadmeaSystemSrv.findBy(struct.getSystemName());
-        Validator.assertNotNull(cadmeaSystem, "system.not.found");
-        Validator.failIfAnyExceptionsFound();
+        Validator.throwIfFail(cadmeaSystem == null, "system.not.found");
 
-        final UserSystem userSystem = getBo().getUserBy(struct.getUsername(), cadmeaSystem.getId());
-        Validator.assertNotNull(userSystem, "user.not.allow.in.system");
+        final UserSystem userSystem = getBo().getUserBy(struct.getEmail(), cadmeaSystem.getId());
+        Validator.throwIfFail(userSystem == null, "user.not.allow.in.system");
 
         //TODO adding custom SQL to get a person' name without anything else
         final UserAccess userAccess = new UserAccess(userSystem.getPerson().getName());
@@ -129,7 +135,7 @@ public class UserSrv extends BaseServiceSrvImpl<UserCreateStc> {
     }
 
 
-    public void resetPassword(final @NotNull UserCreateStc struct) {
+    public void resetPassword(final @NotNull UserSystemRequest struct) {
         logger.info("starting recoveryPassword service for:" + struct.getEmail());
 
         final UserSystem user = getBo().getUserBy(struct.getEmail());
@@ -161,7 +167,7 @@ public class UserSrv extends BaseServiceSrvImpl<UserCreateStc> {
     /**
      * change the password of user
      */
-    public void changeUserPassword(final @NotNull UserCreateStc struct) {
+    public void changeUserPassword(final @NotNull UserSystemRequest struct) {
         final UserSystem user = (UserSystem) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         logger.info("starting change password for the user:" + user.getNickname());
         final String hashPassword = passwordEncoder.encode(struct.getPassword());

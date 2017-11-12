@@ -1,9 +1,9 @@
 /**
  *
  */
-package br.com.cadmea.dto;
+package br.com.cadmea.dto.user;
 
-import br.com.cadmea.comuns.dto.Structurable;
+import br.com.cadmea.comuns.dto.Request;
 import br.com.cadmea.comuns.validator.Validator;
 import br.com.cadmea.model.orm.UserSystem;
 import lombok.Data;
@@ -12,7 +12,7 @@ import lombok.Data;
  * @author Gilberto Santos
  */
 @Data
-public class UserCreateStc implements Structurable<UserSystem> {
+public class UserSystemRequest implements Request<UserSystem> {
 
     private String systemName;
     private String url;
@@ -38,7 +38,7 @@ public class UserCreateStc implements Structurable<UserSystem> {
     }
 
     /**
-     * check if the {@link UserCreateStc} is a valid on request
+     * check if the {@link UserSystemRequest} is a valid on request
      */
     @Override
     public void validate() {

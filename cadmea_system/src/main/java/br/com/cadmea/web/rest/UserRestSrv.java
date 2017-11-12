@@ -1,7 +1,6 @@
 package br.com.cadmea.web.rest;
 
-import br.com.cadmea.dto.UserAuthenticationStc;
-import br.com.cadmea.dto.UserCreateStc;
+import br.com.cadmea.dto.user.UserSystemRequest;
 import br.com.cadmea.model.orm.PasswordResetToken;
 import br.com.cadmea.model.orm.SocialNetwork;
 import br.com.cadmea.model.orm.UserSystem;
@@ -34,7 +33,7 @@ import java.util.Locale;
  */
 @RestController
 @RequestMapping(path = ServicePath.PUBLIC_ROOT_PATH + "/user")
-public class UserRestSrv extends GenericRestService<UserCreateStc> {
+public class UserRestSrv extends GenericRestService<UserSystemRequest> {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -43,14 +42,14 @@ public class UserRestSrv extends GenericRestService<UserCreateStc> {
 
     private PasswordResetTokenSrv passwordResetTokenSrv;
 
-    private UserCreateStc userDTo;
+    private UserSystemRequest userDTo;
 
     @Autowired
     private HttpServletRequest servletRequest;
 
     @Override
     protected void beforeLoadClass() {
-        userDTo = new UserCreateStc();
+        userDTo = new UserSystemRequest();
     }
 
     @Override
@@ -68,7 +67,7 @@ public class UserRestSrv extends GenericRestService<UserCreateStc> {
      * @return
      */
     @PostMapping(path = "/authentication/")
-    public ResponseEntity<UserAccess> logIn(@RequestBody final UserAuthenticationStc struct) {
+    public ResponseEntity<UserAccess> logIn(@RequestBody final UserSystemRequest struct) {
         logger.info("starting logIn service");
         final UserAccess found = userSrv.authentication(struct);
         return new ResponseEntity<UserAccess>(found, HttpStatus.OK);
@@ -81,7 +80,7 @@ public class UserRestSrv extends GenericRestService<UserCreateStc> {
      * @return
      */
     @PostMapping(path = "/resetPassword")
-    public GenericResponse recoveryPassword(final @NotNull UserCreateStc struct) {
+    public GenericResponse recoveryPassword(final @NotNull UserSystemRequest struct) {
         userSrv.resetPassword(struct);
         return new GenericResponse("recoveryPassword", "");
     }
@@ -94,7 +93,7 @@ public class UserRestSrv extends GenericRestService<UserCreateStc> {
      */
     @PostMapping(path = "/savePassword")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public GenericResponse savePassword(final @NotNull UserCreateStc struct) {
+    public GenericResponse savePassword(final @NotNull UserSystemRequest struct) {
         userSrv.changeUserPassword(struct);
         return new GenericResponse("message.resetPasswordSuc", "");
     }

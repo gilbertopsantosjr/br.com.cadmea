@@ -6,7 +6,7 @@ package br.com.cadmea.web.rest;
 import br.com.cadmea.comuns.exceptions.BusinessException;
 import br.com.cadmea.comuns.util.ValidatorUtil;
 import br.com.cadmea.dto.SocialNetworkStruct;
-import br.com.cadmea.dto.UserCreateStc;
+import br.com.cadmea.dto.user.UserSystemRequest;
 import br.com.cadmea.model.orm.Person;
 import br.com.cadmea.model.orm.SocialNetwork;
 import br.com.cadmea.model.orm.UserSystem;
@@ -117,7 +117,7 @@ public class FacebookController {
 
         socialNetwork.setUserSystem(userSystem);
 
-        final UserCreateStc body = new UserCreateStc();
+        final UserSystemRequest body = new UserSystemRequest();
         //body.setEntity(userSystem);
 
         final SocialNetworkStruct socialNetworkStruct = new SocialNetworkStruct();
@@ -125,13 +125,13 @@ public class FacebookController {
 
         socialNetworkSrv.save(socialNetworkStruct);
 
-        final HttpEntity<UserCreateStc> request = new HttpEntity<UserCreateStc>(body, headers);
+        final HttpEntity<UserSystemRequest> request = new HttpEntity<UserSystemRequest>(body, headers);
 
         final URI uri = new URI(servletRequest.getAttribute("contextPath") + ":" + servletRequest.getServerPort() + "/api/public/user/authentication/");
 
         // call the REST Service and get response 
         final RestTemplate rest = new RestTemplate();
-        final ResponseEntity<UserCreateStc> response = rest.postForEntity(uri, request, UserCreateStc.class);
+        final ResponseEntity<UserSystemRequest> response = rest.postForEntity(uri, request, UserSystemRequest.class);
         response.getBody().setPictureProfile(socialNetwork.getPictureProfile());
         response.getBody().getEntity().setEmail(userProfile.getEmail());
 

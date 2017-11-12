@@ -5,7 +5,7 @@ import br.com.cadmea.comuns.orm.enums.Gender;
 import br.com.cadmea.comuns.orm.enums.Relationship;
 import br.com.cadmea.comuns.orm.enums.Situation;
 import br.com.cadmea.comuns.util.DateUtil;
-import br.com.cadmea.dto.UserCreateStc;
+import br.com.cadmea.dto.user.UserSystemRequest;
 import br.com.cadmea.model.orm.Permission;
 import br.com.cadmea.model.orm.Person;
 import br.com.cadmea.model.orm.UserSystem;
@@ -55,7 +55,7 @@ public class TestUserRestSrv extends AbstractTestUnit {
         entity.setPerson(person);
         entity.setPermissions(Arrays.asList(permission));
 
-        final UserCreateStc userDto = new UserCreateStc();
+        final UserSystemRequest userDto = new UserSystemRequest();
 
 
         final String jsonString = fromGson().toJson(userDto);
@@ -98,9 +98,9 @@ public class TestUserRestSrv extends AbstractTestUnit {
                 .andReturn().getResponse().getContentAsString();
 
         assertTrue(!json.isEmpty());
-        UserCreateStc userDto = null;
+        UserSystemRequest userDto = null;
 
-        userDto = fromGson().fromJson(json, UserCreateStc.class);
+        userDto = fromGson().fromJson(json, UserSystemRequest.class);
 
         assertTrue(userDto != null);
 

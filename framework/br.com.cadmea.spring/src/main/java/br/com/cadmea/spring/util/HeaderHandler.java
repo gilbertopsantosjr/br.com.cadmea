@@ -29,6 +29,10 @@ public class HeaderHandler implements LogoutSuccessHandler, Filter {
             throws IOException, ServletException {
         final HttpServletResponse response = (HttpServletResponse) servletResponse;
 
+        servletRequest.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        
         injectHeaders(response);
 
         filterChain.doFilter(servletRequest, servletResponse);

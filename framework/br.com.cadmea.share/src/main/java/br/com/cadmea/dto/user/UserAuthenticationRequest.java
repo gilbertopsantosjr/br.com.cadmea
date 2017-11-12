@@ -1,12 +1,12 @@
-package br.com.cadmea.dto;
+package br.com.cadmea.dto.user;
 
-import br.com.cadmea.comuns.dto.Structurable;
+import br.com.cadmea.comuns.dto.Request;
 import br.com.cadmea.comuns.validator.Validator;
 import br.com.cadmea.model.orm.UserSystem;
 import lombok.Data;
 
 @Data
-public class UserAuthenticationStc implements Structurable<UserSystem> {
+public class UserAuthenticationRequest implements Request<UserSystem> {
 
     private String systemName;
     private String username;
