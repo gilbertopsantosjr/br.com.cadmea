@@ -9,10 +9,7 @@ import br.com.cadmea.comuns.orm.enums.Result;
 import br.com.cadmea.comuns.srv.BaseService;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * A layer Service receive an structure {@link Structurable} from a request
@@ -33,138 +30,141 @@ public abstract class BaseServiceSrvImpl<R extends Request> implements BaseServi
     protected abstract <B extends BaseNegocial<EntityPersistent>> B getBo();
 
     /**
-     * validate the Entity
-     * inset a new Entity
-     *
-     * @param struct
-     * @return Serializable
+     * Generic Reponse
      */
+    private final Response response = new Response() {
+        private EntityPersistent entity;
+        private final List<EntityPersistent> entities = Collections.emptyList();
 
-    public Response insert(final R struct) {
+        @Override
+        public void setEntity(final EntityPersistent entity) {
+            this.entity = entity;
+        }
+
+        @Override
+        public EntityPersistent getEntity() {
+            return entity;
+        }
+
+        @Override
+        public List<EntityPersistent> getEntities() {
+            return entities;
+        }
+
+        @Override
+        public void clear() {
+            entity = null;
+            entities.clear();
+        }
+    };
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Response insert(final Request struct) {
         struct.validate();
         final EntityPersistent entity = getBo().insert(struct.getEntity());
-
-        final Response r = new Response() {
-            @Override
-            public List getEntities() {
-                return null;
-            }
-
-            @Override
-            public void setEntity(final EntityPersistent entity) {
-
-            }
-
-            @Override
-            public EntityPersistent getEntity() {
-                return null;
-            }
-        };
-
-        return r;
+        response.clear();
+        response.setEntity(entity);
+        return response;
     }
 
     /**
-     * persiste (cria ou alterar uma existente) uma nova entidade e limpa o
-     * estado para repetir o processo
-     *
-     * @param struct
+     * {@inheritDoc}
      */
     @Override
-    public void save(final R struct) {
+    public void save(final Request struct) {
         struct.validate();
         getBo().save(struct.getEntity());
     }
 
 
     /**
-     * remove fisicamente uma entidade
-     *
-     * @param struct
+     * {@inheritDoc}
      */
     @Override
-    public void remove(final S struct) {
+    public void remove(final Request struct) {
         struct.validate();
         getBo().remove(struct.getEntity());
     }
 
 
     /**
-     * obtem uma entidade pelo seu identificador natural id
-     *
-     * @param identificador
-     * @return E
+     * {@inheritDoc}
      */
     @Override
-    public <E extends EntityPersistent> E find(final Serializable identificador) {
-        return (E) getBo().find(identificador);
+    public Response find(final Serializable identificador) {
+        final EntityPersistent entity = getBo().find(identificador);
+        response.clear();
+        response.setEntity(entity);
+        return response;
     }
 
     /**
-     * obtem uma entidade conforme os parametros de entrada
-     *
-     * @param params exemplo <code> params.put("nomeDaVariavel", objetoDeValor); </code>
-     * @return E
+     * {@inheritDoc}
      */
     @Override
-    public Collection<EntityPersistent> find(final Map<String, Object> params) {
-        return getBo().find(params);
+    public Response find(final Map<String, Object> params) {
+        final Collection<EntityPersistent> entities = getBo().find(params);
+        response.clear();
+        response.getEntities().addAll(entities);
+        return response;
     }
 
     /**
-     * obtem uma coleção de entidades conforme os parametros de entrada <br/>
-     *
-     * @param params exemplo <code> params.put("nomeDaVariavel", objetoDeValor); </code>
-     * @return Collection<E>
+     * {@inheritDoc}
      */
     @Override
-    public <E extends EntityPersistent> E find(final Map<String, Object> params, final Result res) {
-        return (E) getBo().find(params, res);
+    public Response find(final Map<String, Object> params, final Result res) {
+        final EntityPersistent entity = getBo().find(params, res);
+        response.clear();
+        response.setEntity(entity);
+        return response;
     }
 
     /**
-     * find only one entity by propName
-     *
-     * @param propNome
-     * @param valor
-     * @return E
+     * {@inheritDoc}
      */
-    public <E extends EntityPersistent> E find(final String propNome, final Object valor) {
+    public Response find(final String propNome, final Object valor) {
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put(propNome, valor);
-        return (E) getBo().find(params, Result.UNIQUE);
+        final EntityPersistent entity = getBo().find(params, Result.UNIQUE);
+        response.clear();
+        response.setEntity(entity);
+        return response;
     }
 
     /**
-     * @param namedQuery
-     * @param parameters
-     * @return
-     * @throws DaoException
+     * {@inheritDoc}
      */
-    public Collection<EntityPersistent> find(final String namedQuery, final Map<String, Object> parameters) throws DaoException {
-        return getBo().findByNamedQuery(namedQuery, parameters);
+    public Response find(final String namedQuery, final Map<String, Object> parameters) throws DaoException {
+        final Collection<EntityPersistent> entities = getBo().findByNamedQuery(namedQuery, parameters);
+        response.clear();
+        response.getEntities().addAll(entities);
+        return response;
     }
 
     /**
-     * obtem todos instancias persistidas para entidade E
-     * retorna todos objetos da entidade
-     *
-     * @return Collection<E>
-     */
-    @Override
-    public Collection<EntityPersistent> listAll() {
-        return getBo().findAll();
-    }
-
-    /**
-     * obtem todos instancias persistidas para entidade E retorna todos objetos
-     * da entidade
-     *
-     * @return Collection<E>
+     * {@inheritDoc}
      */
     @Override
-    public Collection<EntityPersistent> listAll(final Map<String, Object> params, final int de, final int ate) {
-        return getBo().findAll(de, ate);
+    public Response listAll() {
+        final Collection<EntityPersistent> entities = getBo().findAll();
+        response.clear();
+        response.getEntities().addAll(entities);
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Response listAll(final Map<String, Object> params, final int de, final int ate) {
+        final Collection<EntityPersistent> entities = getBo().findAll(de, ate);
+        response.clear();
+        response.getEntities().addAll(entities);
+        return response;
     }
 
 

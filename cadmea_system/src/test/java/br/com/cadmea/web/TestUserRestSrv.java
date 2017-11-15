@@ -1,6 +1,7 @@
 package br.com.cadmea.web;
 
 import br.com.cadmea.comuns.clazz.ProjectStage;
+import br.com.cadmea.comuns.dto.GenericResponse;
 import br.com.cadmea.comuns.orm.enums.Gender;
 import br.com.cadmea.comuns.orm.enums.Relationship;
 import br.com.cadmea.comuns.orm.enums.Situation;
@@ -9,7 +10,6 @@ import br.com.cadmea.dto.user.UserSystemRequest;
 import br.com.cadmea.model.orm.Permission;
 import br.com.cadmea.model.orm.Person;
 import br.com.cadmea.model.orm.UserSystem;
-import br.com.cadmea.spring.util.GenericResponse;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;

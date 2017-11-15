@@ -21,6 +21,6 @@ public interface ServiceMap<E extends Structurable> {
 
     String OBJID = "objId";
 
-    BaseService<E> getService();
+    BaseService getService();
 
 }

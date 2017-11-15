@@ -73,7 +73,6 @@ public class UserSrv extends BaseServiceSrvImpl<UserSystemRequest> {
      * @param struct
      * @return
      */
-
     @Override
     public UserSystemResponse insert(final @NotNull UserSystemRequest struct) {
         logger.info(" save userSystem entity ");
@@ -174,5 +173,6 @@ public class UserSrv extends BaseServiceSrvImpl<UserSystemRequest> {
         user.setPassword(hashPassword);
         getBo().save(user);
     }
+
 
 }

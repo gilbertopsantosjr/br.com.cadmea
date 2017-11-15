@@ -6,6 +6,7 @@ import br.com.cadmea.comuns.util.ValidatorUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 public class Validator {
 
@@ -23,7 +24,17 @@ public class Validator {
 
     private final List<SystemException> exceptions = new ArrayList<>();
 
+    private Locale locale;
+
     private Validator() {
+        locale = Locale.UK;
+    }
+
+    /**
+     * @param locale
+     */
+    public void addLocale(final String locale) {
+        getInstance().locale = new Locale(locale);
     }
 
     /**
@@ -35,61 +46,137 @@ public class Validator {
         getInstance().addExceptionIfFalse(a != null && b != null && a.compareTo(b) <= 0, message, params);
     }
 
+    /**
+     * @param email
+     */
     public static void assertEmailValid(final String email) {
         getInstance().addExceptionIfFalse(ValidatorUtil.isValidEmail(email), "Email doesn't look good. ", new String[]{email});
     }
 
+    /**
+     * @param a
+     * @param b
+     * @param message
+     * @param params
+     */
     public static void assertNotIn(final Object a, final Collection<?> b, final String message, final Object... params) {
         getInstance().addExceptionIfFalse(b != null && !b.contains(a), message, params);
     }
 
+    /**
+     * @param a
+     * @param b
+     * @param message
+     * @param params
+     */
     public static void assertIn(final Object a, final Collection<?> b, final String message, final Object... params) {
         getInstance().addExceptionIfFalse(b != null && b.contains(a), message, params);
     }
 
+    /**
+     * @param array
+     * @param minSize
+     * @param message
+     * @param params
+     */
     public static void assertMinSize(final Object[] array, final int minSize, final String message, final Object... params) {
         getInstance().addExceptionIfFalse(array != null && array.length >= minSize, message, params);
     }
 
+    /**
+     * @param toCheck
+     * @param minSize
+     * @param message
+     * @param params
+     */
     public static void assertMinSize(final Collection toCheck, final int minSize, final String message,
                                      final Object... params) {
         getInstance().addExceptionIfFalse(toCheck != null && toCheck.size() >= minSize, message, params);
     }
 
+    /**
+     * @param toCheck
+     * @param maxSize
+     * @param message
+     * @param params
+     */
     public static void assertMaxSize(final Collection toCheck, final int maxSize, final String message, final Object... params) {
         getInstance().addExceptionIfFalse(toCheck != null && toCheck.size() <= maxSize, message, params);
     }
 
+    /**
+     * @param a
+     * @param b
+     * @param message
+     * @param params
+     */
     public static void assertEquals(final Object a, final Object b, final String message, final Object... params) {
         getInstance().addExceptionIfFalse(ValidatorUtil.equals(a, b), message, params);
     }
 
+    /**
+     * @param a
+     * @param b
+     * @param message
+     * @param params
+     */
     public static void assertNotEquals(final Object a, final Object b, final String message, final Object... params) {
         getInstance().addExceptionIfFalse(!ValidatorUtil.equals(a, b), message, params);
     }
 
+    /**
+     * @param toCheck
+     * @param message
+     * @param params
+     */
     public static void assertTrue(final Boolean toCheck, final String message, final Object... params) {
         getInstance().addExceptionIfFalse(toCheck != null && toCheck, message, params);
     }
 
+    /**
+     * @param value
+     * @param message
+     * @param params
+     */
     public static void assertNotNull(final Object value, final String message, final Object... params) {
         getInstance().addExceptionIfFalse(value != null, message, params);
     }
 
+    /**
+     * @param value
+     * @param message
+     * @param params
+     */
     public static void assertNull(final Object value, final String message, final Object... params) {
         getInstance().addExceptionIfFalse(value == null, message, params);
     }
 
+    /**
+     * @param value
+     * @param message
+     * @param params
+     */
     public static void assertNotBlank(final String value, final String message, final Object... params) {
         getInstance().addExceptionIfFalse(ValidatorUtil.isNotBlank(value), message, params);
     }
 
 
+    /**
+     * @param message
+     * @param params
+     * @param <T>
+     * @return
+     */
     public static <T> T throwException(final String message, final Object... params) {
         getInstance().addExceptionIfFalse(false, message, params);
         return null;
     }
 
+    /**
+     * @param toCheck
+     * @param message
+     * @param params
+     */
     public static void assertFalse(final Boolean toCheck, final String message, final Object... params) {
         getInstance().addExceptionIfFalse(toCheck != null && !toCheck, message, params);
     }
@@ -159,9 +246,14 @@ public class Validator {
         getInstance().addExceptionIfFalse(id.matches(DB_ID_PATTERN), message, params);
     }
 
+    /**
+     * @param asserted
+     * @param message
+     * @param params
+     */
     private void addExceptionIfFalse(final boolean asserted, final String message, final Object[] params) {
         if (!asserted) {
-            final SystemException e = new SystemException(String.format(message, params));
+            final SystemException e = new SystemException(String.format(message, params), getInstance().locale);
             exceptions.add(e);
         }
     }
@@ -172,7 +264,7 @@ public class Validator {
      */
     public static void throwIfFail(final Boolean condictional, final String message) {
         if (condictional) {
-            throw new SystemException(String.format(message));
+            throw new SystemException(String.format(message), getInstance().locale);
         }
     }
 

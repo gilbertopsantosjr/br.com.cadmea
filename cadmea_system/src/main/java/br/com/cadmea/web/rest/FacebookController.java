@@ -5,7 +5,7 @@ package br.com.cadmea.web.rest;
 
 import br.com.cadmea.comuns.exceptions.BusinessException;
 import br.com.cadmea.comuns.util.ValidatorUtil;
-import br.com.cadmea.dto.SocialNetworkStruct;
+import br.com.cadmea.dto.SocialNetworkRequest;
 import br.com.cadmea.dto.user.UserSystemRequest;
 import br.com.cadmea.model.orm.Person;
 import br.com.cadmea.model.orm.SocialNetwork;
@@ -120,7 +120,7 @@ public class FacebookController {
         final UserSystemRequest body = new UserSystemRequest();
         //body.setEntity(userSystem);
 
-        final SocialNetworkStruct socialNetworkStruct = new SocialNetworkStruct();
+        final SocialNetworkRequest socialNetworkStruct = new SocialNetworkRequest();
         //socialNetworkStruct.setEntity(socialNetwork);
 
         socialNetworkSrv.save(socialNetworkStruct);

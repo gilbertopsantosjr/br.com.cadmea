@@ -23,6 +23,8 @@ public class UserSystemRequest implements Request<UserSystem> {
     private String nickname;
     private Boolean readTerms;
 
+    private String locale;
+
     /**
      * here we set the values defines by the user
      *

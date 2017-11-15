@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 public interface Request<E extends EntityPersistent> extends Structurable<E> {
 
-
     /**
      * validates user' inputs
      *
@@ -20,6 +19,10 @@ public interface Request<E extends EntityPersistent> extends Structurable<E> {
      */
     @JsonIgnore
     void validate();
+
+
+    @JsonIgnore
+    String getLocale();
 
 
 }

@@ -4,7 +4,7 @@
 package br.com.cadmea.web.srv;
 
 import br.com.cadmea.comuns.orm.enums.Result;
-import br.com.cadmea.dto.SocialNetworkStruct;
+import br.com.cadmea.dto.SocialNetworkRequest;
 import br.com.cadmea.infra.negocio.BaseServiceSrvImpl;
 import br.com.cadmea.model.orm.SocialNetwork;
 import br.com.cadmea.web.bo.SocialNetworkBo;
@@ -17,7 +17,7 @@ import javax.inject.Inject;
  * @author Gilberto Santos
  */
 @Service
-public class SocialNetworkSrv extends BaseServiceSrvImpl<SocialNetworkStruct> {
+public class SocialNetworkSrv extends BaseServiceSrvImpl<SocialNetworkRequest> {
 
     @Inject
     private SocialNetworkBo bo;

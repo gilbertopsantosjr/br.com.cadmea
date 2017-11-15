@@ -1,6 +1,7 @@
 package br.com.cadmea.spring.rest;
 
-import br.com.cadmea.comuns.dto.DataStructure;
+import br.com.cadmea.comuns.dto.Request;
+import br.com.cadmea.comuns.dto.Response;
 import br.com.cadmea.comuns.dto.Structurable;
 import br.com.cadmea.comuns.exceptions.BusinessException;
 import br.com.cadmea.comuns.orm.EntityPersistent;
@@ -66,7 +67,7 @@ public abstract class GenericRestService<S extends Structurable<? extends Entity
      * @return ResponseEntity<Void> Rest.Status.Ok
      */
     @PostMapping(path = "/create")
-    protected ResponseEntity<Void> create(@RequestBody final S struct) {
+    protected ResponseEntity<Void> create(@RequestBody final Request struct) {
         logger.info("create an entity:" + struct.getEntity().getClass().getSimpleName());
 
         try {
@@ -101,7 +102,7 @@ public abstract class GenericRestService<S extends Structurable<? extends Entity
      * @return ResponseEntity<E> the entity up to date Rest.Status.Ok
      */
     @PutMapping(path = "/update")
-    protected ResponseEntity<S> update(@RequestBody final S struct) {
+    protected ResponseEntity<S> update(@RequestBody final Request struct) {
         verifyIfEntityExists(struct.getEntity().getId());
         logger.info("update an entity:" + struct.getEntity());
 
@@ -113,7 +114,7 @@ public abstract class GenericRestService<S extends Structurable<? extends Entity
             throw c;
         }
 
-        return new ResponseEntity<S>(struct, HttpStatus.OK);
+        return new ResponseEntity<Response>(struct, HttpStatus.OK);
     }
 
     /**

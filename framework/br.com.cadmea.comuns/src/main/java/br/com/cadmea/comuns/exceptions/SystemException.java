@@ -30,9 +30,18 @@ public class SystemException extends RuntimeException {
     /**
      * Cria o objeto e atribui a mensagem da exceção.
      *
-     * @param mensagem Mensagem da exceção
+     * @param _chave Mensagem da exceção
      */
     public SystemException(final String _chave) {
+        super(_chave);
+    }
+
+    /**
+     * @param _chave
+     * @param locale
+     */
+    public SystemException(final String _chave, final Locale locale) {
+        //TODO load messages properties with locale
         super(_chave);
     }
 
@@ -55,21 +64,5 @@ public class SystemException extends RuntimeException {
         super(causa);
     }
 
-
-    public List<String> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(final List<String> messages) {
-        this.messages = messages;
-    }
-
-    public Locale getLocale() {
-        return locale;
-    }
-
-    public void setLocale(final Locale locale) {
-        this.locale = locale;
-    }
 
 }

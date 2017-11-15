@@ -1,6 +1,6 @@
 package br.com.cadmea.web.srv;
 
-import br.com.cadmea.dto.PasswordResetTokenStruct;
+import br.com.cadmea.dto.PasswordResetTokenRequest;
 import br.com.cadmea.infra.negocio.BaseServiceSrvImpl;
 import br.com.cadmea.model.orm.PasswordResetToken;
 import br.com.cadmea.model.orm.UserSystem;
@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Service
-public class PasswordResetTokenSrv extends BaseServiceSrvImpl<PasswordResetTokenStruct> {
+public class PasswordResetTokenSrv extends BaseServiceSrvImpl<PasswordResetTokenRequest> {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 

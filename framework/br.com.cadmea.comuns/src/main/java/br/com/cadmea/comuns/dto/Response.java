@@ -21,4 +21,9 @@ public interface Response<E extends EntityPersistent> extends Structurable<E> {
      */
     @JsonIgnore
     void setEntity(E entity);
+
+    /**
+     * clear any data into Response
+     */
+    void clear();
 }

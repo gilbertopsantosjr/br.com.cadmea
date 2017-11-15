@@ -24,4 +24,9 @@ public class UserAuthenticationRequest implements Request<UserSystem> {
         Validator.assertNotBlank(getPassword(), "password is required !");
         Validator.failIfAnyExceptionsFound();
     }
+
+    @Override
+    public String getLocale() {
+        return null;
+    }
 }

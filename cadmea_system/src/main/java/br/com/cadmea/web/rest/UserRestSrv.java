@@ -1,5 +1,6 @@
 package br.com.cadmea.web.rest;
 
+import br.com.cadmea.comuns.dto.GenericResponse;
 import br.com.cadmea.dto.user.UserSystemRequest;
 import br.com.cadmea.model.orm.PasswordResetToken;
 import br.com.cadmea.model.orm.SocialNetwork;
@@ -7,7 +8,6 @@ import br.com.cadmea.model.orm.UserSystem;
 import br.com.cadmea.spring.pojos.UserAccess;
 import br.com.cadmea.spring.rest.GenericRestService;
 import br.com.cadmea.spring.rest.ServicePath;
-import br.com.cadmea.spring.util.GenericResponse;
 import br.com.cadmea.web.srv.PasswordResetTokenSrv;
 import br.com.cadmea.web.srv.UserSrv;
 import org.slf4j.Logger;

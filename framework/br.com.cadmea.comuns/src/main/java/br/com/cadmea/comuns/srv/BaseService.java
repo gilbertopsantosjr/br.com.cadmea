@@ -5,7 +5,6 @@ import br.com.cadmea.comuns.dto.Response;
 import br.com.cadmea.comuns.orm.enums.Result;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -16,26 +15,26 @@ public interface BaseService {
 
 
     /**
-     * insere um registro e devolve sua referencia
+     * insert a new Record based on Request and return a Response
      *
-     * @param structure
-     * @return Serializable
+     * @param {@link Request}
+     * @return {@link Response}
      */
-    <R extends Request> Response insert(R structure);
+    Response insert(Request structure);
 
     /**
      * persiste (cria ou alterar uma existente) uma nova structure e limpa o estado para repetir o processo
      *
      * @param structure
      */
-    <R extends Request> void save(R structure);
+    void save(Request structure);
 
     /**
      * remove fisicamente uma structure
      *
      * @param structure
      */
-    <R extends Request> void remove(R structure);
+    void remove(Request structure);
 
     /**
      * obtem uma structure pelo seu identificador natural id
@@ -43,7 +42,7 @@ public interface BaseService {
      * @param id
      * @return E
      */
-    <E extends Response> E find(Serializable id);
+    Response find(Serializable id);
 
     /**
      * obtem uma structure conforme os parametros de entrada
@@ -51,7 +50,7 @@ public interface BaseService {
      * @param params exemplo <code> params.put("nomeDaVariavel", objetoDeValor); </code>
      * @return E
      */
-    <E extends Response> E find(Map<String, Object> params, Result res);
+    Response find(Map<String, Object> params, Result res);
 
     /**
      * obtem uma coleção de entidades conforme os parametros de entrada <br/>
@@ -59,7 +58,7 @@ public interface BaseService {
      * @param params exemplo <code> params.put("nomeDaVariavel", objetoDeValor); </code>
      * @return Collection<E>
      */
-    Collection<? extends Response> find(Map<String, Object> params);
+    Response find(Map<String, Object> params);
 
     /**
      * obtem todos instancias persistidas para structure E
@@ -67,7 +66,7 @@ public interface BaseService {
      *
      * @return Collection<E>
      */
-    Collection<? extends Response> listAll();
+    Response listAll();
 
     /**
      * obtem todos instancias persistidas para structure E
@@ -77,7 +76,7 @@ public interface BaseService {
      * @param to
      * @return Collection<E>
      */
-    Collection<? extends Response> listAll(Map<String, Object> params, int from, int to);
+    Response listAll(Map<String, Object> params, int from, int to);
 
 
 }
