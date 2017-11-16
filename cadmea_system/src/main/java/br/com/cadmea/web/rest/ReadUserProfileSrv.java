@@ -5,7 +5,6 @@ package br.com.cadmea.web.rest;
 
 import br.com.cadmea.dto.user.UserSystemRequest;
 import br.com.cadmea.dto.user.UserSystemResponse;
-import br.com.cadmea.model.orm.UserSystem;
 import br.com.cadmea.spring.rest.GenericRestService;
 import br.com.cadmea.spring.rest.ServicePath;
 import br.com.cadmea.web.srv.UserSrv;
@@ -39,14 +38,8 @@ public class ReadUserProfileSrv extends GenericRestService<UserSystemRequest> {
     @RequestMapping(value = "/read/{id}", method = RequestMethod.GET)
     public ResponseEntity<UserSystemResponse> readUserProfile(@PathVariable("id") final String id) {
         logger.info("starting readUserProfile service");
-        final UserSystem entity = getService().find(Long.valueOf(id));
-        if (entity != null) {
-            final UserSystemResponse found = new UserSystemResponse();
-            found.setEntity(entity);
-            //found.setEntity(entity);
-            return new ResponseEntity<UserSystemResponse>(found, HttpStatus.OK);
-        }
-        return new ResponseEntity<UserSystemResponse>(HttpStatus.BAD_REQUEST);
+        final UserSystemResponse found = (UserSystemResponse) getService().find(Long.valueOf(id));
+        return new ResponseEntity<UserSystemResponse>(found, HttpStatus.OK);
     }
 
 

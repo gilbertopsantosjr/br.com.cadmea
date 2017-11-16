@@ -15,6 +15,7 @@ public class UserSystemResponse implements Response<UserSystem> {
     private List<UserSystem> entities;
     private UserSystem user;
     private String locale;
+    private String message;
 
     @Override
     public List<UserSystem> getEntities() {
@@ -35,7 +36,7 @@ public class UserSystemResponse implements Response<UserSystem> {
 
     @Override
     public void clear() {
-        
+
     }
 
     @Override

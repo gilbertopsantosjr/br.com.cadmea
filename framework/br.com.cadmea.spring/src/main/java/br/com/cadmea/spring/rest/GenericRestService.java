@@ -98,23 +98,23 @@ public abstract class GenericRestService<S extends Structurable<? extends Entity
     /**
      * the rest service /update/ to updated a old entity
      *
-     * @param struct
+     * @param request
      * @return ResponseEntity<E> the entity up to date Rest.Status.Ok
      */
     @PutMapping(path = "/update")
-    protected ResponseEntity<S> update(@RequestBody final Request struct) {
-        verifyIfEntityExists(struct.getEntity().getId());
-        logger.info("update an entity:" + struct.getEntity());
+    protected ResponseEntity<Void> update(@RequestBody final Request request) {
+        verifyIfEntityExists(request.getEntity().getId());
+        logger.info("update an entity:" + request.getEntity());
 
         try {
             beforeUpdate();
-            getService().save(struct);
+            getService().save(request);
             afterUpdate();
         } catch (final ValidationException c) {
             throw c;
         }
 
-        return new ResponseEntity<Response>(struct, HttpStatus.OK);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     /**
@@ -132,15 +132,15 @@ public abstract class GenericRestService<S extends Structurable<? extends Entity
     /**
      * the rest service /remove/ to remove an old entity
      *
-     * @param id
+     * @param request
      * @return ResponseEntity<E> the entity up to date Rest.Status.Ok
      */
     @DeleteMapping(path = "/remove/{id}")
-    protected ResponseEntity<Void> exclude(@PathVariable("id") final Long id) {
-        verifyIfEntityExists(id);
-        logger.info("excludes a entity as resource:" + id);
+    protected ResponseEntity<Void> exclude(@RequestBody final Request request) {
+        verifyIfEntityExists(request.getEntity().getId());
+        logger.info("excludes a entity as resource:" + request);
         beforeExclude();
-        getService().remove(getService().find(id));
+        getService().remove(request);
         afterExclude();
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
@@ -180,13 +180,13 @@ public abstract class GenericRestService<S extends Structurable<? extends Entity
      * @return ResponseEntity<E> the entity up to date Rest.Status.Ok
      */
     @GetMapping(path = "/load/{id}")
-    protected ResponseEntity<S> load(@PathVariable final Long id) {
+    protected ResponseEntity<Response> load(@PathVariable final Long id) {
         logger.info("requesting an entity by id");
         verifyIfEntityExists(id);
         beforeGetById();
-        final S entity = getService().find(id);
+        final Response response = getService().find(id);
         afterGetById();
-        return new ResponseEntity<S>(entity, HttpStatus.OK);
+        return new ResponseEntity<Response>(response, HttpStatus.OK);
     }
 
     /**
@@ -196,8 +196,6 @@ public abstract class GenericRestService<S extends Structurable<? extends Entity
     }
 
     /**
-     * get a list from the criteria setted in {@link DataStructure#getParams()}
-     *
      * @return ResponseEntity<Collection<E>> the entities up to date
      * Rest.Status.Ok
      */

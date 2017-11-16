@@ -1,7 +1,8 @@
 package br.com.cadmea.web.rest;
 
-import br.com.cadmea.comuns.dto.GenericResponse;
+import br.com.cadmea.comuns.validator.Validator;
 import br.com.cadmea.dto.user.UserSystemRequest;
+import br.com.cadmea.dto.user.UserSystemResponse;
 import br.com.cadmea.model.orm.PasswordResetToken;
 import br.com.cadmea.model.orm.SocialNetwork;
 import br.com.cadmea.model.orm.UserSystem;
@@ -67,10 +68,12 @@ public class UserRestSrv extends GenericRestService<UserSystemRequest> {
      * @return
      */
     @PostMapping(path = "/authentication/")
-    public ResponseEntity<UserAccess> logIn(@RequestBody final UserSystemRequest struct) {
+    public ResponseEntity<UserSystemResponse> logIn(@RequestBody final UserSystemRequest struct) {
         logger.info("starting logIn service");
         final UserAccess found = userSrv.authentication(struct);
-        return new ResponseEntity<UserAccess>(found, HttpStatus.OK);
+        final UserSystemResponse response = new UserSystemResponse();
+        response.setEntity(found);
+        return new ResponseEntity<UserSystemResponse>(response, HttpStatus.OK);
     }
 
 
@@ -80,9 +83,11 @@ public class UserRestSrv extends GenericRestService<UserSystemRequest> {
      * @return
      */
     @PostMapping(path = "/resetPassword")
-    public GenericResponse recoveryPassword(final @NotNull UserSystemRequest struct) {
+    public ResponseEntity<UserSystemResponse> recoveryPassword(final @NotNull UserSystemRequest struct) {
         userSrv.resetPassword(struct);
-        return new GenericResponse("recoveryPassword", "");
+        final UserSystemResponse response = new UserSystemResponse();
+        response.setMessage("found");
+        return new ResponseEntity<UserSystemResponse>(response, HttpStatus.OK);
     }
 
     /**
@@ -93,9 +98,11 @@ public class UserRestSrv extends GenericRestService<UserSystemRequest> {
      */
     @PostMapping(path = "/savePassword")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public GenericResponse savePassword(final @NotNull UserSystemRequest struct) {
+    public ResponseEntity<UserSystemResponse> savePassword(final @NotNull UserSystemRequest struct) {
         userSrv.changeUserPassword(struct);
-        return new GenericResponse("message.resetPasswordSuc", "");
+        final UserSystemResponse response = new UserSystemResponse();
+        response.setMessage("message.resetPasswordSuc");
+        return new ResponseEntity<UserSystemResponse>(response, HttpStatus.OK);
     }
 
     /**
@@ -107,23 +114,19 @@ public class UserRestSrv extends GenericRestService<UserSystemRequest> {
      * @return arguments to allow client build the form
      */
     @GetMapping(value = "/showChangePassword")
-    public GenericResponse showChangePasswordPage(final HttpServletRequest request, @RequestParam("id") final long id,
-                                                  @RequestParam("token") final String token) {
+    public ResponseEntity<UserSystemResponse> showChangePasswordPage(final HttpServletRequest request, @RequestParam("id") final long id,
+                                                                     @RequestParam("token") final String token) {
         final Locale locale = request.getLocale();
         final PasswordResetToken passToken = passwordResetTokenSrv.getPasswordResetToken(token);
         final UserSystem user = passToken.getUser();
-
-        GenericResponse response = new GenericResponse("Ok");
-        response.setLocale(locale);
-
-        if (passToken == null || user.getId() != id) {
-            response = new GenericResponse("message.resetPasswordSuc", "auth.message.invalidToken");
-        }
-
         final Calendar cal = Calendar.getInstance();
-        if ((passToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
-            response = new GenericResponse("message.resetPasswordSuc", "auth.message.expired");
-        }
+
+        final UserSystemResponse response = new UserSystemResponse();
+        response.setMessage("message.resetPasswordSuc");
+        response.setLocale(locale.getLanguage());
+
+        Validator.throwIfFail(passToken == null || user.getId() != id, "auth.message.invalidToken");
+        Validator.throwIfFail((passToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0, "auth.message.expired");
 
         final UserAccess userAccess = new UserAccess(user.getPerson().getName());
         user.getPermissions().forEach(a -> {
@@ -133,7 +136,7 @@ public class UserRestSrv extends GenericRestService<UserSystemRequest> {
         final Authentication auth = new UsernamePasswordAuthenticationToken(userAccess, null, userAccess.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        return response;
+        return new ResponseEntity<UserSystemResponse>(response, HttpStatus.OK);
     }
 
     @Override
