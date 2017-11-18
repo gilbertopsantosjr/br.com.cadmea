@@ -13,9 +13,8 @@ import java.util.Map;
  */
 public interface BaseService {
 
-
     /**
-     * insert a new Record based on Request and return a Response
+     * verify if the Record already and insert a new Record based on Request and return a Response
      *
      * @param {@link Request}
      * @return {@link Response}
@@ -23,18 +22,19 @@ public interface BaseService {
     Response insert(Request structure);
 
     /**
-     * persiste (cria ou alterar uma existente) uma nova structure e limpa o estado para repetir o processo
+     * save a new Record based on Request and return a Response
      *
-     * @param structure
+     * @param {@link Request}
+     * @return {@link Response}
      */
-    void save(Request structure);
+    Response save(Request structure);
 
     /**
      * remove fisicamente uma structure
      *
      * @param structure
      */
-    void remove(Request structure);
+    Boolean remove(Request structure);
 
     /**
      * obtem uma structure pelo seu identificador natural id

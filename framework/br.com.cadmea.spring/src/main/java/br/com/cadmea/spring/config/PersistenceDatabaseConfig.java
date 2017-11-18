@@ -73,7 +73,7 @@ public class PersistenceDatabaseConfig {
     @Value("${cadmea.jdbc.username:sa}")
     private String JDBC_USERNAME;
 
-    @Value("${cadmea.jdbc.username:}")
+    @Value("${cadmea.jdbc.password}")
     private String JDBC_PASSWORD;
 
     @Value("${spring.profiles.active}")
@@ -125,11 +125,11 @@ public class PersistenceDatabaseConfig {
 
         vendorAdapter.setDatabase(Database.H2);
 
-        driverClasseOpt.ifPresent(x -> {
-            if (x.contains("mysql")) {
+        driverClasseOpt.ifPresent(driver -> {
+            if (driver.contains("mysql")) {
                 vendorAdapter.setDatabase(Database.MYSQL);
             }
-            if (x.contains("postgresql")) {
+            if (driver.contains("postgresql")) {
                 vendorAdapter.setDatabase(Database.POSTGRESQL);
             }
         });

@@ -130,7 +130,7 @@ public class DateUtil {
      * @return
      * @throws ParseException
      */
-    public static LocalDate getDate(final int year, int month, final int day) throws ParseException {
+    public static LocalDate getDate(final int year, int month, final int day) {
         month = month > 0 ? month - 1 : month;
         final Calendar calendar = new GregorianCalendar(year, month, day);
         final Date input = calendar.getTime();

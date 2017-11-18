@@ -74,9 +74,12 @@ public abstract class BaseServiceSrvImpl<R extends Request> implements BaseServi
      * {@inheritDoc}
      */
     @Override
-    public void save(final Request struct) {
+    public Response save(final Request struct) {
         struct.validate();
         getBo().save(struct.getEntity());
+        response.clear();
+        response.setEntity(struct.getEntity());
+        return response;
     }
 
 
@@ -84,9 +87,12 @@ public abstract class BaseServiceSrvImpl<R extends Request> implements BaseServi
      * {@inheritDoc}
      */
     @Override
-    public void remove(final Request struct) {
+    public Boolean remove(final Request struct) {
         struct.validate();
-        getBo().remove(struct.getEntity());
+        if (getBo().isThere(struct.getEntity())) {
+            getBo().remove(struct.getEntity());
+        }
+        return getBo().isThere(struct.getEntity());
     }
 
 

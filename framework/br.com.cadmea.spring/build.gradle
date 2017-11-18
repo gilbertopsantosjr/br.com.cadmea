@@ -33,7 +33,8 @@ dependencies {
 
     compile 'org.threeten:threetenbp:0.7.2'
 
-    runtime "com.h2database:h2:1.3.173"
+    providedRuntime "com.h2database:h2:1.3.173"
+    providedRuntime 'commons-dbcp:commons-dbcp:1.4'
 
 }
     

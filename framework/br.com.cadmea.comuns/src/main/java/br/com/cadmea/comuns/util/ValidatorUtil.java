@@ -10,13 +10,16 @@ import br.com.cadmea.comuns.validator.EmailValidator;
  */
 public class ValidatorUtil {
 
+    final static EmailValidator validator = new EmailValidator();
 
     /**
      * @param email
      * @return
      */
     public static boolean isValidEmail(final String email) {
-        final EmailValidator validator = new EmailValidator();
+        if (!isValid(email)) {
+            return false;
+        }
         return validator.validate(email);
     }
 

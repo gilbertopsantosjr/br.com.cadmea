@@ -61,7 +61,7 @@ public abstract class BaseNegocial<E extends EntityPersistent> {
     }
 
     /**
-     * the main diff between insert and save is that insert method
+     * the main diff between save and save is that save method
      * avoid duplicate records
      *
      * @param entity
@@ -237,7 +237,7 @@ public abstract class BaseNegocial<E extends EntityPersistent> {
      * contrario.
      */
     public boolean isThere(final E entity) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
 }
