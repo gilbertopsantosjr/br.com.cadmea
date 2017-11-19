@@ -6,7 +6,7 @@ import br.com.cadmea.model.orm.UserSystem;
 import lombok.Data;
 
 @Data
-public class UserAuthenticationRequest implements Request<UserSystem> {
+public class UserAuthenticationRequest extends Request<UserSystem> {
 
     private String systemName;
     private String username;
@@ -25,8 +25,5 @@ public class UserAuthenticationRequest implements Request<UserSystem> {
         Validator.failIfAnyExceptionsFound();
     }
 
-    @Override
-    public String getLocale() {
-        return null;
-    }
+
 }

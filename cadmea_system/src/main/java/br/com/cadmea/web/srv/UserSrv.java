@@ -7,7 +7,6 @@ import br.com.cadmea.comuns.dto.Request;
 import br.com.cadmea.comuns.dto.Response;
 import br.com.cadmea.comuns.orm.enums.Situation;
 import br.com.cadmea.comuns.util.DateUtil;
-import br.com.cadmea.comuns.validator.Validator;
 import br.com.cadmea.dto.user.UserSystemRequest;
 import br.com.cadmea.dto.user.UserSystemResponse;
 import br.com.cadmea.infra.negocio.BaseServiceSrvImpl;
@@ -32,6 +31,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import static br.com.cadmea.comuns.validator.Validator.throwIfFail;
 
 /**
  * @author Gilberto Santos
@@ -93,7 +94,7 @@ public class UserSrv extends BaseServiceSrvImpl<UserSystem> {
         struct.getEntity().setLastVisit(DateUtil.getDate());
 
         final UserSystem userSystem = getBo().insert(struct.getEntity());
-        Validator.throwIfFail(userSystem == null, "user.not.allow.in.system");
+        throwIfFail(userSystem == null, "user.not.allow.in.system");
 
         final UserSystemResponse response = new UserSystemResponse();
         response.setEntity(userSystem);
@@ -113,10 +114,10 @@ public class UserSrv extends BaseServiceSrvImpl<UserSystem> {
         struct.validate();
 
         final CadmeaSystem cadmeaSystem = cadmeaSystemSrv.findBy(struct.getSystemName());
-        Validator.throwIfFail(cadmeaSystem == null, "system.not.found");
+        throwIfFail(cadmeaSystem == null, "system.not.found");
 
         final UserSystem userSystem = getBo().getUserBy(struct.getEmail(), cadmeaSystem.getId());
-        Validator.throwIfFail(userSystem == null, "user.not.allow.in.system");
+        throwIfFail(userSystem == null, "user.not.allow.in.system");
 
         //TODO adding custom SQL to get a person' name without anything else
         final UserAccess userAccess = new UserAccess(userSystem.getPerson().getName());

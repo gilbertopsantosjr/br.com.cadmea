@@ -5,7 +5,6 @@ package br.com.cadmea.web.srv;
 
 import br.com.cadmea.comuns.orm.enums.Result;
 import br.com.cadmea.comuns.validator.Validator;
-import br.com.cadmea.dto.CadmeaSystemRequest;
 import br.com.cadmea.infra.negocio.BaseServiceSrvImpl;
 import br.com.cadmea.model.orm.CadmeaSystem;
 import br.com.cadmea.web.bo.CadmeaSystemBo;
@@ -18,7 +17,7 @@ import javax.inject.Inject;
  * @author Gilberto Santos
  */
 @Service
-public class CadmeaSystemSrv extends BaseServiceSrvImpl<CadmeaSystemRequest> {
+public class CadmeaSystemSrv extends BaseServiceSrvImpl<CadmeaSystem> {
 
     @Inject
     private CadmeaSystemBo bo;

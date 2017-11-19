@@ -3,7 +3,7 @@ package br.com.cadmea.dto;
 import br.com.cadmea.comuns.dto.Request;
 import br.com.cadmea.model.orm.PasswordResetToken;
 
-public class PasswordResetTokenRequest implements Request<PasswordResetToken> {
+public class PasswordResetTokenRequest extends Request<PasswordResetToken> {
 
     @Override
     public void validate() {
