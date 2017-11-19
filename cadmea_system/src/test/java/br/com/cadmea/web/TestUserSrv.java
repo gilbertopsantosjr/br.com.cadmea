@@ -74,7 +74,7 @@ public class TestUserSrv extends AbstractTestUnit {
         final UserSystemRequest request = new UserSystemRequest();
         request.setEmail(EMAIL);
 
-        //userSrv.insert(request);
+        userSrv.insert(request);
 
     }
 

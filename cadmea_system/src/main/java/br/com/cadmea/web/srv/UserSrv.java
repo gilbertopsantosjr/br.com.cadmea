@@ -3,9 +3,13 @@
  */
 package br.com.cadmea.web.srv;
 
+import br.com.cadmea.comuns.dto.Request;
+import br.com.cadmea.comuns.dto.Response;
+import br.com.cadmea.comuns.orm.enums.Situation;
 import br.com.cadmea.comuns.util.DateUtil;
 import br.com.cadmea.comuns.validator.Validator;
 import br.com.cadmea.dto.user.UserSystemRequest;
+import br.com.cadmea.dto.user.UserSystemResponse;
 import br.com.cadmea.infra.negocio.BaseServiceSrvImpl;
 import br.com.cadmea.model.orm.CadmeaSystem;
 import br.com.cadmea.model.orm.UserSystem;
@@ -24,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -34,7 +39,7 @@ import java.util.UUID;
  * sendo uma layer para validar, nao permitindo chegar objetos invalidos ate o negocio
  */
 @Service
-public class UserSrv extends BaseServiceSrvImpl<UserSystemRequest> {
+public class UserSrv extends BaseServiceSrvImpl<UserSystem> {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -65,36 +70,36 @@ public class UserSrv extends BaseServiceSrvImpl<UserSystemRequest> {
         return userBo;
     }
 
-
     /**
-     * the service layer defines the values defined by business logic
+     * * the service layer defines the values defined by business logic
      *
      * @param struct
+     * @param <R>
      * @return
-     *
-    public UserSystemResponse insert(final @NotNull UserSystemRequest struct) {
-    logger.info(" save userSystem entity ");
+     */
+    @Override
+    public <R extends Request<UserSystem>> Response<UserSystem> insert(final R struct) {
+        final UserSystemRequest request = ((UserSystemRequest) struct);
 
-    struct.validate();
+        request.validate();
 
-    final String hashPassword = passwordEncoder.encode(struct.getPassword());
-    final CadmeaSystem cadmeaSystem = cadmeaSystemSrv.findByName(struct.getSystemName());
+        final String hashPassword = passwordEncoder.encode(request.getPassword());
+        final CadmeaSystem cadmeaSystem = cadmeaSystemSrv.findByName(request.getSystemName());
 
-    struct.getEntity().setPassword(hashPassword);
-    struct.getEntity().setSystems(Arrays.asList(cadmeaSystem));
-    struct.getEntity().setDateRegister(DateUtil.getDate());
-    struct.getEntity().setSituation(Situation.DISABLE);
-    struct.getEntity().setLastVisit(DateUtil.getDate());
+        struct.getEntity().setPassword(hashPassword);
+        struct.getEntity().setSystems(Arrays.asList(cadmeaSystem));
+        struct.getEntity().setDateRegister(DateUtil.getDate());
+        struct.getEntity().setSituation(Situation.DISABLE);
+        struct.getEntity().setLastVisit(DateUtil.getDate());
 
-    final UserSystem userSystem = getBo().insert(struct.getEntity());
-    Validator.throwIfFail(userSystem == null, "user.not.allow.in.system");
+        final UserSystem userSystem = getBo().insert(struct.getEntity());
+        Validator.throwIfFail(userSystem == null, "user.not.allow.in.system");
 
-    final UserSystemResponse response = new UserSystemResponse();
-    response.setEntity(userSystem);
+        final UserSystemResponse response = new UserSystemResponse();
+        response.setEntity(userSystem);
 
-    return response;
-    } */
-
+        return response;
+    }
 
     /**
      * search for user in Cadmea System

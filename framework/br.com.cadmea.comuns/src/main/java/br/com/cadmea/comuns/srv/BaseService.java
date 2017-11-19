@@ -2,6 +2,7 @@ package br.com.cadmea.comuns.srv;
 
 import br.com.cadmea.comuns.dto.Request;
 import br.com.cadmea.comuns.dto.Response;
+import br.com.cadmea.comuns.orm.EntityPersistent;
 import br.com.cadmea.comuns.orm.enums.Result;
 
 import java.io.Serializable;
@@ -11,15 +12,16 @@ import java.util.Map;
  * @author Gilberto Santos
  * determina os serviços padrões que toda structure deve implementar
  */
-public interface BaseService {
+public interface BaseService<E extends EntityPersistent> {
+
 
     /**
      * verify if the Record already and insert a new Record based on Request and return a Response
      *
-     * @param {@link Request}
-     * @return {@link Response}
+     * @param {@link Request<E>}
+     * @return {@link Response<E>}
      */
-    Response insert(Request structure);
+    <R extends Request<E>> Response<E> insert(R structure);
 
     /**
      * save a new Record based on Request and return a Response

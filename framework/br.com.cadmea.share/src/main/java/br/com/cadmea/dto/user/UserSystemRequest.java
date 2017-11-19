@@ -12,7 +12,7 @@ import lombok.Data;
  * @author Gilberto Santos
  */
 @Data
-public class UserSystemRequest implements Request<UserSystem> {
+public class UserSystemRequest extends Request<UserSystem> {
 
     private String systemName;
     private String url;

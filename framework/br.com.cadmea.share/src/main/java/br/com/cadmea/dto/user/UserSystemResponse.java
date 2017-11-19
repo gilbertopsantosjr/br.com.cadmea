@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class UserSystemResponse implements Response<UserSystem> {
+public class UserSystemResponse extends Response<UserSystem> {
 
     private List<UserSystem> entities;
     private UserSystem user;

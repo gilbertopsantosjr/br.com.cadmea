@@ -20,7 +20,7 @@ import java.util.*;
  *
  * @version 1.0
  */
-public abstract class BaseServiceSrvImpl<R extends Request> implements BaseService {
+public abstract class BaseServiceSrvImpl<E extends EntityPersistent> implements BaseService<E> {
 
     /**
      * Retorna a instância de BO.
@@ -62,7 +62,7 @@ public abstract class BaseServiceSrvImpl<R extends Request> implements BaseServi
      * {@inheritDoc}
      */
     @Override
-    public Response insert(final Request struct) {
+    public <R extends Request<E>> Response<E> insert(final R struct) {
         struct.validate();
         final EntityPersistent entity = getBo().insert(struct.getEntity());
         response.clear();

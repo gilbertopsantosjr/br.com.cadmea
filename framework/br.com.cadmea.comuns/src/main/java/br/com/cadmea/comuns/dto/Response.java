@@ -9,21 +9,21 @@ import java.util.List;
  * @author Gilberto Santos
  * defines the way to structure any response comes from a client
  */
-public interface Response<E extends EntityPersistent> extends Structurable<E> {
+public abstract class Response<E extends EntityPersistent> implements Structurable<E> {
 
     /**
      * @return
      */
-    List<E> getEntities();
+    public abstract List<E> getEntities();
 
     /**
      * @param entity
      */
     @JsonIgnore
-    void setEntity(E entity);
+    public abstract void setEntity(E entity);
 
     /**
      * clear any data into Response
      */
-    void clear();
+    public abstract void clear();
 }

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @author Gilberto Santos
  * defines the way to structure any request comes from a client
  */
-public interface Request<E extends EntityPersistent> extends Structurable<E> {
+public abstract class Request<E extends EntityPersistent> implements Structurable<E> {
 
     /**
      * validates user' inputs
@@ -18,11 +18,11 @@ public interface Request<E extends EntityPersistent> extends Structurable<E> {
      * @return
      */
     @JsonIgnore
-    void validate();
+    public abstract void validate();
 
 
     @JsonIgnore
-    String getLocale();
+    public abstract String getLocale();
 
 
 }
