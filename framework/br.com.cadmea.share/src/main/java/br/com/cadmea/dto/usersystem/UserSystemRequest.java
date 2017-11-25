@@ -14,6 +14,11 @@ import lombok.Data;
 @Data
 public class UserSystemRequest extends Request<UserSystem> {
 
+    public static final String USER_SYSTEM_REQUEST_SYSTEM_NAME_REQUIRED = "userSystemRequest.systemName.required";
+    public static final String USER_SYSTEM_REQUEST_PASSWORD_REQUIRED = "userSystemRequest.password.required";
+    public static final String USER_SYSTEM_PASSWORD_MIN_SIZE = "userSystem.password.min.size";
+    public static final String USER_SYSTEM_REQUEST_PASSWORD_NOTMATCH = "userSystemRequest.password.notmatch";
+
     private String systemName;
     private String url;
     private String email; // must be a valid email
@@ -24,6 +29,7 @@ public class UserSystemRequest extends Request<UserSystem> {
     private Boolean readTerms;
 
     private String locale;
+
 
     /**
      * here we set the values defines by the user
@@ -44,14 +50,8 @@ public class UserSystemRequest extends Request<UserSystem> {
      */
     @Override
     public void validate() {
-        Validator.assertNotBlank(getSystemName(), "System name is required !");
-
-        Validator.assertEmailValid(getEmail());
-
-        Validator.assertNotBlank(getPassword(), "Password is required !");
-
-        Validator.assertEquals(getPassword(), getRepeatPassword(), "Password's not match !");
-
+        //CREATE, UPDATE, REQUEST
+        getState().doAction(this);
         Validator.failIfAnyExceptionsFound();
     }
 
