@@ -49,6 +49,7 @@ insert into cadmea_user_permission (role) values ('ROLE_USER'); /* Anatoly */
 /* adding permissino to the role  */
 insert into cadmea_permissions_per_user (per_id, user_id) values (1, 1);
 
+insert into cadmea_system (sys_identity, sys_name, sys_url) values ('CADMEA_TEST', 'Cadmea System Test', '/dashboard');
 insert into cadmea_system (sys_identity, sys_name, sys_url) values ('MAGEC', 'System of properties management', '/dashboard');
 insert into cadmea_system (sys_identity, sys_name, sys_url) values ('1CADS', 'Cadmea System', '/private/index.jsp');
 insert into cadmea_system (sys_identity, sys_name, sys_url) values ('2MTFU', 'Message to the future', '/dashboard');
