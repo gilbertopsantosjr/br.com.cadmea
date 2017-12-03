@@ -1,32 +1,37 @@
 /**
  *
  */
-package br.com.cadmea.dto.user;
+package br.com.cadmea.dto.usersystem;
 
 import br.com.cadmea.comuns.dto.Request;
+import br.com.cadmea.comuns.orm.enums.Gender;
+import br.com.cadmea.comuns.orm.enums.Relationship;
 import br.com.cadmea.comuns.validator.Validator;
 import br.com.cadmea.model.orm.UserSystem;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author Gilberto Santos
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class UserSystemRequest extends Request<UserSystem> {
-
-    public static final String USER_SYSTEM_REQUEST_SYSTEM_NAME_REQUIRED = "userSystemRequest.systemName.required";
-    public static final String USER_SYSTEM_REQUEST_PASSWORD_REQUIRED = "userSystemRequest.password.required";
-    public static final String USER_SYSTEM_PASSWORD_MIN_SIZE = "userSystem.password.min.size";
-    public static final String USER_SYSTEM_REQUEST_PASSWORD_NOTMATCH = "userSystemRequest.password.notmatch";
 
     private String systemName;
     private String url;
-    private String email; // must be a valid email
+    private String email;
     private String password;
     private String repeatPassword;
     private String pictureProfile;
     private String nickname;
     private Boolean readTerms;
+
+    private String personName;
+    private String personSurname;
+    private String personRegister;
+    private Gender personGender;
+    private Relationship personRelationship;
 
     private String locale;
 

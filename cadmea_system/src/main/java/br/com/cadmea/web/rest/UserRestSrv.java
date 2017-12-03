@@ -1,8 +1,8 @@
 package br.com.cadmea.web.rest;
 
 import br.com.cadmea.comuns.validator.Validator;
-import br.com.cadmea.dto.user.UserSystemRequest;
-import br.com.cadmea.dto.user.UserSystemResponse;
+import br.com.cadmea.dto.usersystem.UserSystemRequest;
+import br.com.cadmea.dto.usersystem.UserSystemResponse;
 import br.com.cadmea.model.orm.PasswordResetToken;
 import br.com.cadmea.model.orm.SocialNetwork;
 import br.com.cadmea.model.orm.UserSystem;
@@ -129,9 +129,7 @@ public class UserRestSrv extends GenericRestService<UserSystemRequest> {
         Validator.throwIfFail((passToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0, "auth.message.expired");
 
         final UserAccess userAccess = new UserAccess(user.getPerson().getName());
-        user.getPermissions().forEach(a -> {
-            userAccess.getRoles().add(a.getRole());
-        });
+        userAccess.setRoles(user.getRoles());
 
         final Authentication auth = new UsernamePasswordAuthenticationToken(userAccess, null, userAccess.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);

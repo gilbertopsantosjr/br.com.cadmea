@@ -24,7 +24,7 @@ import java.util.Map;
 @Component
 public class UserBo extends BaseNegocial<UserSystem> {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
 
     @Inject
@@ -35,54 +35,53 @@ public class UserBo extends BaseNegocial<UserSystem> {
         return userDao;
     }
 
-    /**
-     * validate the quantities of each contact form
-     *
-     * @param userSystem
-     */
-    public void validateEntity(final UserSystem userSystem) {
-
-    }
 
     @Override
     public void save(final UserSystem entidade) {
-        validateEntity(entidade);
         entidade.setLastVisit(DateUtil.getDate());
         super.save(entidade);
     }
 
     /**
-     * try to get a {@link UserSystem} of system by params
+     * try to get a {@link UserSystem} of system by email
      *
-     * @param email
+     * @param {@link String} email
      * @return {@link UserSystem} if found
      */
-    public UserSystem getUserBy(final @NotEmpty String email) {
-        logger.info(" get user by email " + email);
+    public UserSystem findBy(final @NotEmpty String email) {
+        log.info(" find user by email " + email);
         final Map<String, Object> params = new HashMap<>();
         params.put("email", email);
-        return getDao().findByNamedQuery("loginByUsername", params, Result.UNIQUE);
+        return findByNamedQuery("findByUsername", params, Result.UNIQUE);
+    }
+
+
+    /**
+     * try to get a {@link UserSystem} of system by nickname
+     *
+     * @param {@link String} nickname
+     * @return {@link UserSystem} if found
+     */
+    public UserSystem findByNickName(final @NotEmpty String nickname) {
+        log.info(" find user by nickname " + nickname);
+        final Map<String, Object> params = new HashMap<>();
+        params.put("nickname", nickname);
+        return find(params, Result.UNIQUE);
     }
 
     /**
-     * try to get a {@link UserSystem} of system by params
+     * look if the {@link UserSystem} is already in the {@link br.com.cadmea.model.orm.CadmeaSystem}
      *
-     * @param email
-     * @param sysId
+     * @param {@link String} email
+     * @param {@link Long} sysId
      * @return {@link UserSystem} if found
      */
-    public UserSystem getUserBy(final @NotEmpty String email, final @NotNull Long sysId) {
-        logger.info(" get user by email " + email);
+    public UserSystem findBy(final @NotEmpty String email, final @NotNull Long sysId) {
+        log.info(" find user by email " + email);
         final Map<String, Object> params = new HashMap<>();
         params.put("email", email);
         params.put("sysId", sysId);
-        return getDao().findByNamedQuery("loginByUsernameAndSystem", params, Result.UNIQUE);
-    }
-
-
-    @Override
-    public boolean isThere(final UserSystem entidade) {
-        return getDao().find("email", entidade.getEmail(), Result.UNIQUE) != null;
+        return findByNamedQuery("findByUsernameAndSystem", params, Result.UNIQUE);
     }
 
 }

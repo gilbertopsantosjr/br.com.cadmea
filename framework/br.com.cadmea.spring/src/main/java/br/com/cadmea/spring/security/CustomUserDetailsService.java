@@ -1,6 +1,6 @@
 package br.com.cadmea.spring.security;
 
-import br.com.cadmea.model.orm.Permission;
+import br.com.cadmea.model.orm.Role;
 import br.com.cadmea.spring.pojos.UserAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,10 +67,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                 new Object[]{userAccess.getId()});
 
         for (final Map<String, Object> row : rows) {
-            final Permission permission = new Permission();
-            permission.setId((Long) row.get("per_id"));
-            permission.setRole((String) row.get("per_role_nome"));
-            userAccess.addRole(permission.getRole());
+            final Role role = new Role();
+            role.setId((Long) row.get("per_id"));
+            role.setName((String) row.get("per_role_nome"));
+            userAccess.addRole(role);
         }
 
         return userAccess;

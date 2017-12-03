@@ -22,7 +22,7 @@ import java.util.List;
 public class CadmeaSystem extends BaseEntityPersistent {
 
     /**
-     * these values should be get from a rest service in gilbertosantos.com
+     * these values should be get from a rest service in cadmea.com
      */
 
     @NotNull

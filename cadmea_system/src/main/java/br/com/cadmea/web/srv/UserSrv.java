@@ -7,14 +7,14 @@ import br.com.cadmea.comuns.dto.Request;
 import br.com.cadmea.comuns.dto.Response;
 import br.com.cadmea.comuns.orm.enums.Situation;
 import br.com.cadmea.comuns.util.DateUtil;
-import br.com.cadmea.dto.user.UserSystemRequest;
-import br.com.cadmea.dto.user.UserSystemResponse;
+import br.com.cadmea.dto.usersystem.UserSystemMessages;
+import br.com.cadmea.dto.usersystem.UserSystemRequest;
+import br.com.cadmea.dto.usersystem.UserSystemResponse;
 import br.com.cadmea.infra.negocio.BaseServiceSrvImpl;
 import br.com.cadmea.model.orm.CadmeaSystem;
 import br.com.cadmea.model.orm.UserSystem;
 import br.com.cadmea.spring.beans.SmtpEmailSender;
 import br.com.cadmea.spring.pojos.UserAccess;
-import br.com.cadmea.spring.rest.exceptions.NotFoundException;
 import br.com.cadmea.web.bo.UserBo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,19 +85,34 @@ public class UserSrv extends BaseServiceSrvImpl<UserSystem> {
         request.validate();
 
         final String hashPassword = passwordEncoder.encode(request.getPassword());
-        final CadmeaSystem cadmeaSystem = cadmeaSystemSrv.findByName(request.getSystemName());
+        final CadmeaSystem cadmeaSystem = cadmeaSystemSrv.findBySystemName(request.getSystemName());
 
-        struct.getEntity().setPassword(hashPassword);
-        struct.getEntity().setSystems(Arrays.asList(cadmeaSystem));
-        struct.getEntity().setDateRegister(DateUtil.getDate());
-        struct.getEntity().setSituation(Situation.DISABLE);
-        struct.getEntity().setLastVisit(DateUtil.getDate());
+        throwIfFail(cadmeaSystem == null, UserSystemMessages.USER_SRV_NOT_FOUND);
 
-        final UserSystem userSystem = getBo().insert(struct.getEntity());
-        throwIfFail(userSystem == null, "user.not.allow.in.system");
+        /**
+         * In case the userSystem is already in the Cadmea System, then fail
+         */
+        throwIfFail(getBo().findBy(request.getEmail(), cadmeaSystem.getId()) != null, UserSystemMessages.USER_SRV_FOUND);
+
+        /**
+         * In case the nickname is already in use, then fail
+         */
+        throwIfFail(getBo().findByNickName(request.getNickname()) != null, UserSystemMessages.USER_SYSTEM_REQUEST_NICKNAME_DUPLICATED);
+
+        final UserSystem toInsert = struct.getEntity();
+
+        toInsert.setPassword(hashPassword);
+        toInsert.setSystems(Arrays.asList(cadmeaSystem));
+        toInsert.setDateRegister(DateUtil.getDate());
+        toInsert.setSituation(Situation.DISABLE);
+        toInsert.setLastVisit(DateUtil.getDate());
+
+        final UserSystem inserted = getBo().insert(toInsert);
+
+        throwIfFail(inserted == null, UserSystemMessages.USER_SRV_NOT_ALLOW_IN_SYSTEM);
 
         final UserSystemResponse response = new UserSystemResponse();
-        response.setEntity(userSystem);
+        response.setEntity(toInsert);
 
         return response;
     }
@@ -114,18 +129,15 @@ public class UserSrv extends BaseServiceSrvImpl<UserSystem> {
         struct.validate();
 
         final CadmeaSystem cadmeaSystem = cadmeaSystemSrv.findBy(struct.getSystemName());
-        throwIfFail(cadmeaSystem == null, "system.not.found");
+        throwIfFail(cadmeaSystem == null, UserSystemMessages.USER_SRV_NOT_FOUND);
 
-        final UserSystem userSystem = getBo().getUserBy(struct.getEmail(), cadmeaSystem.getId());
-        throwIfFail(userSystem == null, "user.not.allow.in.system");
+        final UserSystem userSystem = getBo().findBy(struct.getEmail(), cadmeaSystem.getId());
+        throwIfFail(userSystem == null, UserSystemMessages.USER_SRV_NOT_ALLOW_IN_SYSTEM);
 
         //TODO adding custom SQL to get a person' name without anything else
         final UserAccess userAccess = new UserAccess(userSystem.getPerson().getName());
-
-        userSystem.getPermissions().forEach(a -> {
-            userAccess.getRoles().add(a.getRole());
-        });
-
+        userAccess.setRoles(userSystem.getRoles());
+    
         final Authentication auth = new UsernamePasswordAuthenticationToken(userAccess, null,
                 userAccess.getAuthorities());
 
@@ -141,11 +153,8 @@ public class UserSrv extends BaseServiceSrvImpl<UserSystem> {
     public void resetPassword(final @NotNull UserSystemRequest struct) {
         logger.info("starting recoveryPassword service for:" + struct.getEmail());
 
-        final UserSystem user = getBo().getUserBy(struct.getEmail());
-
-        if (user == null) {
-            throw new NotFoundException("user");
-        }
+        final UserSystem user = getBo().findBy(struct.getEmail());
+        throwIfFail(user == null, UserSystemMessages.USER_SRV_FOUND);
 
         final String token = UUID.randomUUID().toString();
         passwordResetTokenSrv.createPasswordResetTokenForUser(user, token);

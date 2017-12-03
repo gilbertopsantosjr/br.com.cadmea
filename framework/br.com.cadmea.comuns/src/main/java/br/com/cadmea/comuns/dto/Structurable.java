@@ -8,7 +8,7 @@ import java.io.Serializable;
 public interface Structurable<E extends EntityPersistent> extends Serializable {
 
     /**
-     * @return
+     * @return {@link E}
      */
     @JsonIgnore
     E getEntity();

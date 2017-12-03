@@ -1,13 +1,13 @@
 package br.com.cadmea.comuns.validator;
 
 import br.com.cadmea.comuns.exceptions.SystemException;
+import br.com.cadmea.comuns.i18n.Message;
+import br.com.cadmea.comuns.i18n.MessageCommon;
 import br.com.cadmea.comuns.util.ValidatorUtil;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
+@SuppressWarnings("unchecked")
 public class Validator {
 
     // only word characters: [a-zA-Z_0-9] and file extension
@@ -22,7 +22,7 @@ public class Validator {
     //only word characters: [a-zA-Z_0-9-]
     private static final String DB_ID_PATTERN = "[a-zA-Z_0-9-]+";
 
-    private final List<SystemException> exceptions = new ArrayList<>();
+    private final List<Message> messages = new ArrayList<>();
 
     private Locale locale;
 
@@ -50,7 +50,7 @@ public class Validator {
      * @param email
      */
     public static void assertEmailValid(final String email) {
-        getInstance().addExceptionIfFalse(ValidatorUtil.isValidEmail(email), "Email doesn't look good. ", new String[]{email});
+        getInstance().addExceptionIfFalse(ValidatorUtil.isValidEmail(email), MessageCommon.EMAIL_INVALID, new String[]{email});
     }
 
     /**
@@ -253,32 +253,41 @@ public class Validator {
      */
     private void addExceptionIfFalse(final boolean asserted, final String message, final Object[] params) {
         if (!asserted) {
-            final SystemException e = new SystemException(String.format(message, params), getInstance().locale);
-            exceptions.add(e);
+            final Message e = new Message(getInstance().locale, String.format(message, params));
+            messages.add(e);
         }
     }
 
     /**
-     * @param condictional
+     * @param asserted
      * @param message
      */
-    public static void throwIfFail(final Boolean condictional, final String message) {
-        if (condictional) {
-            throw new SystemException(String.format(message), getInstance().locale);
+    public static void throwIfFail(final Boolean asserted, final String message) {
+        if (asserted) {
+            throw new SystemException(Arrays.asList( new Message(getInstance().locale, String.format(message)) ) );
         }
     }
 
+    /**
+     *
+     */
     public static void failIfAnyExceptionsFound() {
-        if (getInstance().exceptions.size() > 0) {
-            throw new SystemException(getInstance().exceptions);
+        if (getInstance().messages.size() > 0) {
+            throw new SystemException(getInstance().messages);
         }
-        getInstance().exceptions.clear();
+        getInstance().messages.clear();
     }
 
+    /**
+     * @return
+     */
     public static Validator getInstance() {
         return InstanceHolder.instance;
     }
 
+    /**
+     *
+     */
     private static class InstanceHolder {
         public static Validator instance = new Validator();
     }

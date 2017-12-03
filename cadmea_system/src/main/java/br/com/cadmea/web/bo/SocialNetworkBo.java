@@ -25,13 +25,6 @@ public class SocialNetworkBo extends BaseNegocial<SocialNetwork> {
         return dao;
     }
 
-    @Override
-    public void save(final SocialNetwork entity) {
-        if (!isThere(entity)) {
-            super.save(entity);
-        }
-    }
-
 
     @Override
     public boolean isThere(final SocialNetwork entidade) {

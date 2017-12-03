@@ -27,27 +27,27 @@ public abstract class BaseServiceSrvImpl<E extends EntityPersistent> implements 
      *
      * @return O BO que será utilizado nas operações de manutenção
      */
-    protected abstract <B extends BaseNegocial<EntityPersistent>> B getBo();
+    protected abstract <B extends BaseNegocial<E>> B getBo();
 
     /**
      * Generic Reponse
      */
-    private final Response response = new Response() {
-        private EntityPersistent entity;
-        private final List<EntityPersistent> entities = Collections.emptyList();
+    private final Response<E> response = new Response<E>() {
+        private E entity;
+        private final List<E> entities = Collections.emptyList();
 
         @Override
-        public void setEntity(final EntityPersistent entity) {
+        public void setEntity(final E entity) {
             this.entity = entity;
         }
 
         @Override
-        public EntityPersistent getEntity() {
+        public E getEntity() {
             return entity;
         }
 
         @Override
-        public List<EntityPersistent> getEntities() {
+        public List<E> getEntities() {
             return entities;
         }
 
@@ -64,7 +64,7 @@ public abstract class BaseServiceSrvImpl<E extends EntityPersistent> implements 
     @Override
     public <R extends Request<E>> Response<E> insert(final R struct) {
         struct.validate();
-        final EntityPersistent entity = getBo().insert(struct.getEntity());
+        final E entity = getBo().insert(struct.getEntity());
         response.clear();
         response.setEntity(entity);
         return response;
@@ -74,7 +74,7 @@ public abstract class BaseServiceSrvImpl<E extends EntityPersistent> implements 
      * {@inheritDoc}
      */
     @Override
-    public Response save(final Request struct) {
+    public <R extends Request<E>> Response<E> save(final R struct) {
         struct.validate();
         getBo().save(struct.getEntity());
         response.clear();
@@ -82,26 +82,22 @@ public abstract class BaseServiceSrvImpl<E extends EntityPersistent> implements 
         return response;
     }
 
-
     /**
      * {@inheritDoc}
      */
     @Override
-    public Boolean remove(final Request struct) {
+    public <R extends Request<E>> Boolean remove(final R struct) {
         struct.validate();
-        if (getBo().isThere(struct.getEntity())) {
-            getBo().remove(struct.getEntity());
-        }
-        return getBo().isThere(struct.getEntity());
+        getBo().remove(struct.getEntity());
+        return getBo().find(struct.getEntity().getId()) != null;
     }
 
-
     /**
      * {@inheritDoc}
      */
     @Override
-    public Response find(final Serializable identificador) {
-        final EntityPersistent entity = getBo().find(identificador);
+    public Response<E> find(final Serializable identificador) {
+        final E entity = getBo().find(identificador);
         response.clear();
         response.setEntity(entity);
         return response;
@@ -111,8 +107,8 @@ public abstract class BaseServiceSrvImpl<E extends EntityPersistent> implements 
      * {@inheritDoc}
      */
     @Override
-    public Response find(final Map<String, Object> params) {
-        final Collection<EntityPersistent> entities = getBo().find(params);
+    public Response<E> find(final Map<String, Object> params) {
+        final Collection<E> entities = getBo().find(params);
         response.clear();
         response.getEntities().addAll(entities);
         return response;
@@ -122,8 +118,8 @@ public abstract class BaseServiceSrvImpl<E extends EntityPersistent> implements 
      * {@inheritDoc}
      */
     @Override
-    public Response find(final Map<String, Object> params, final Result res) {
-        final EntityPersistent entity = getBo().find(params, res);
+    public Response<E> find(final Map<String, Object> params, final Result res) {
+        final E entity = getBo().find(params, res);
         response.clear();
         response.setEntity(entity);
         return response;
@@ -132,10 +128,10 @@ public abstract class BaseServiceSrvImpl<E extends EntityPersistent> implements 
     /**
      * {@inheritDoc}
      */
-    public Response find(final String propNome, final Object valor) {
+    public Response<E> find(final String propNome, final Object valor) {
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put(propNome, valor);
-        final EntityPersistent entity = getBo().find(params, Result.UNIQUE);
+        final E entity = getBo().find(params, Result.UNIQUE);
         response.clear();
         response.setEntity(entity);
         return response;
@@ -145,7 +141,7 @@ public abstract class BaseServiceSrvImpl<E extends EntityPersistent> implements 
      * {@inheritDoc}
      */
     public Response find(final String namedQuery, final Map<String, Object> parameters) throws DaoException {
-        final Collection<EntityPersistent> entities = getBo().findByNamedQuery(namedQuery, parameters);
+        final Collection<E> entities = getBo().findByNamedQuery(namedQuery, parameters);
         response.clear();
         response.getEntities().addAll(entities);
         return response;
@@ -156,7 +152,7 @@ public abstract class BaseServiceSrvImpl<E extends EntityPersistent> implements 
      */
     @Override
     public Response listAll() {
-        final Collection<EntityPersistent> entities = getBo().findAll();
+        final Collection<E> entities = getBo().findAll();
         response.clear();
         response.getEntities().addAll(entities);
         return response;
@@ -167,7 +163,7 @@ public abstract class BaseServiceSrvImpl<E extends EntityPersistent> implements 
      */
     @Override
     public Response listAll(final Map<String, Object> params, final int de, final int ate) {
-        final Collection<EntityPersistent> entities = getBo().findAll(de, ate);
+        final Collection<E> entities = getBo().findAll(de, ate);
         response.clear();
         response.getEntities().addAll(entities);
         return response;

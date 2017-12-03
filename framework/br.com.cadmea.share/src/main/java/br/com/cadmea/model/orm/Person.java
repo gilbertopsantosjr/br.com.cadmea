@@ -5,6 +5,7 @@ import br.com.cadmea.comuns.orm.enums.Relationship;
 import br.com.cadmea.model.BaseEntityPersistent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -21,12 +22,20 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = false)
 public class Person extends BaseEntityPersistent {
 
+    public Person(){
+        super();
+    }
+
+    public Person(final String name) {
+        super();
+    }
+
     // can't have whitespace
-    @NotNull
+    @NotEmpty
     @Column(nullable = false, length = 35, name = "name")
     private String name;
 
-    @NotNull
+    @NotEmpty
     @Column(nullable = false, length = 250, name = "surname")
     private String surname;
 
@@ -56,5 +65,6 @@ public class Person extends BaseEntityPersistent {
     @JoinTable(name = "person_member_phone", joinColumns = {
             @JoinColumn(name = "pes_id")}, inverseJoinColumns = {@JoinColumn(name = "pho_id")})
     private Set<Phone> phones;
+
 
 }

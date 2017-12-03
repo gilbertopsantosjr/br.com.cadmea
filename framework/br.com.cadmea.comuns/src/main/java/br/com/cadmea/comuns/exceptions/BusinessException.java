@@ -1,87 +1,91 @@
 package br.com.cadmea.comuns.exceptions;
 
-import br.com.cadmea.comuns.exceptions.enums.DefaultMessages;
+import br.com.cadmea.comuns.i18n.Message;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Exceção de negocio.
- * 
+ *
  * @version 1.0
  */
-@SuppressWarnings("serial")
 public class BusinessException extends SystemException {
 
-  private String[] args;
+    private String[] args;
+    private List<Message> messages = new ArrayList<>();
 
-  /**
-   * Cria o objeto.
-   */
-  public BusinessException() {
-    // Construtor.
-  }
+    @Override
+    public List<Message> getMessages() {
+        return messages;
+    }
 
-  /**
-   * Cria o objeto e atribui a mensagem da exceção.
-   *
-   * @param mensagem
-   *          Mensagem da exceção
-   */
-  public BusinessException(DefaultMessages mensagem) {
-    super(mensagem.getMessageKey());
-  }
+    /**
+     * Cria o objeto.
+     */
+    public BusinessException() {
+        // Construtor.
+    }
 
-  /**
-   * Cria o objeto e atribui a mensagem da exceção.
-   * 
-   * @param mensagem
-   *          Mensagem da exceção
-   */
-  public BusinessException(String mensagem) {
-    super(mensagem);
-  }
+    public BusinessException(final List<Message> messages) {
+        this.messages = messages;
+    }
 
-  /**
-   * Cria o objeto e atribui a mensagem e a causa da exceção.
-   * 
-   * @param mensagem
-   *          Mensagem da exceção
-   * @param causa
-   *          Causa da exceção
-   */
-  public BusinessException(String mensagem, Throwable causa) {
-    super(mensagem, causa);
-  }
+    /**
+     * Cria o objeto e atribui a mensagem da exceção.
+     *
+     * @param mensagem Mensagem da exceção
+     */
+    public BusinessException(final Message mensagem) {
+        super(mensagem.getText());
+    }
 
-  /**
-   * Cria o objeto e atribui a causa da exceção.
-   * 
-   * @param causa
-   *          Causa da exceção
-   */
-  public BusinessException(Throwable causa) {
-    super(causa);
-  }
+    /**
+     * Cria o objeto e atribui a mensagem da exceção.
+     *
+     * @param mensagem Mensagem da exceção
+     */
+    public BusinessException(final String mensagem) {
+        super(mensagem);
+    }
 
-  /**
-   * Cria o objeto e atribui a referencia ao arquivo de propriedades.
-   * 
-   * @param mensagem
-   *          Chave no arquivo de propriedades
-   * @param _args
-   *          Valores relacionados a chave
-   */
-  public BusinessException(String mensagem, String... _args) {
-    super(mensagem);
-    this.args = _args;
-  }
+    /**
+     * Cria o objeto e atribui a mensagem e a causa da exceção.
+     *
+     * @param mensagem Mensagem da exceção
+     * @param causa    Causa da exceção
+     */
+    public BusinessException(final String mensagem, final Throwable causa) {
+        super(mensagem, causa);
+    }
 
-  /**
-   * 
-   * Retorna o valor do atributo valores.
-   * 
-   * @return O valor do atributo valores
-   */
-  public String[] getArgs() {
-    return args;
-  }
+    /**
+     * Cria o objeto e atribui a causa da exceção.
+     *
+     * @param causa Causa da exceção
+     */
+    public BusinessException(final Throwable causa) {
+        super(causa);
+    }
+
+    /**
+     * Cria o objeto e atribui a referencia ao arquivo de propriedades.
+     *
+     * @param mensagem Chave no arquivo de propriedades
+     * @param _args    Valores relacionados a chave
+     */
+    public BusinessException(final String mensagem, final String... _args) {
+        super(mensagem);
+        args = _args;
+    }
+
+    /**
+     * Retorna o valor do atributo valores.
+     *
+     * @return O valor do atributo valores
+     */
+    public String[] getArgs() {
+        return args;
+    }
 
 }

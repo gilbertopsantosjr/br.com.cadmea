@@ -29,14 +29,14 @@ public interface BaseService<E extends EntityPersistent> {
      * @param {@link Request}
      * @return {@link Response}
      */
-    Response save(Request structure);
+    <R extends Request<E>> Response<E> save(R structure);
 
     /**
      * remove fisicamente uma structure
      *
      * @param structure
      */
-    Boolean remove(Request structure);
+    <R extends Request<E>> Boolean remove(R structure);
 
     /**
      * obtem uma structure pelo seu identificador natural id
@@ -44,7 +44,7 @@ public interface BaseService<E extends EntityPersistent> {
      * @param id
      * @return E
      */
-    Response find(Serializable id);
+    Response<E> find(Serializable id);
 
     /**
      * obtem uma structure conforme os parametros de entrada
@@ -52,7 +52,7 @@ public interface BaseService<E extends EntityPersistent> {
      * @param params exemplo <code> params.put("nomeDaVariavel", objetoDeValor); </code>
      * @return E
      */
-    Response find(Map<String, Object> params, Result res);
+    Response<E> find(Map<String, Object> params, Result res);
 
     /**
      * obtem uma coleção de entidades conforme os parametros de entrada <br/>
@@ -60,7 +60,7 @@ public interface BaseService<E extends EntityPersistent> {
      * @param params exemplo <code> params.put("nomeDaVariavel", objetoDeValor); </code>
      * @return Collection<E>
      */
-    Response find(Map<String, Object> params);
+    Response<E> find(Map<String, Object> params);
 
     /**
      * obtem todos instancias persistidas para structure E
@@ -68,7 +68,7 @@ public interface BaseService<E extends EntityPersistent> {
      *
      * @return Collection<E>
      */
-    Response listAll();
+    Response<E> listAll();
 
     /**
      * obtem todos instancias persistidas para structure E
@@ -78,7 +78,7 @@ public interface BaseService<E extends EntityPersistent> {
      * @param to
      * @return Collection<E>
      */
-    Response listAll(Map<String, Object> params, int from, int to);
+    Response<E> listAll(Map<String, Object> params, int from, int to);
 
 
 }

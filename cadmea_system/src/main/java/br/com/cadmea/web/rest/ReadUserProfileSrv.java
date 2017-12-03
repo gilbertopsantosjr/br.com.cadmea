@@ -3,8 +3,8 @@
  */
 package br.com.cadmea.web.rest;
 
-import br.com.cadmea.dto.user.UserSystemRequest;
-import br.com.cadmea.dto.user.UserSystemResponse;
+import br.com.cadmea.dto.usersystem.UserSystemRequest;
+import br.com.cadmea.dto.usersystem.UserSystemResponse;
 import br.com.cadmea.spring.rest.GenericRestService;
 import br.com.cadmea.spring.rest.ServicePath;
 import br.com.cadmea.web.srv.UserSrv;

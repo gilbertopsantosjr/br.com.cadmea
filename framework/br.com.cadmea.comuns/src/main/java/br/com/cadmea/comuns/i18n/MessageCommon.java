@@ -1,10 +1,9 @@
 package br.com.cadmea.comuns.i18n;
 
-public interface MessageCadmea {
+public interface MessageCommon {
 
     String EMAIL_INVALID = "email.invalid";
-    Message FOUND = new Message("found");
-    Message NOT_FOUND = new Message("not.found");
-
+    String FOUND = "found";
+    String NOT_FOUND = "not.found";
 
 }

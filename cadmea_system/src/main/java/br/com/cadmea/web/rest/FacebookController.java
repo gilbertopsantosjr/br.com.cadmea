@@ -6,7 +6,7 @@ package br.com.cadmea.web.rest;
 import br.com.cadmea.comuns.exceptions.BusinessException;
 import br.com.cadmea.comuns.util.ValidatorUtil;
 import br.com.cadmea.dto.SocialNetworkRequest;
-import br.com.cadmea.dto.user.UserSystemRequest;
+import br.com.cadmea.dto.usersystem.UserSystemRequest;
 import br.com.cadmea.model.orm.Person;
 import br.com.cadmea.model.orm.SocialNetwork;
 import br.com.cadmea.model.orm.UserSystem;

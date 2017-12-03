@@ -1,14 +1,12 @@
 /**
  *
  */
-package br.com.cadmea.comuns.exceptions;
+package br.com.cadmea.comuns.i18n;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Locale;
-import java.util.Properties;
+import java.util.Objects;
 
 /**
  * @author gilbertopsantosjr
@@ -16,41 +14,40 @@ import java.util.Properties;
 @Slf4j
 public class Message {
 
-    public static final Message NOT_FOUND = new Message(Locale.UK, "not.found");
-    public static final Message FOUND = new Message(Locale.UK, "found");
-
-    private Locale locale;
-    private String text;
-    private final String key;
-    private final Properties prop = new Properties();
+    private final String text;
 
     public Message(final String key) {
-        this.key = key;
-        build();
+        text = MessageLoader.getInstance().build().getProperty(key);
     }
 
     public Message(final Locale locale, final String key) {
-        this.locale = locale;
-        this.key = key;
-        build();
+        text = MessageLoader.getInstance().with(locale).build().getProperty(key);
     }
 
     public Message(final String locale, final String key) {
-        this.locale = new Locale(locale);
-        this.key = key;
-        build();
+        text = MessageLoader.getInstance().with(new Locale(locale)).build().getProperty(key);
     }
 
     public String getText() {
-        return prop.getProperty(key);
+        return text;
     }
 
-    private void build() {
-        final String validName = locale == null || locale.equals(Locale.UK) ? "" : "_" + locale.getLanguage();
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("i18n/CadmeaMessages" + validName + ".properties")) {
-            prop.load(input);
-        } catch (final IOException e) {
-            log.error("error when loading CadmeaMessages " + validName + " properties ");
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
         }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final Message message = (Message) o;
+        return text == message.text &&
+                Objects.equals(text, message.text);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(text);
+    }
+
 }

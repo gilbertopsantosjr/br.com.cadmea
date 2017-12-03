@@ -1,8 +1,9 @@
-package br.com.cadmea.dto.user;
+package br.com.cadmea.dto.usersystem;
 
 import br.com.cadmea.comuns.dto.Response;
 import br.com.cadmea.model.orm.UserSystem;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class UserSystemResponse extends Response<UserSystem> {
 
     private List<UserSystem> entities;

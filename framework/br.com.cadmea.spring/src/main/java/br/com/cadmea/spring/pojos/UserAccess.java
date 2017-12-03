@@ -3,6 +3,7 @@
  */
 package br.com.cadmea.spring.pojos;
 
+import br.com.cadmea.model.orm.Role;
 import br.com.cadmea.model.orm.UserSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,12 +29,12 @@ public class UserAccess extends UserSystem
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private final Set<String> roles;
+    private final Set<Role> roles;
 
     private Locale locale;
 
     public UserAccess(final String email, final String password,
-                      final Set<String> roles) {
+                      final Set<Role> roles) {
         super();
         setEmail(email);
         setPassword(password);
@@ -53,13 +54,13 @@ public class UserAccess extends UserSystem
         roles = new HashSet<>();
     }
 
-    public void addRole(final String role) {
+    public void addRole(final Role role) {
         roles.add(role);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        final Set<String> roles = getRoles();
+        final List<Role> roles = getRoles();
 
         if (roles == null) {
             return Collections.emptyList();
@@ -67,8 +68,8 @@ public class UserAccess extends UserSystem
 
         final Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
 
-        for (final String role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role));
+        for (final Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
 
         return authorities;
@@ -102,8 +103,9 @@ public class UserAccess extends UserSystem
         return true;
     }
 
-    public Set<String> getRoles() {
-        return roles;
+    @Override
+    public List<Role> getRoles() {
+        return new ArrayList(roles);
     }
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");

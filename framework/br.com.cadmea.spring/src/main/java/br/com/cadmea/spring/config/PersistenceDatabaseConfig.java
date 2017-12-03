@@ -55,7 +55,7 @@ public class PersistenceDatabaseConfig {
     @Value("${cadmea.hibernate.generate_sql:true}")
     private String PROPERTY_NAME_HIBERNATE_GENERATE_SQL;
 
-    @Value("${cadmea.hibernate.hbm2ddl.auto:validate}")
+    @Value("${cadmea.hibernate.hbm2ddl.auto:create-drop}")
     private String PROPERTY_NAME_HIBERNATE_UPDATE_SQL;
 
     @Value("${cadmea.hibernate.dialect:org.hibernate.dialect.H2Dialect}")
@@ -158,6 +158,7 @@ public class PersistenceDatabaseConfig {
                 .setPersistenceProviderClass(HibernatePersistenceProvider.class);
         entityManagerFactoryBean.setPackagesToScan(packages);
         entityManagerFactoryBean.setJpaProperties(jpaHibernateProperties());
+
         return entityManagerFactoryBean;
     }
 
@@ -192,7 +193,7 @@ public class PersistenceDatabaseConfig {
         properties.put("hibernate.generate_statistics", false); // Estatisticas de processos SQL
         properties.put("hibernate.use_sql_comments", false);
         properties.put("hibernate.connection.pool_size", 50); //Poll de conexão
-        properties.put("hibernate.format_sql", false);
+        properties.put("hibernate.format_sql", PROPERTY_NAME_HIBERNATE_SHOW_SQL);
 
         return properties;
     }

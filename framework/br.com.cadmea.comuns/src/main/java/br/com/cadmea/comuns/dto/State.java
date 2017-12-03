@@ -1,11 +1,13 @@
 package br.com.cadmea.comuns.dto;
 
+import br.com.cadmea.comuns.orm.EntityPersistent;
+
 /**
  *
  */
-public interface StateRequest {
+public interface State<E extends EntityPersistent> {
     /**
      *
      */
-    void doAction();
+    void doAction(Request<E> struct);
 }

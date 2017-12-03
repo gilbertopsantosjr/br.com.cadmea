@@ -4,7 +4,7 @@ import br.com.cadmea.comuns.exceptions.DaoException;
 import br.com.cadmea.comuns.orm.enums.ComparacaoData;
 import br.com.cadmea.comuns.orm.enums.OrderToSort;
 import br.com.cadmea.comuns.orm.enums.Result;
-import br.com.cadmea.comuns.util.ConstantesComum;
+import br.com.cadmea.comuns.util.CadmeaConstants;
 import br.com.cadmea.comuns.util.CriteriaData;
 import br.com.cadmea.comuns.util.CriteriaDataConstrutor;
 import br.com.cadmea.comuns.util.ValidatorUtil;
@@ -48,45 +48,40 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent> implements 
         clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
+    /**
+     *
+     * @param namedQuery
+     * @param parameters
+     * @return
+     */
     @Override
     public Collection<T> findByNamedQuery(final String namedQuery, final Map<String, Object> parameters) {
         final TypedQuery<T> q = obterPorNamedQuery(namedQuery, parameters);
-        return factoryEntity(q.getResultList());
+        return q.getResultList();
     }
 
+    /**
+     *
+     * @param namedQuery
+     * @param parameters
+     * @param resultado
+     * @return
+     */
     @Override
     public T findByNamedQuery(final String namedQuery, final Map<String, Object> parameters, final Result resultado) {
         T retorno = null;
-        final TypedQuery<T> query = obterPorNamedQuery(namedQuery, parameters);
-        if (resultado.equals(Result.UNIQUE)) {
-            query.setMaxResults(1);
-            final List<T> list = query.getResultList();
-            retorno = obterApenasUmaEntidade(list);
+        try {
+            final TypedQuery<T> query = obterPorNamedQuery(namedQuery, parameters);
+            if (resultado.equals(Result.UNIQUE)) {
+                query.setMaxResults(1);
+                retorno = query.getSingleResult();
+            }
+        } catch(javax.persistence.NoResultException e) {
+
         }
         return retorno;
     }
 
-    /**
-     * opcao para tratar entidade nao encontrada com getSingleResult
-     */
-    private T obterApenasUmaEntidade(final List<T> list) {
-        if (list == null || list.size() == 0) {
-            return null;
-        }
-        final List<T> mylist = factoryEntity(list);
-        return mylist.get(0);
-    }
-
-    /**
-     * transforma uma (List<Object[]>) em (List<T>), necessario sobreescrever a
-     * funcao no Dao.
-     *
-     * @param list
-     * @return
-     */
-    public List<T> factoryEntity(final List<T> list) {
-        return list;
-    }
 
     /**
      * is mandatory following this patterns <b> NameEntity.namedQuery </b> in
@@ -119,6 +114,10 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent> implements 
         save(entidade);
     }
 
+    /**
+     *
+     * @param entidades
+     */
     @Override
     public void save(final Collection<T> entidades) {
         for (final T t : entidades) {
@@ -126,6 +125,11 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent> implements 
         }
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     public T find(final Serializable id) {
         return getEntityManager().find(getClazz(), id);
@@ -140,7 +144,7 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent> implements 
     public T get(final Long id) {
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("id", id);
-        return findByNamedQuery(ConstantesComum.GET_BY_ID, params, Result.UNIQUE);
+        return findByNamedQuery(CadmeaConstants.GET_BY_ID, params, Result.UNIQUE);
     }
 
     /**
@@ -149,11 +153,8 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent> implements 
      * @return Session sessao do hibernate
      */
     public Session getSessionOfHibernate() {
-        if (getEntityManager().getDelegate() != null) {
-            return (Session) getEntityManager().getDelegate();
-        } else {
-            throw new RuntimeException("Session not found !");
-        }
+        final Session session = getEntityManager().unwrap(Session.class);
+        return session;
     }
 
     private Collection<T> obter(final Map<String, Object> params, final Criteria criteria) throws RuntimeException {

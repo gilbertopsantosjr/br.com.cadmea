@@ -1,6 +1,6 @@
 package br.com.cadmea.comuns.exceptions;
 
-import lombok.Data;
+import br.com.cadmea.comuns.i18n.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +12,13 @@ import java.util.Locale;
  * @author Gilberto Santos
  * @version 1.0
  */
-@Data
 public class SystemException extends RuntimeException {
 
-    private Locale locale;
-    private final List<String> messages = new ArrayList<>();
+    private List<Message> messages = new ArrayList<>();
+
+    public List<Message> getMessages() {
+        return messages;
+    }
 
     /**
      * Cria o objeto.
@@ -25,10 +27,8 @@ public class SystemException extends RuntimeException {
 
     }
 
-    public SystemException(final List<SystemException> exceptions) {
-        for (final SystemException e : exceptions) {
-            messages.add(e.getMessage());
-        }
+    public SystemException(final List<Message> messages) {
+        this.messages = messages;
     }
 
     /**

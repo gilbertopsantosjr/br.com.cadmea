@@ -2,7 +2,8 @@ package br.com.cadmea.infra.negocio;
 
 import br.com.cadmea.comuns.exceptions.BusinessException;
 import br.com.cadmea.comuns.exceptions.DaoException;
-import br.com.cadmea.comuns.exceptions.enums.DefaultMessages;
+import br.com.cadmea.comuns.i18n.Message;
+import br.com.cadmea.comuns.i18n.MessageCommon;
 import br.com.cadmea.comuns.orm.EntityPersistent;
 import br.com.cadmea.comuns.orm.enums.Result;
 import br.com.cadmea.model.dao.DaoGenerico;
@@ -20,10 +21,13 @@ import java.util.*;
  * This Class wrappes kind Rules that , when is necessary to consult another entity to allow persist
  * like, The room can' have more vacancies rather than your capacity
  * when the action is from entity to entity, then should be applied in the business layer
+ * <p>
+ * A camada Bo prepara a entidade para a camada DAO
  *
  * @param <E> entity que sera manipulada
  * @version 1.0
  */
+@Transactional
 public abstract class BaseNegocial<E extends EntityPersistent> {
 
     /**
@@ -55,7 +59,7 @@ public abstract class BaseNegocial<E extends EntityPersistent> {
     public E find(final Serializable id) {
         final E entity = getDao().find(id);
         if (entity == null) {
-            throw new BusinessException(DefaultMessages.NOT_FOUND);
+            throw new BusinessException(MessageCommon.NOT_FOUND);
         }
         return entity;
     }
@@ -70,7 +74,7 @@ public abstract class BaseNegocial<E extends EntityPersistent> {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public E insert(final E entity) {
         if (isThere(entity)) {
-            throw new BusinessException(DefaultMessages.FOUND);
+            throw new BusinessException(new Message(MessageCommon.FOUND));
         }
         return getDao().save(entity);
     }
@@ -97,7 +101,7 @@ public abstract class BaseNegocial<E extends EntityPersistent> {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void remove(final E entity) {
         if (!isThere(entity)) {
-            throw new BusinessException("isThere method not implemented or returned false " + DefaultMessages.NOT_FOUND);
+            throw new BusinessException(new Message(MessageCommon.NOT_FOUND));
         }
         getDao().remove(entity);
     }
@@ -128,12 +132,7 @@ public abstract class BaseNegocial<E extends EntityPersistent> {
      */
     @Transactional(readOnly = true)
     public E find(final Map<String, Object> params, final Result resl) {
-        final E entity = getDao().find(params, resl);
-        if (entity == null) {
-            throw new BusinessException(DefaultMessages.NOT_FOUND);
-        }
-        // E copy = copier.hibernate2dto(entity);
-        return entity;
+        return getDao().find(params, resl);
     }
 
     /**
@@ -182,7 +181,7 @@ public abstract class BaseNegocial<E extends EntityPersistent> {
     public Collection<E> find(final Map<String, Object> params) {
         final Collection<E> entidades = getDao().find(params);
         if (entidades == null) {
-            throw new BusinessException(DefaultMessages.NOT_FOUND);
+            throw new BusinessException(new Message(MessageCommon.NOT_FOUND));
         }
         return entidades;
     }
@@ -232,9 +231,7 @@ public abstract class BaseNegocial<E extends EntityPersistent> {
      * validar se os dados informados ja existem e nao podem ser incluidos. Este
      * metodo e chamado na inclusao e na alteracao.
      *
-     * @param entity Objeto a ser verificado.
-     * @return <code>true</code> caso o objeto ja exista e <code>false</code> caso
-     * contrario.
+     * @param {@link E} entity
      */
     public boolean isThere(final E entity) {
         throw new UnsupportedOperationException();

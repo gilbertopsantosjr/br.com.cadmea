@@ -1,6 +1,7 @@
 package br.com.cadmea.model.orm;
 
 import br.com.cadmea.comuns.orm.enums.Situation;
+import br.com.cadmea.dto.usersystem.UserSystemMessages;
 import br.com.cadmea.model.BaseEntityPersistent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,12 +18,24 @@ import java.util.List;
 @Table(name = "user_system")
 @AttributeOverrides(@AttributeOverride(name = "id", column = @Column(name = "usu_id", nullable = false)))
 @NamedQueries({
-        @NamedQuery(name = "UserSystem.loginByUsername", query = "SELECT u.id, u.email, u.nickname, p.name FROM UserSystem as u INNER JOIN u.person as p INNER JOIN u.systems sys WHERE u.email = :email and u.situation = 1 "),
-        @NamedQuery(name = "UserSystem.loginByUsernameAndSystem", query = "SELECT u.id, u.email, u.nickname, p.name FROM UserSystem as u INNER JOIN u.person as p INNER JOIN u.systems sys WHERE u.email = :email and u.situation = 1 and sys.id = :sysId ")
+        @NamedQuery(name = "UserSystem.findByUsername", query = "SELECT new UserSystem( u.id, u.email, u.nickname, p.name) FROM UserSystem as u INNER JOIN u.person as p INNER JOIN u.systems sys WHERE u.email = :email and u.situation = 1 "),
+        @NamedQuery(name = "UserSystem.findByUsernameAndSystem", query = "SELECT new UserSystem( u.id, u.email, u.nickname, p.name) FROM UserSystem as u INNER JOIN u.person as p INNER JOIN u.systems sys WHERE u.email = :email and u.situation = 1 and sys.id = :sysId ")
 })
 @EqualsAndHashCode(callSuper = false)
 public class UserSystem extends BaseEntityPersistent {
 
+    public static final int MIM_LENGTH_PASSWORD = 6;
+
+    public UserSystem(){
+        super();
+    }
+
+    public UserSystem(final Long id, final String email, final String nickname, final String name ){
+        this.setId(id);
+        this.setEmail(email);
+        this.setNickname(nickname);
+        this.setPerson( new Person(name) );
+    }
 
     /**
      * this would be used for a public profile like
@@ -45,14 +58,14 @@ public class UserSystem extends BaseEntityPersistent {
      * unique and default password would be used to authentication
      */
     @NotNull
-    @Size(min = 6, message = "{userSystem.password.min.size}")
-    @Column(name = "usu_pwd", nullable = true, length = 150)
+    @Size(min = MIM_LENGTH_PASSWORD, message = UserSystemMessages.USER_SYSTEM_PASSWORD_MIN_SIZE)
+    @Column(name = "usu_pwd", length = 150)
     private String password;
 
     @Column(name = "usu_dt_register", nullable = false)
     private LocalDateTime dateRegister;
 
-    @Column(name = "usu_dt_expired", nullable = true)
+    @Column(name = "usu_dt_expired")
     private LocalDateTime dateExpire;
 
     @Column(nullable = false, name = "usu_last_visit")
@@ -72,10 +85,10 @@ public class UserSystem extends BaseEntityPersistent {
     private String favoriteLanguage;
 
     @ManyToMany(cascade = {CascadeType.PERSIST,
-            CascadeType.REMOVE}, fetch = FetchType.LAZY, targetEntity = Permission.class)
+            CascadeType.REMOVE}, fetch = FetchType.LAZY, targetEntity = Role.class)
     @JoinTable(name = "cadmea_permissions_per_user", joinColumns = {
             @JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "per_id")})
-    private List<Permission> permissions = Collections.EMPTY_LIST;
+    private List<Role> roles = Collections.EMPTY_LIST;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, targetEntity = CadmeaSystem.class)
     @JoinTable(name = "cadmea_systems_per_user", joinColumns = {
