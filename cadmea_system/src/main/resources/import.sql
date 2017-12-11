@@ -34,7 +34,7 @@ insert into cadmea_user_permission (role_name,situation, sys_id) values ('ROLE_U
 insert into cadmea_permissions_per_user (per_id, user_id) values (1, 1);
 
 -- adding user Gilberto santos to CadmeaSystem CADMEA_TEST
-insert into cadmea_systems_per_user (user_id, system_id) values (1, 1);
+insert into cadmea_systems_per_user (usu_id, sys_id) values (1, 1);
 
 -- adding user Anatoly to CadmeaSystem CADMEA_TEST
-insert into cadmea_systems_per_user (user_id, system_id) values (2, 1);
+insert into cadmea_systems_per_user (usu_id, sys_id) values (2, 1);

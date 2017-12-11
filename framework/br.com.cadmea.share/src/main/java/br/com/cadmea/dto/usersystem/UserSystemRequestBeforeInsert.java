@@ -14,8 +14,8 @@ public class UserSystemRequestBeforeInsert implements State<UserSystem> {
         final UserSystemRequest userSystemRequest = (UserSystemRequest) struct;
 
         Validator.assertNotNull(userSystemRequest.getReadTerms(), UserSystemMessages.USER_SYSTEM_REQUEST_READ_TERMS);
-
-        Validator.assertNotBlank(userSystemRequest.getNickname(), UserSystemMessages.USER_SYSTEM_REQUEST_NICKNAME);
+        // can' have special chars, white spaces or numbers
+        Validator.assertNotBlank(userSystemRequest.getNickname(), UserSystemMessages.USER_SYSTEM_REQUEST_NICKNAME_REQUIRED);
 
         Validator.assertNotBlank(userSystemRequest.getSystemName(), UserSystemMessages.USER_SYSTEM_REQUEST_SYSTEM_NAME_REQUIRED);
 
@@ -38,6 +38,8 @@ public class UserSystemRequestBeforeInsert implements State<UserSystem> {
         Validator.assertNotBlank(userSystemRequest.getPersonRegister(), PersonMessages.REGISTER_REQUIRED);
 
         Validator.assertNotNull(userSystemRequest.getPersonGender(), PersonMessages.GENDER_REQUIRED);
+
+        Validator.assertNotNull(userSystemRequest.getPersonDateOfBirth(), PersonMessages.DATE_OF_BIRTH_REQUIRED);
 
 
     }

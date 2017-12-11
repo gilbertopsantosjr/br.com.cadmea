@@ -1,39 +1,41 @@
 package br.com.cadmea.web;
 
+import br.com.cadmea.comuns.dto.Response;
 import br.com.cadmea.comuns.exceptions.SystemException;
 import br.com.cadmea.comuns.i18n.Message;
 import br.com.cadmea.comuns.i18n.MessageCommon;
 import br.com.cadmea.comuns.orm.enums.Gender;
-import br.com.cadmea.comuns.orm.enums.Relationship;
-import br.com.cadmea.comuns.util.DateUtil;
+import br.com.cadmea.comuns.orm.enums.Situation;
 import br.com.cadmea.dto.person.PersonMessages;
 import br.com.cadmea.dto.usersystem.UserSystemMessages;
 import br.com.cadmea.dto.usersystem.UserSystemRequest;
 import br.com.cadmea.dto.usersystem.UserSystemRequestBeforeInsert;
-import br.com.cadmea.model.orm.Person;
-import br.com.cadmea.model.orm.Role;
+import br.com.cadmea.model.orm.CadmeaSystem;
 import br.com.cadmea.model.orm.UserSystem;
+import br.com.cadmea.spring.test.AbstractTestUnit;
 import br.com.cadmea.web.srv.UserSrv;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
-import java.util.Arrays;
 import java.util.Locale;
 
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 
 
-public class TestUserSrv extends AbstractTestUnit {
+@SpringBootTest(classes = StartCadmeaSystem.class)
+public class UserSystemSrvTest extends AbstractTestUnit {
 
     private static final String EMAIL = "gilbertopsantosjr@gmail.com";
     private static final String CADMEA_SYSTEM_NAME = "CADMEA_TEST";
-
 
     @Autowired
     UserSrv userSrv;
@@ -51,7 +53,7 @@ public class TestUserSrv extends AbstractTestUnit {
                     new Message(Locale.UK, UserSystemMessages.USER_SYSTEM_REQUEST_SYSTEM_NAME_REQUIRED),
                     new Message(Locale.UK, UserSystemMessages.USER_SYSTEM_REQUEST_PASSWORD_REQUIRED),
                     new Message(Locale.UK, UserSystemMessages.USER_SYSTEM_REQUEST_READ_TERMS),
-                    new Message(Locale.UK, UserSystemMessages.USER_SYSTEM_REQUEST_NICKNAME),
+                    new Message(Locale.UK, UserSystemMessages.USER_SYSTEM_REQUEST_NICKNAME_REQUIRED),
                     new Message(Locale.UK, MessageCommon.EMAIL_INVALID)
             ));
         }
@@ -91,11 +93,58 @@ public class TestUserSrv extends AbstractTestUnit {
             request.setPersonSurname("Pereira dos Santos Júnior");
             request.setPersonName("Gilberto");
             request.setPersonRegister("3734563");
+            request.setPersonDateOfBirth("22/08/1980");
             userSrv.insert(request);
             fail();
         } catch (final SystemException e) {
             assertThat(e.getMessages(), hasItems(
                     new Message(Locale.UK, UserSystemMessages.USER_SYSTEM_REQUEST_NICKNAME_DUPLICATED)
+            ));
+        }
+    }
+
+    @Test
+    public void whenInsertOrUpdateUserSystemWrongDateFormat_thenFail() {
+        try {
+            final UserSystemRequest request = new UserSystemRequest();
+            request.setState(new UserSystemRequestBeforeInsert());
+            request.setEmail("emaildateofbirthwrong@gmail.com");
+            request.setSystemName(CADMEA_SYSTEM_NAME); // this user is not on this system
+            request.setPassword("123456");
+            request.setReadTerms(Boolean.TRUE);
+            request.setNickname("dateofbirthwrong");
+            request.setPersonGender(Gender.MALE);
+            request.setPersonName("Gilberto");
+            request.setPersonSurname("Pereira dos Santos Júnior");
+            request.setPersonRegister("3734563");
+            request.setPersonDateOfBirth("22-1980-08");
+        } catch (final SystemException e) {
+            assertThat(e.getMessages(), hasItems(
+                    new Message(Locale.UK, MessageCommon.DATE_FORMAT_INVALID)
+            ));
+        }
+    }
+
+    @Test
+    public void whenInsertNewUserAlreadyInCadmeaSystem_thenFail() {
+        try {
+            final UserSystemRequest request = new UserSystemRequest();
+            request.setState(new UserSystemRequestBeforeInsert());
+            request.setEmail(EMAIL);
+            request.setSystemName(CADMEA_SYSTEM_NAME); // this user is not on this system
+            request.setPassword("123456");
+            request.setReadTerms(Boolean.TRUE);
+            request.setNickname("gilbertopsantosjr");
+            request.setPersonGender(Gender.MALE);
+            request.setPersonName("Gilberto");
+            request.setPersonSurname("Pereira dos Santos Júnior");
+            request.setPersonRegister("3734563");
+            request.setPersonDateOfBirth("22/08/1980");
+            userSrv.insert(request);
+            fail(" allow to insert a new user even if the user already exist in cadmea system");
+        } catch (final SystemException e) {
+            assertThat(e.getMessages(), hasItems(
+                    new Message(Locale.UK, UserSystemMessages.USER_SRV_FOUND)
             ));
         }
     }
@@ -117,49 +166,71 @@ public class TestUserSrv extends AbstractTestUnit {
                     new Message(Locale.UK, PersonMessages.NAME_REQUIRED),
                     new Message(Locale.UK, PersonMessages.SURNAME_REQUIRED),
                     new Message(Locale.UK, PersonMessages.REGISTER_REQUIRED),
-                    new Message(Locale.UK, PersonMessages.GENDER_REQUIRED)
+                    new Message(Locale.UK, PersonMessages.GENDER_REQUIRED),
+                    new Message(Locale.UK, PersonMessages.DATE_OF_BIRTH_REQUIRED)
             ));
         }
     }
 
-    //@Test
+    @Test
     public void whenInsertSameUser_thenFail() {
-        final UserSystemRequest request = new UserSystemRequest();
-        request.setState(new UserSystemRequestBeforeInsert());
-        request.setEmail(EMAIL);
-        userSrv.insert(request);
-        fail("the same email twice are not allow");
+        try {
+            final UserSystemRequest request = new UserSystemRequest();
+            request.setState(new UserSystemRequestBeforeInsert());
+            request.setEmail(EMAIL);
+            request.setSystemName("MAGEC"); // this user is not on this system
+            request.setPassword("123456");
+            request.setReadTerms(Boolean.TRUE);
+            request.setNickname("another_nickname");
+            request.setPersonGender(Gender.MALE);
+            request.setPersonName("Gilberto");
+            request.setPersonSurname("Pereira dos Santos Júnior");
+            request.setPersonRegister("3734563");
+            request.setPersonDateOfBirth("22/08/1980");
+            userSrv.insert(request);
+            fail("the same email twice are not allow");
+        } catch (final SystemException e) {
+            assertThat(e.getMessages(), hasItems(
+                    new Message(Locale.UK, UserSystemMessages.EMAIL_DUPLICATED)
+            ));
+        }
     }
 
-    //@Test
+    @Test
     public void whenInsertNewUser_thenSuccess() {
         try {
-            final Person person = new Person();
-            person.setRegister("70792585100");
-            person.setDateOfBirth(DateUtil.getDate(1988, 3, 18));
-            person.setRelationship(Relationship.SOLTEIRO);
-            person.setName("Gilberto");
-            person.setSurname("Pereira dos Santos Junior");
-            person.setGender(Gender.MALE);
-
-            final Role role = new Role();
-            role.setName("ROLE_ADMIN");
-
-            final UserSystem entity = new UserSystem();
-            entity.setDateRegister(DateUtil.getDate());
-            entity.setEmail(EMAIL);
-            entity.setPassword("password");
-            entity.setNickname("Gilberto Santos");
-            entity.setPerson(person);
-            entity.setRoles(Arrays.asList(role));
-
             final UserSystemRequest request = new UserSystemRequest();
-            request.setEmail(EMAIL);
+            request.setState(new UserSystemRequestBeforeInsert());
+            request.setEmail("contato@gilbertosantos.com");
+            request.setSystemName(CADMEA_SYSTEM_NAME); // this user is not on this system
+            request.setPassword("123456");
+            request.setReadTerms(Boolean.TRUE);
+            request.setNickname("gilbertosantos");
+            request.setPersonGender(Gender.MALE);
+            request.setPersonName("Gilberto");
+            request.setPersonSurname("Pereira dos Santos Júnior");
+            request.setPersonRegister("3734563");
+            request.setPersonDateOfBirth("22/08/1980");
 
-            userSrv.insert(request);
+            final Response<UserSystem> response = userSrv.insert(request);
+            final UserSystem toInsert = response.getEntity();
+
+            assertThat(toInsert.getPassword(), is(not(nullValue())));
+
+            assertThat(toInsert.getSystems(), is(not(nullValue())));
+            assertThat(toInsert.getSystems(), hasItems(
+                    new CadmeaSystem(CADMEA_SYSTEM_NAME)
+            ));
+
+            assertThat(toInsert.getSituation(), is(not(nullValue())));
+            assertThat(toInsert.getSituation(), is(Situation.DISABLE));
+
+            assertThat(toInsert.getLastVisit(), is(not(nullValue())));
+            assertThat(toInsert.getDateRegister(), is(not(nullValue())));
 
         } catch (final SystemException e) {
             assertThat(e.getMessages(), is(empty()));
+            fail("should works properly");
         }
     }
 

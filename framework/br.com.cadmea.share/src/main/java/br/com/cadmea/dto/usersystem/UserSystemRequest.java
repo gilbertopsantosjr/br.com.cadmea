@@ -6,7 +6,9 @@ package br.com.cadmea.dto.usersystem;
 import br.com.cadmea.comuns.dto.Request;
 import br.com.cadmea.comuns.orm.enums.Gender;
 import br.com.cadmea.comuns.orm.enums.Relationship;
+import br.com.cadmea.comuns.util.DateUtil;
 import br.com.cadmea.comuns.validator.Validator;
+import br.com.cadmea.model.orm.Person;
 import br.com.cadmea.model.orm.UserSystem;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,6 +31,7 @@ public class UserSystemRequest extends Request<UserSystem> {
 
     private String personName;
     private String personSurname;
+    private String personDateOfBirth;
     private String personRegister;
     private Gender personGender;
     private Relationship personRelationship;
@@ -47,6 +50,16 @@ public class UserSystemRequest extends Request<UserSystem> {
         userSystem.setEmail(getEmail());
         userSystem.setNickname(getNickname());
         userSystem.setReadTerms(getReadTerms());
+
+        Person person = new Person();
+        person.setName(personName);
+        person.setSurname(personName);
+        person.setDateOfBirth( DateUtil.getDate(personDateOfBirth) );
+        person.setGender(personGender);
+        person.setRegister(personRegister);
+
+        userSystem.setPerson(person);
+
         return userSystem;
     }
 

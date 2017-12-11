@@ -10,8 +10,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Data
 @Table(name = "person_company")
-@AttributeOverrides(@AttributeOverride(name = "id",
-        column = @Column(name = "pej_id", nullable = false)))
+@AttributeOverrides(@AttributeOverride(name = "id", column = @Column(name = "pej_id", nullable = false)))
 @EqualsAndHashCode(callSuper = false)
 public class PersonCompany extends BaseEntityPersistent {
 

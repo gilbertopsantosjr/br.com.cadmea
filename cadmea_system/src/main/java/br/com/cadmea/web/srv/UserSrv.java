@@ -19,6 +19,7 @@ import br.com.cadmea.web.bo.UserBo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.provider.HibernateUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -72,7 +73,7 @@ public class UserSrv extends BaseServiceSrvImpl<UserSystem> {
     }
 
     /**
-     * * the service layer defines the values defined by business logic
+     * the service layer defines the values defined by business logic
      *
      * @param struct
      * @param <R>
@@ -94,16 +95,14 @@ public class UserSrv extends BaseServiceSrvImpl<UserSystem> {
          */
         throwIfFail(getBo().findBy(request.getEmail(), cadmeaSystem.getId()) != null, UserSystemMessages.USER_SRV_FOUND);
 
-        /**
-         * In case the nickname is already in use, then fail
-         */
-        throwIfFail(getBo().findByNickName(request.getNickname()) != null, UserSystemMessages.USER_SYSTEM_REQUEST_NICKNAME_DUPLICATED);
-
         final UserSystem toInsert = struct.getEntity();
 
         toInsert.setPassword(hashPassword);
         toInsert.setSystems(Arrays.asList(cadmeaSystem));
         toInsert.setDateRegister(DateUtil.getDate());
+        /**
+         * it will be disable until the user confirm his email
+         */
         toInsert.setSituation(Situation.DISABLE);
         toInsert.setLastVisit(DateUtil.getDate());
 

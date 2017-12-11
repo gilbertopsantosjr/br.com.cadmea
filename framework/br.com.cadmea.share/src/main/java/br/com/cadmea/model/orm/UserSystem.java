@@ -40,6 +40,9 @@ public class UserSystem extends BaseEntityPersistent {
     /**
      * this would be used for a public profile like
      * http://api.cadmea.com/profile/{nickname}
+     * can't have special chars
+     * can't have numbers
+     * can't have whitespaces
      */
     @NotNull
     @Size(min = 3, max = 150)
@@ -90,14 +93,14 @@ public class UserSystem extends BaseEntityPersistent {
             @JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "per_id")})
     private List<Role> roles = Collections.EMPTY_LIST;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, targetEntity = CadmeaSystem.class)
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, targetEntity = CadmeaSystem.class)
     @JoinTable(name = "cadmea_systems_per_user", joinColumns = {
-            @JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "system_id")})
+            @JoinColumn(name = "usu_id")}, inverseJoinColumns = {@JoinColumn(name = "sys_id")})
     private List<CadmeaSystem> systems = Collections.EMPTY_LIST;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, targetEntity = SocialNetwork.class)
     @JoinTable(name = "cadmea_social_per_user", joinColumns = {
-            @JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "system_id")})
+            @JoinColumn(name = "usu_id")}, inverseJoinColumns = {@JoinColumn(name = "sys_id")})
     private List<SocialNetwork> socialNetworks = Collections.EMPTY_LIST;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)

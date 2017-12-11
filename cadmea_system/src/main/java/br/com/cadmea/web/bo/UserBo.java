@@ -5,6 +5,7 @@ package br.com.cadmea.web.bo;
 
 import br.com.cadmea.comuns.orm.enums.Result;
 import br.com.cadmea.comuns.util.DateUtil;
+import br.com.cadmea.dto.usersystem.UserSystemMessages;
 import br.com.cadmea.infra.negocio.BaseNegocial;
 import br.com.cadmea.model.orm.UserSystem;
 import br.com.cadmea.web.dao.UserDao;
@@ -17,6 +18,8 @@ import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
+
+import static br.com.cadmea.comuns.validator.Validator.throwIfFail;
 
 /**
  * @author Gilberto Santos
@@ -84,4 +87,19 @@ public class UserBo extends BaseNegocial<UserSystem> {
         return findByNamedQuery("findByUsernameAndSystem", params, Result.UNIQUE);
     }
 
+
+    @Override
+    public boolean isThere(UserSystem entity) {
+        /**
+         * In case the nickname is already in use, then fail
+         */
+        throwIfFail(findByNickName(entity.getNickname()) != null, UserSystemMessages.USER_SYSTEM_REQUEST_NICKNAME_DUPLICATED);
+
+        /**
+         * In case the user try to insert and existent email  doesn't matter the system
+         */
+        throwIfFail( findBy(entity.getEmail()) != null, UserSystemMessages.EMAIL_DUPLICATED );
+
+        return false;
+    }
 }

@@ -12,7 +12,7 @@ public interface UserSystemMessages {
 
     String USER_SYSTEM_REQUEST_READ_TERMS = "userSystemRequest.readterms.required";
 
-    String USER_SYSTEM_REQUEST_NICKNAME = "userSystemRequest.nickname.required";
+    String USER_SYSTEM_REQUEST_NICKNAME_REQUIRED = "userSystemRequest.nickname.required";
 
     String USER_SYSTEM_REQUEST_NICKNAME_DUPLICATED = "userSystemRequest.nickname.duplicated";
 
@@ -22,5 +22,7 @@ public interface UserSystemMessages {
 
     String USER_SRV_FOUND = "userSrv.user.found";
 
-    String USER_SRV_NICKNAME_FOUND = "userSystemRequest.nickname.duplicated";
+    String EMAIL_DUPLICATED = "email.duplicated";
+
+
 }

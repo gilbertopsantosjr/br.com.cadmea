@@ -1,5 +1,8 @@
 package br.com.cadmea.comuns.util;
 
+import br.com.cadmea.comuns.i18n.MessageCommon;
+import br.com.cadmea.comuns.validator.Validator;
+
 import java.io.IOException;
 import java.sql.Time;
 import java.text.ParseException;
@@ -18,6 +21,8 @@ public class DateUtil {
     static String FMT_HORA_CURTA = "HH:mm";
     static String FMT_DATA_HORA = FMT_DATA + " " + FMT_HORA;
     static String FMT_DATA_HORA_CURTA = FMT_DATA + " " + FMT_HORA_CURTA;
+    static final SimpleDateFormat formatDate = new SimpleDateFormat(FMT_DATA);
+    static final SimpleDateFormat formatDateTime = new SimpleDateFormat(FMT_DATA_HORA);
 
     /**
      * @param data
@@ -137,6 +142,28 @@ public class DateUtil {
         return input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
+    /**
+     * @param date
+     * @return
+     */
+    public static LocalDate getDate(final Date date) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        final Date input = calendar.getTime();
+        return input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    /**
+     * @param date
+     * @return
+     */
+    public static LocalDate getDate(final String date) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(parseDate(date));
+        final Date input = calendar.getTime();
+        return input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
 
     /**
      * @param parametro
@@ -167,29 +194,37 @@ public class DateUtil {
     }
 
     /**
-     * @param strDate
-     * @return
+     * parse the valid date as String to a valid Date object
+     * format dd/mm/yyyy
+     *
+     * @param strDate {@link String}
+     * @return Date {@link Date}
      */
     public static Date parseDate(final String strDate) {
-        final SimpleDateFormat format = new SimpleDateFormat(FMT_DATA);
+        Date dtReturn = null;
         try {
-            return format.parse(strDate);
+            dtReturn = formatDate.parse(strDate);
         } catch (final ParseException e) {
-            return null;
+            Validator.throwIfFail(true, MessageCommon.DATE_FORMAT_INVALID);
         }
+        return dtReturn;
     }
 
     /**
-     * @param strDate
-     * @return
+     * parse the valid date as String to a valid Date object
+     * format dd/mm/yyyy hh:mm:ss
+     *
+     * @param strDate {@link String}
+     * @return Date {@link Date}
      */
     public static Date parseDataHora(final String strDate) {
-        final SimpleDateFormat format = new SimpleDateFormat(FMT_DATA_HORA);
+        Date dtReturn = null;
         try {
-            return format.parse(strDate);
+            dtReturn = formatDateTime.parse(strDate);
         } catch (final ParseException e) {
-            return null;
+            Validator.throwIfFail(true, MessageCommon.DATE_FORMAT_INVALID);
         }
+        return dtReturn;
     }
 
     /**

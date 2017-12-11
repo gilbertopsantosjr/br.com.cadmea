@@ -10,4 +10,6 @@ public interface PersonMessages {
 
     String GENDER_REQUIRED = "person.gender.required";
 
+    String DATE_OF_BIRTH_REQUIRED = "person.dob.required";
+
 }
