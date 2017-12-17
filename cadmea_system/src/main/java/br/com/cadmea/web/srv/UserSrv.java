@@ -19,12 +19,13 @@ import br.com.cadmea.web.bo.UserBo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.jpa.provider.HibernateUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
@@ -74,26 +75,30 @@ public class UserSrv extends BaseServiceSrvImpl<UserSystem> {
 
     /**
      * the service layer defines the values defined by business logic
+     * a transacao precisa estar na camada de servico ao inves de negocio, pois servico prepara a entidade
+     * para negocio, ou seja faz varios selects a entao delega a entidade pronta para negocio.
+     * isso tudo precisa estar em uma unica transacao
      *
      * @param struct
      * @param <R>
      * @return
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public <R extends Request<UserSystem>> Response<UserSystem> insert(final R struct) {
         final UserSystemRequest request = ((UserSystemRequest) struct);
 
         request.validate();
 
         final String hashPassword = passwordEncoder.encode(request.getPassword());
-        final CadmeaSystem cadmeaSystem = cadmeaSystemSrv.findBySystemName(request.getSystemName());
+        final CadmeaSystem cadmeaSystem = cadmeaSystemSrv.findByIdentity(request.getSystemName());
 
-        throwIfFail(cadmeaSystem == null, UserSystemMessages.USER_SRV_NOT_FOUND);
+        throwIfFail(cadmeaSystem == null, UserSystemMessages.USER_SYSTEM_NOT_FOUND);
 
         /**
          * In case the userSystem is already in the Cadmea System, then fail
          */
-        throwIfFail(getBo().findBy(request.getEmail(), cadmeaSystem.getId()) != null, UserSystemMessages.USER_SRV_FOUND);
+        throwIfFail(getBo().findBy(request.getEmail(), cadmeaSystem.getId()) != null, UserSystemMessages.USER_SYSTEM_FOUND);
 
         final UserSystem toInsert = struct.getEntity();
 
@@ -119,24 +124,24 @@ public class UserSrv extends BaseServiceSrvImpl<UserSystem> {
     /**
      * search for user in Cadmea System
      *
-     * @param struct
+     * @param userSystemRequest
      * @return {@link UserAccess}
      */
-    public UserAccess authentication(final @NotNull UserSystemRequest struct) {
+    public UserAccess authentication(final @NotNull UserSystemRequest userSystemRequest) {
         logger.info("starting authentication of user ");
 
-        struct.validate();
+        userSystemRequest.validate();
 
-        final CadmeaSystem cadmeaSystem = cadmeaSystemSrv.findBy(struct.getSystemName());
-        throwIfFail(cadmeaSystem == null, UserSystemMessages.USER_SRV_NOT_FOUND);
+        final CadmeaSystem cadmeaSystem = cadmeaSystemSrv.findByIdentity(userSystemRequest.getSystemName());
+        throwIfFail(cadmeaSystem == null, UserSystemMessages.USER_SYSTEM_NOT_FOUND);
 
-        final UserSystem userSystem = getBo().findBy(struct.getEmail(), cadmeaSystem.getId());
+        final UserSystem userSystem = getBo().findBy(userSystemRequest.getEmail(), cadmeaSystem.getId());
         throwIfFail(userSystem == null, UserSystemMessages.USER_SRV_NOT_ALLOW_IN_SYSTEM);
 
         //TODO adding custom SQL to get a person' name without anything else
         final UserAccess userAccess = new UserAccess(userSystem.getPerson().getName());
         userAccess.setRoles(userSystem.getRoles());
-    
+
         final Authentication auth = new UsernamePasswordAuthenticationToken(userAccess, null,
                 userAccess.getAuthorities());
 
@@ -153,7 +158,7 @@ public class UserSrv extends BaseServiceSrvImpl<UserSystem> {
         logger.info("starting recoveryPassword service for:" + struct.getEmail());
 
         final UserSystem user = getBo().findBy(struct.getEmail());
-        throwIfFail(user == null, UserSystemMessages.USER_SRV_FOUND);
+        throwIfFail(user == null, UserSystemMessages.USER_SYSTEM_FOUND);
 
         final String token = UUID.randomUUID().toString();
         passwordResetTokenSrv.createPasswordResetTokenForUser(user, token);
@@ -163,7 +168,7 @@ public class UserSrv extends BaseServiceSrvImpl<UserSystem> {
 
         final String to = user.getEmail();
         final String subject = "Recovery password";
-        final Map<String, Object> msg = new HashMap<String, Object>();
+        final Map<String, Object> msg = new HashMap<>();
 
         msg.put("url", appUrl);
         msg.put("nickname", user.getNickname());

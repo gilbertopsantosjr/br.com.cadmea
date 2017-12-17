@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.io.Serializable;
 
 /**
  * @author Gilberto Santos
@@ -28,11 +29,11 @@ public class CadmeaSystemSrv extends BaseServiceSrvImpl<CadmeaSystem> {
     }
 
     /**
-     * @param systemName
-     * @return
+     * @param identity
+     * @return {@link CadmeaSystem}
      */
-    public CadmeaSystem findBySystemName(final @NotEmpty String systemName) {
-        final CadmeaSystem cadmeaSystem = getBo().find("identity", systemName, Result.UNIQUE);
+    public CadmeaSystem findByIdentity(final @NotEmpty String identity) {
+        final CadmeaSystem cadmeaSystem = getBo().find("identity", identity, Result.UNIQUE);
         Validator.throwIfFail(cadmeaSystem == null, "a cadmea system cant be null");
         return cadmeaSystem;
     }
@@ -43,7 +44,7 @@ public class CadmeaSystemSrv extends BaseServiceSrvImpl<CadmeaSystem> {
      * @param id
      * @return {@link CadmeaSystem} if found
      */
-    public CadmeaSystem findBy(final @NotEmpty String id) {
+    public CadmeaSystem findById(final @NotEmpty Serializable id) {
         Validator.throwIfFail(id == null, "Identity of system can't be null or empty");
         return getBo().find("id", id, Result.UNIQUE);
     }

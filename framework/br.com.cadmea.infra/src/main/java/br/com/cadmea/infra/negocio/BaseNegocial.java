@@ -71,12 +71,12 @@ public abstract class BaseNegocial<E extends EntityPersistent> {
      * @param entity
      * @return
      */
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public E insert(final E entity) {
         if (isThere(entity)) {
             throw new BusinessException(new Message(MessageCommon.FOUND));
         }
-        return getDao().save(entity);
+        getDao().insert(entity);
+        return getDao().find(entity.getId());
     }
 
     /**
@@ -111,7 +111,7 @@ public abstract class BaseNegocial<E extends EntityPersistent> {
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void remove(final Collection<E> entidades) {
-        final Collection<E> removidas = new ArrayList<E>();
+        final Collection<E> removidas = new ArrayList<>();
         final Iterator<E> iterator = entidades.iterator();
         while (iterator.hasNext()) {
             final E entity = iterator.next();
@@ -201,7 +201,7 @@ public abstract class BaseNegocial<E extends EntityPersistent> {
      */
     @Transactional(readOnly = true)
     public Collection<E> findAll(final int de, final int ate) {
-        return getDao().listAll(new HashMap<String, Object>(), de, ate);
+        return getDao().listAll(new HashMap<>(), de, ate);
     }
 
     /**

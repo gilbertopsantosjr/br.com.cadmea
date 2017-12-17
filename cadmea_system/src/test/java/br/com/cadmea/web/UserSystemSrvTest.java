@@ -1,16 +1,12 @@
 package br.com.cadmea.web;
 
-import br.com.cadmea.comuns.dto.Response;
 import br.com.cadmea.comuns.exceptions.SystemException;
 import br.com.cadmea.comuns.i18n.Message;
 import br.com.cadmea.comuns.i18n.MessageCommon;
 import br.com.cadmea.comuns.orm.enums.Gender;
 import br.com.cadmea.comuns.orm.enums.Situation;
 import br.com.cadmea.dto.person.PersonMessages;
-import br.com.cadmea.dto.usersystem.UserSystemMessages;
-import br.com.cadmea.dto.usersystem.UserSystemRequest;
-import br.com.cadmea.dto.usersystem.UserSystemRequestBeforeInsert;
-import br.com.cadmea.model.orm.CadmeaSystem;
+import br.com.cadmea.dto.usersystem.*;
 import br.com.cadmea.model.orm.UserSystem;
 import br.com.cadmea.spring.test.AbstractTestUnit;
 import br.com.cadmea.web.srv.UserSrv;
@@ -40,7 +36,6 @@ public class UserSystemSrvTest extends AbstractTestUnit {
     @Autowired
     UserSrv userSrv;
 
-
     @Test
     public void whenInsertNewUserMissingUserSystemRequestMandatoryFields_thenFail() {
         try {
@@ -54,7 +49,12 @@ public class UserSystemSrvTest extends AbstractTestUnit {
                     new Message(Locale.UK, UserSystemMessages.USER_SYSTEM_REQUEST_PASSWORD_REQUIRED),
                     new Message(Locale.UK, UserSystemMessages.USER_SYSTEM_REQUEST_READ_TERMS),
                     new Message(Locale.UK, UserSystemMessages.USER_SYSTEM_REQUEST_NICKNAME_REQUIRED),
-                    new Message(Locale.UK, MessageCommon.EMAIL_INVALID)
+                    new Message(Locale.UK, MessageCommon.EMAIL_INVALID),
+                    new Message(Locale.UK, PersonMessages.NAME_REQUIRED),
+                    new Message(Locale.UK, PersonMessages.SURNAME_REQUIRED),
+                    new Message(Locale.UK, PersonMessages.REGISTER_REQUIRED),
+                    new Message(Locale.UK, PersonMessages.GENDER_REQUIRED),
+                    new Message(Locale.UK, PersonMessages.DATE_OF_BIRTH_REQUIRED)
             ));
         }
     }
@@ -144,33 +144,11 @@ public class UserSystemSrvTest extends AbstractTestUnit {
             fail(" allow to insert a new user even if the user already exist in cadmea system");
         } catch (final SystemException e) {
             assertThat(e.getMessages(), hasItems(
-                    new Message(Locale.UK, UserSystemMessages.USER_SRV_FOUND)
+                    new Message(Locale.UK, UserSystemMessages.USER_SYSTEM_FOUND)
             ));
         }
     }
 
-    @Test
-    public void whenInsertNewUserMissingUserSystemEntityMandatoryFields_thenSuccess() {
-        try {
-            final UserSystemRequest request = new UserSystemRequest();
-            request.setState(new UserSystemRequestBeforeInsert());
-            request.setEmail(EMAIL);
-            request.setSystemName(CADMEA_SYSTEM_NAME);
-            request.setPassword("123456");
-            request.setReadTerms(Boolean.TRUE);
-            request.setNickname("gilbertopsantosjr");
-            userSrv.insert(request);
-            fail();
-        } catch (final SystemException e) {
-            assertThat(e.getMessages(), hasItems(
-                    new Message(Locale.UK, PersonMessages.NAME_REQUIRED),
-                    new Message(Locale.UK, PersonMessages.SURNAME_REQUIRED),
-                    new Message(Locale.UK, PersonMessages.REGISTER_REQUIRED),
-                    new Message(Locale.UK, PersonMessages.GENDER_REQUIRED),
-                    new Message(Locale.UK, PersonMessages.DATE_OF_BIRTH_REQUIRED)
-            ));
-        }
-    }
 
     @Test
     public void whenInsertSameUser_thenFail() {
@@ -212,15 +190,12 @@ public class UserSystemSrvTest extends AbstractTestUnit {
             request.setPersonRegister("3734563");
             request.setPersonDateOfBirth("22/08/1980");
 
-            final Response<UserSystem> response = userSrv.insert(request);
+            final UserSystemResponse response = (UserSystemResponse) userSrv.insert(request);
             final UserSystem toInsert = response.getEntity();
 
             assertThat(toInsert.getPassword(), is(not(nullValue())));
 
             assertThat(toInsert.getSystems(), is(not(nullValue())));
-            assertThat(toInsert.getSystems(), hasItems(
-                    new CadmeaSystem(CADMEA_SYSTEM_NAME)
-            ));
 
             assertThat(toInsert.getSituation(), is(not(nullValue())));
             assertThat(toInsert.getSituation(), is(Situation.DISABLE));
@@ -233,6 +208,41 @@ public class UserSystemSrvTest extends AbstractTestUnit {
             fail("should works properly");
         }
     }
+
+
+    @Test
+    public void whenUserTryToAuthAndNotFound_thenFail() {
+        try {
+            final UserSystemRequest request = new UserSystemRequest();
+            request.setState(new UserSystemRequestBeforeAuth());
+            request.setEmail("anotheremail@gmail.com");
+            request.setPassword("123456");
+            request.setSystemName(CADMEA_SYSTEM_NAME);
+            userSrv.authentication(request);
+            fail();
+        } catch (final SystemException e) {
+            assertThat(e.getMessages(), hasItems(
+                    new Message(Locale.UK, UserSystemMessages.USER_SRV_NOT_ALLOW_IN_SYSTEM)
+            ));
+        }
+    }
+
+    @Test
+    public void whenUserTryToAuthAndMissingFields_thenFail() {
+        try {
+            final UserSystemRequest request = new UserSystemRequest();
+            request.setState(new UserSystemRequestBeforeAuth());
+            userSrv.authentication(request);
+            fail();
+        } catch (final SystemException e) {
+            assertThat(e.getMessages(), hasItems(
+                    new Message(Locale.UK, UserSystemMessages.USER_SYSTEM_REQUEST_SYSTEM_NAME_REQUIRED),
+                    new Message(Locale.UK, UserSystemMessages.USER_SYSTEM_REQUEST_PASSWORD_REQUIRED),
+                    new Message(Locale.UK, MessageCommon.EMAIL_INVALID)
+            ));
+        }
+    }
+
 
     //@Test
     public void whenSearchForUserAndUserNotFound_thenFail() {

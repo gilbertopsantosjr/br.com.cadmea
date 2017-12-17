@@ -7,7 +7,6 @@ import br.com.cadmea.comuns.util.ValidatorUtil;
 
 import java.util.*;
 
-@SuppressWarnings("unchecked")
 public class Validator {
 
     // only word characters: [a-zA-Z_0-9] and file extension
@@ -241,7 +240,6 @@ public class Validator {
      * @param params
      */
     public static void assertValidDBId(final String id, final String message, final Object... params) {
-
         assertNotBlank(id, message, params);
         getInstance().addExceptionIfFalse(id.matches(DB_ID_PATTERN), message, params);
     }
@@ -254,7 +252,7 @@ public class Validator {
     private void addExceptionIfFalse(final boolean asserted, final String message, final Object[] params) {
         if (!asserted) {
             final Message e = new Message(getInstance().locale, String.format(message, params));
-            messages.add(e);
+            getInstance().messages.add(e);
         }
     }
 
@@ -264,7 +262,7 @@ public class Validator {
      */
     public static void throwIfFail(final Boolean asserted, final String message) {
         if (asserted) {
-            throw new SystemException(Arrays.asList( new Message(getInstance().locale, String.format(message)) ) );
+            throw new SystemException(Arrays.asList(new Message(getInstance().locale, String.format(message))));
         }
     }
 
@@ -272,10 +270,14 @@ public class Validator {
      *
      */
     public static void failIfAnyExceptionsFound() {
-        if (getInstance().messages.size() > 0) {
-            throw new SystemException(getInstance().messages);
-        }
+        final List<Message> messages = new ArrayList<>();
+        getInstance().messages.forEach(x -> {
+            messages.add(x);
+        });
         getInstance().messages.clear();
+        if (messages.size() > 0) {
+            throw new SystemException(messages);
+        }
     }
 
     /**

@@ -16,11 +16,11 @@ public interface UserSystemMessages {
 
     String USER_SYSTEM_REQUEST_NICKNAME_DUPLICATED = "userSystemRequest.nickname.duplicated";
 
-    String USER_SRV_NOT_FOUND = "userSrv.system.not.found";
+    String USER_SYSTEM_NOT_FOUND = "userSrv.system.not.found";
 
     String USER_SRV_NOT_ALLOW_IN_SYSTEM = "userSrv.not.allow.in.system";
 
-    String USER_SRV_FOUND = "userSrv.user.found";
+    String USER_SYSTEM_FOUND = "userSrv.user.found";
 
     String EMAIL_DUPLICATED = "email.duplicated";
 

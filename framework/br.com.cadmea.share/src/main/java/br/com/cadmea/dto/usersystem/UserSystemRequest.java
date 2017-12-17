@@ -51,10 +51,10 @@ public class UserSystemRequest extends Request<UserSystem> {
         userSystem.setNickname(getNickname());
         userSystem.setReadTerms(getReadTerms());
 
-        Person person = new Person();
+        final Person person = new Person();
         person.setName(personName);
         person.setSurname(personName);
-        person.setDateOfBirth( DateUtil.getDate(personDateOfBirth) );
+        person.setDateOfBirth(DateUtil.getDate(personDateOfBirth));
         person.setGender(personGender);
         person.setRegister(personRegister);
 
@@ -69,6 +69,9 @@ public class UserSystemRequest extends Request<UserSystem> {
     @Override
     public void validate() {
         //CREATE, UPDATE, REQUEST
+        if (getState() == null) {
+            Validator.throwIfFail(true, "missed the state of this request");
+        }
         getState().doAction(this);
         Validator.failIfAnyExceptionsFound();
     }

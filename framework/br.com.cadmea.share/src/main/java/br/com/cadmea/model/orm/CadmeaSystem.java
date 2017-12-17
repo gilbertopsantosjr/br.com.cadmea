@@ -27,9 +27,9 @@ public class CadmeaSystem extends BaseEntityPersistent {
         super();
     }
 
-    public CadmeaSystem(final String systemName) {
+    public CadmeaSystem(final String identity) {
         super();
-        setName(systemName);
+        setIdentity(identity);
     }
 
     /**
@@ -68,12 +68,17 @@ public class CadmeaSystem extends BaseEntityPersistent {
             return false;
         }
         final CadmeaSystem cadmeaSystem = (CadmeaSystem) o;
-        return name == cadmeaSystem.name && Objects.equals(name, cadmeaSystem.name);
+        return identity == cadmeaSystem.identity && Objects.equals(identity, cadmeaSystem.identity);
+    }
+
+    @Override
+    public String toString() {
+        return "CadmeaSystem{" + "identity='" + identity + "'}";
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(identity);
     }
 
 

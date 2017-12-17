@@ -4,9 +4,7 @@ import br.com.cadmea.comuns.dto.Response;
 import br.com.cadmea.model.orm.UserSystem;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.beanutils.BeanUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,13 +24,6 @@ public class UserSystemResponse extends Response<UserSystem> {
 
     @Override
     public void setEntity(final UserSystem entity) {
-        try {
-            BeanUtils.copyProperties(user, entity);
-        } catch (final IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (final InvocationTargetException e) {
-            e.printStackTrace();
-        }
         user = entity;
     }
 

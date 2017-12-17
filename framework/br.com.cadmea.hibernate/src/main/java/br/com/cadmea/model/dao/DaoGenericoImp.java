@@ -49,7 +49,6 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent> implements 
     }
 
     /**
-     *
      * @param namedQuery
      * @param parameters
      * @return
@@ -61,7 +60,6 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent> implements 
     }
 
     /**
-     *
      * @param namedQuery
      * @param parameters
      * @param resultado
@@ -76,7 +74,7 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent> implements 
                 query.setMaxResults(1);
                 retorno = query.getSingleResult();
             }
-        } catch(javax.persistence.NoResultException e) {
+        } catch (final javax.persistence.NoResultException e) {
 
         }
         return retorno;
@@ -115,7 +113,6 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent> implements 
     }
 
     /**
-     *
      * @param entidades
      */
     @Override
@@ -126,7 +123,6 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent> implements 
     }
 
     /**
-     *
      * @param id
      * @return
      */
@@ -142,7 +138,7 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent> implements 
      * @return T
      */
     public T get(final Long id) {
-        final Map<String, Object> params = new HashMap<String, Object>();
+        final Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         return findByNamedQuery(CadmeaConstants.GET_BY_ID, params, Result.UNIQUE);
     }
@@ -163,14 +159,14 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent> implements 
 
     @Override
     public Collection<T> find(final String propriedade, final Object valor) {
-        final Map<String, Object> params = new HashMap<String, Object>();
+        final Map<String, Object> params = new HashMap<>();
         params.put(propriedade, valor);
         return find(params);
     }
 
     @Override
     public T find(final String propriedade, final Object valor, final Result res) throws DaoException {
-        final Map<String, Object> params = new HashMap<String, Object>();
+        final Map<String, Object> params = new HashMap<>();
         params.put(propriedade, valor);
         return find(params, Result.UNIQUE);
     }
@@ -331,7 +327,7 @@ public abstract class DaoGenericoImp<T extends BaseEntityPersistent> implements 
 
     @Override
     public Collection<T> listAll() {
-        return listAll(new HashMap<String, Object>(), 0, 0);
+        return listAll(new HashMap<>(), 0, 0);
     }
 
     @Override
